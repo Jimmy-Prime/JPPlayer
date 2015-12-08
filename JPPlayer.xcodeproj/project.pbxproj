@@ -1,0 +1,552 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4BA85D921C15748400D78EB9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA85D911C15748400D78EB9 /* main.m */; };
+		4BA85D951C15748400D78EB9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA85D941C15748400D78EB9 /* AppDelegate.m */; };
+		4BA85D9B1C15748400D78EB9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4BA85D991C15748400D78EB9 /* Main.storyboard */; };
+		4BA85D9D1C15748400D78EB9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4BA85D9C1C15748400D78EB9 /* Assets.xcassets */; };
+		4BA85DA01C15748400D78EB9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4BA85D9E1C15748400D78EB9 /* LaunchScreen.storyboard */; };
+		4BA85DAB1C15748400D78EB9 /* JPPlayerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA85DAA1C15748400D78EB9 /* JPPlayerTests.m */; };
+		4BA85DB61C15748400D78EB9 /* JPPlayerUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA85DB51C15748400D78EB9 /* JPPlayerUITests.m */; };
+		4BA85DC61C15753300D78EB9 /* JPListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA85DC51C15753300D78EB9 /* JPListViewController.m */; };
+		4BA85DCA1C1575A200D78EB9 /* JPLeftBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA85DC91C1575A200D78EB9 /* JPLeftBarView.m */; };
+		4BA85DCD1C15770400D78EB9 /* JPLeftBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA85DCC1C15770400D78EB9 /* JPLeftBarViewController.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4BA85DA71C15748400D78EB9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4BA85D851C15748400D78EB9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4BA85D8C1C15748400D78EB9;
+			remoteInfo = JPPlayer;
+		};
+		4BA85DB21C15748400D78EB9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4BA85D851C15748400D78EB9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4BA85D8C1C15748400D78EB9;
+			remoteInfo = JPPlayer;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		4BA85D8D1C15748400D78EB9 /* JPPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JPPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4BA85D911C15748400D78EB9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		4BA85D931C15748400D78EB9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		4BA85D941C15748400D78EB9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		4BA85D9A1C15748400D78EB9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		4BA85D9C1C15748400D78EB9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4BA85D9F1C15748400D78EB9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		4BA85DA11C15748400D78EB9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4BA85DA61C15748400D78EB9 /* JPPlayerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JPPlayerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4BA85DAA1C15748400D78EB9 /* JPPlayerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JPPlayerTests.m; sourceTree = "<group>"; };
+		4BA85DAC1C15748400D78EB9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4BA85DB11C15748400D78EB9 /* JPPlayerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JPPlayerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4BA85DB51C15748400D78EB9 /* JPPlayerUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JPPlayerUITests.m; sourceTree = "<group>"; };
+		4BA85DB71C15748400D78EB9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4BA85DC41C15753300D78EB9 /* JPListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPListViewController.h; path = ViewControllers/JPListViewController.h; sourceTree = "<group>"; };
+		4BA85DC51C15753300D78EB9 /* JPListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPListViewController.m; path = ViewControllers/JPListViewController.m; sourceTree = "<group>"; };
+		4BA85DC81C1575A200D78EB9 /* JPLeftBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPLeftBarView.h; path = Views/JPLeftBarView.h; sourceTree = "<group>"; };
+		4BA85DC91C1575A200D78EB9 /* JPLeftBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPLeftBarView.m; path = Views/JPLeftBarView.m; sourceTree = "<group>"; };
+		4BA85DCB1C15770400D78EB9 /* JPLeftBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPLeftBarViewController.h; path = ViewControllers/JPLeftBarViewController.h; sourceTree = "<group>"; };
+		4BA85DCC1C15770400D78EB9 /* JPLeftBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPLeftBarViewController.m; path = ViewControllers/JPLeftBarViewController.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4BA85D8A1C15748400D78EB9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4BA85DA31C15748400D78EB9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4BA85DAE1C15748400D78EB9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4BA85D841C15748400D78EB9 = {
+			isa = PBXGroup;
+			children = (
+				4BA85D8F1C15748400D78EB9 /* JPPlayer */,
+				4BA85DA91C15748400D78EB9 /* JPPlayerTests */,
+				4BA85DB41C15748400D78EB9 /* JPPlayerUITests */,
+				4BA85D8E1C15748400D78EB9 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		4BA85D8E1C15748400D78EB9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4BA85D8D1C15748400D78EB9 /* JPPlayer.app */,
+				4BA85DA61C15748400D78EB9 /* JPPlayerTests.xctest */,
+				4BA85DB11C15748400D78EB9 /* JPPlayerUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4BA85D8F1C15748400D78EB9 /* JPPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				4BA85DC71C15756E00D78EB9 /* Views */,
+				4BA85DC31C1574CE00D78EB9 /* ViewControllers */,
+				4BA85D931C15748400D78EB9 /* AppDelegate.h */,
+				4BA85D941C15748400D78EB9 /* AppDelegate.m */,
+				4BA85D991C15748400D78EB9 /* Main.storyboard */,
+				4BA85D9C1C15748400D78EB9 /* Assets.xcassets */,
+				4BA85D9E1C15748400D78EB9 /* LaunchScreen.storyboard */,
+				4BA85DA11C15748400D78EB9 /* Info.plist */,
+				4BA85D901C15748400D78EB9 /* Supporting Files */,
+			);
+			path = JPPlayer;
+			sourceTree = "<group>";
+		};
+		4BA85D901C15748400D78EB9 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				4BA85D911C15748400D78EB9 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		4BA85DA91C15748400D78EB9 /* JPPlayerTests */ = {
+			isa = PBXGroup;
+			children = (
+				4BA85DAA1C15748400D78EB9 /* JPPlayerTests.m */,
+				4BA85DAC1C15748400D78EB9 /* Info.plist */,
+			);
+			path = JPPlayerTests;
+			sourceTree = "<group>";
+		};
+		4BA85DB41C15748400D78EB9 /* JPPlayerUITests */ = {
+			isa = PBXGroup;
+			children = (
+				4BA85DB51C15748400D78EB9 /* JPPlayerUITests.m */,
+				4BA85DB71C15748400D78EB9 /* Info.plist */,
+			);
+			path = JPPlayerUITests;
+			sourceTree = "<group>";
+		};
+		4BA85DC31C1574CE00D78EB9 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				4BA85DCB1C15770400D78EB9 /* JPLeftBarViewController.h */,
+				4BA85DCC1C15770400D78EB9 /* JPLeftBarViewController.m */,
+				4BA85DC41C15753300D78EB9 /* JPListViewController.h */,
+				4BA85DC51C15753300D78EB9 /* JPListViewController.m */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		4BA85DC71C15756E00D78EB9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4BA85DC81C1575A200D78EB9 /* JPLeftBarView.h */,
+				4BA85DC91C1575A200D78EB9 /* JPLeftBarView.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4BA85D8C1C15748400D78EB9 /* JPPlayer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4BA85DBA1C15748400D78EB9 /* Build configuration list for PBXNativeTarget "JPPlayer" */;
+			buildPhases = (
+				4BA85D891C15748400D78EB9 /* Sources */,
+				4BA85D8A1C15748400D78EB9 /* Frameworks */,
+				4BA85D8B1C15748400D78EB9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JPPlayer;
+			productName = JPPlayer;
+			productReference = 4BA85D8D1C15748400D78EB9 /* JPPlayer.app */;
+			productType = "com.apple.product-type.application";
+		};
+		4BA85DA51C15748400D78EB9 /* JPPlayerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4BA85DBD1C15748400D78EB9 /* Build configuration list for PBXNativeTarget "JPPlayerTests" */;
+			buildPhases = (
+				4BA85DA21C15748400D78EB9 /* Sources */,
+				4BA85DA31C15748400D78EB9 /* Frameworks */,
+				4BA85DA41C15748400D78EB9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4BA85DA81C15748400D78EB9 /* PBXTargetDependency */,
+			);
+			name = JPPlayerTests;
+			productName = JPPlayerTests;
+			productReference = 4BA85DA61C15748400D78EB9 /* JPPlayerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		4BA85DB01C15748400D78EB9 /* JPPlayerUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4BA85DC01C15748400D78EB9 /* Build configuration list for PBXNativeTarget "JPPlayerUITests" */;
+			buildPhases = (
+				4BA85DAD1C15748400D78EB9 /* Sources */,
+				4BA85DAE1C15748400D78EB9 /* Frameworks */,
+				4BA85DAF1C15748400D78EB9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4BA85DB31C15748400D78EB9 /* PBXTargetDependency */,
+			);
+			name = JPPlayerUITests;
+			productName = JPPlayerUITests;
+			productReference = 4BA85DB11C15748400D78EB9 /* JPPlayerUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4BA85D851C15748400D78EB9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0710;
+				ORGANIZATIONNAME = Prime;
+				TargetAttributes = {
+					4BA85D8C1C15748400D78EB9 = {
+						CreatedOnToolsVersion = 7.1.1;
+						DevelopmentTeam = KJP5VZ2QJA;
+					};
+					4BA85DA51C15748400D78EB9 = {
+						CreatedOnToolsVersion = 7.1.1;
+						TestTargetID = 4BA85D8C1C15748400D78EB9;
+					};
+					4BA85DB01C15748400D78EB9 = {
+						CreatedOnToolsVersion = 7.1.1;
+						TestTargetID = 4BA85D8C1C15748400D78EB9;
+					};
+				};
+			};
+			buildConfigurationList = 4BA85D881C15748400D78EB9 /* Build configuration list for PBXProject "JPPlayer" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 4BA85D841C15748400D78EB9;
+			productRefGroup = 4BA85D8E1C15748400D78EB9 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4BA85D8C1C15748400D78EB9 /* JPPlayer */,
+				4BA85DA51C15748400D78EB9 /* JPPlayerTests */,
+				4BA85DB01C15748400D78EB9 /* JPPlayerUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4BA85D8B1C15748400D78EB9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4BA85DA01C15748400D78EB9 /* LaunchScreen.storyboard in Resources */,
+				4BA85D9D1C15748400D78EB9 /* Assets.xcassets in Resources */,
+				4BA85D9B1C15748400D78EB9 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4BA85DA41C15748400D78EB9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4BA85DAF1C15748400D78EB9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4BA85D891C15748400D78EB9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4BA85D951C15748400D78EB9 /* AppDelegate.m in Sources */,
+				4BA85DC61C15753300D78EB9 /* JPListViewController.m in Sources */,
+				4BA85D921C15748400D78EB9 /* main.m in Sources */,
+				4BA85DCD1C15770400D78EB9 /* JPLeftBarViewController.m in Sources */,
+				4BA85DCA1C1575A200D78EB9 /* JPLeftBarView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4BA85DA21C15748400D78EB9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4BA85DAB1C15748400D78EB9 /* JPPlayerTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4BA85DAD1C15748400D78EB9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4BA85DB61C15748400D78EB9 /* JPPlayerUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4BA85DA81C15748400D78EB9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4BA85D8C1C15748400D78EB9 /* JPPlayer */;
+			targetProxy = 4BA85DA71C15748400D78EB9 /* PBXContainerItemProxy */;
+		};
+		4BA85DB31C15748400D78EB9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4BA85D8C1C15748400D78EB9 /* JPPlayer */;
+			targetProxy = 4BA85DB21C15748400D78EB9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		4BA85D991C15748400D78EB9 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4BA85D9A1C15748400D78EB9 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		4BA85D9E1C15748400D78EB9 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4BA85D9F1C15748400D78EB9 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		4BA85DB81C15748400D78EB9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		4BA85DB91C15748400D78EB9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		4BA85DBB1C15748400D78EB9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = JPPlayer/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = prime.JPPlayer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		4BA85DBC1C15748400D78EB9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = JPPlayer/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = prime.JPPlayer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		4BA85DBE1C15748400D78EB9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = JPPlayerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = prime.JPPlayerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JPPlayer.app/JPPlayer";
+			};
+			name = Debug;
+		};
+		4BA85DBF1C15748400D78EB9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = JPPlayerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = prime.JPPlayerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JPPlayer.app/JPPlayer";
+			};
+			name = Release;
+		};
+		4BA85DC11C15748400D78EB9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = JPPlayerUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = prime.JPPlayerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = JPPlayer;
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		4BA85DC21C15748400D78EB9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = JPPlayerUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = prime.JPPlayerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = JPPlayer;
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4BA85D881C15748400D78EB9 /* Build configuration list for PBXProject "JPPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4BA85DB81C15748400D78EB9 /* Debug */,
+				4BA85DB91C15748400D78EB9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4BA85DBA1C15748400D78EB9 /* Build configuration list for PBXNativeTarget "JPPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4BA85DBB1C15748400D78EB9 /* Debug */,
+				4BA85DBC1C15748400D78EB9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		4BA85DBD1C15748400D78EB9 /* Build configuration list for PBXNativeTarget "JPPlayerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4BA85DBE1C15748400D78EB9 /* Debug */,
+				4BA85DBF1C15748400D78EB9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		4BA85DC01C15748400D78EB9 /* Build configuration list for PBXNativeTarget "JPPlayerUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4BA85DC11C15748400D78EB9 /* Debug */,
+				4BA85DC21C15748400D78EB9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4BA85D851C15748400D78EB9 /* Project object */;
+}
