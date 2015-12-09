@@ -7,25 +7,12 @@
 //
 
 #import "JPListViewController.h"
+#import "JPListTableViewController.h"
 
+@interface JPListViewController ()
 
-@interface MyTableViewCell : UITableViewCell
-@end
-
-@implementation MyTableViewCell
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
-    // overwrite style
-    self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
-    return self;
-}
-@end
-
-
-
-@interface JPListViewController () <UITableViewDataSource, UITableViewDelegate>
-
-@property (strong, nonatomic) UITableView *listsTableView;
-@property (strong, nonatomic) UITableView *contentsTableView;
+@property (strong, nonatomic) JPListTableViewController *listViewController;
+@property (strong, nonatomic) JPListTableViewController *testViewController;
 
 @end
 
@@ -35,65 +22,37 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    CGRect frame;
-    _listsTableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
-    _listsTableView.dataSource = self;
-    _listsTableView.delegate = self;
-    _listsTableView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.rightContainerView addSubview:_listsTableView];
+    _listViewController = [[JPListTableViewController alloc] init];
+    [self addChildViewController:_listViewController];
+    [self.rightContainerView addSubview:_listViewController.view];
     
-    [_listsTableView registerClass:[MyTableViewCell class] forCellReuseIdentifier:@"OAOCell"];
+    _testViewController = [[JPListTableViewController alloc] init];
+    [self addChildViewController:_testViewController];
+    [self.rightContainerView addSubview:_testViewController.view];
     
-    _contentsTableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
-    _contentsTableView.dataSource = self;
-    _contentsTableView.delegate = self;
-    _contentsTableView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.rightContainerView addSubview:_contentsTableView];
-    
-    [_contentsTableView registerClass:[MyTableViewCell class] forCellReuseIdentifier:@"OAOCell"];
+    UIView *leftView = _listViewController.view;
+    UIView *rightView = _testViewController.view;
     
     NSMutableArray *constraints = [[NSMutableArray alloc] init];
     [constraints addObjectsFromArray:
-     [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_listsTableView]|"
+     [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[leftView]|"
                                              options:NSLayoutFormatDirectionLeftToRight
                                              metrics:nil
-                                               views:NSDictionaryOfVariableBindings(_listsTableView)]];
+                                               views:NSDictionaryOfVariableBindings(leftView)]];
     
     [constraints addObjectsFromArray:
-     [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_contentsTableView]|"
+     [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[rightView]|"
                                              options:NSLayoutFormatDirectionLeftToRight
                                              metrics:nil
-                                               views:NSDictionaryOfVariableBindings(_contentsTableView)]];
-
+                                               views:NSDictionaryOfVariableBindings(rightView)]];
+    
     [constraints addObjectsFromArray:
-     [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_listsTableView(==_contentsTableView)][_contentsTableView]|"
+     [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[leftView(==rightView)][rightView]|"
                                              options:NSLayoutFormatDirectionLeftToRight
                                              metrics:nil
-                                               views:NSDictionaryOfVariableBindings(_listsTableView, _contentsTableView, _contentsTableView)]];
+                                               views:NSDictionaryOfVariableBindings(leftView, rightView, rightView)]];
     
-    [self.view addConstraints:constraints];
+    [self.rightContainerView addConstraints:constraints];
 }
-
-
-#pragma mark - UITableViewDataSource
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 29;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *identifier = @"OAOCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
-    }
-    
-    cell.textLabel.text = @"Title";
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"OAO Cell: %ld", (long)indexPath.row];
-    
-    return cell;
-}
-
-
-#pragma mark - UITableViewDelegate
 
 @end

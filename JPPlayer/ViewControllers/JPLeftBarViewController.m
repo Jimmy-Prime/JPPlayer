@@ -18,6 +18,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    [self.view setBackgroundColor:[UIColor blackColor]];
+    
     _leftBarView = [JPLeftBarView view];
     _leftBarView.translatesAutoresizingMaskIntoConstraints = NO;
     [_leftBarView setBackgroundColor:[UIColor lightGrayColor]];
@@ -30,13 +32,13 @@
     
     NSMutableArray *constraints = [[NSMutableArray alloc] init];
     [constraints addObjectsFromArray:
-     [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_leftBarView]|"
+     [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_leftBarView]|"
                                              options:NSLayoutFormatDirectionLeftToRight
                                              metrics:nil
                                                views:NSDictionaryOfVariableBindings(_leftBarView)]];
     
     [constraints addObjectsFromArray:
-     [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_rightContainerView]|"
+     [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_rightContainerView]|"
                                              options:NSLayoutFormatDirectionLeftToRight
                                              metrics:nil
                                                views:NSDictionaryOfVariableBindings(_rightContainerView)]];
