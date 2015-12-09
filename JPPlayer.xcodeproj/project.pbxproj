@@ -17,6 +17,7 @@
 		4BA85DC61C15753300D78EB9 /* JPListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA85DC51C15753300D78EB9 /* JPListViewController.m */; };
 		4BA85DCA1C1575A200D78EB9 /* JPLeftBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA85DC91C1575A200D78EB9 /* JPLeftBarView.m */; };
 		4BA85DCD1C15770400D78EB9 /* JPLeftBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA85DCC1C15770400D78EB9 /* JPLeftBarViewController.m */; };
+		B94418F1C05B7E089ED37A64 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3604C5FF7C837E39F4E3BAB2 /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,6 +38,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3604C5FF7C837E39F4E3BAB2 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		4BA7A1921C179EE3000DDEBB /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		4BA85D8D1C15748400D78EB9 /* JPPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JPPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BA85D911C15748400D78EB9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		4BA85D931C15748400D78EB9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -57,6 +60,8 @@
 		4BA85DC91C1575A200D78EB9 /* JPLeftBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPLeftBarView.m; path = Views/JPLeftBarView.m; sourceTree = "<group>"; };
 		4BA85DCB1C15770400D78EB9 /* JPLeftBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPLeftBarViewController.h; path = ViewControllers/JPLeftBarViewController.h; sourceTree = "<group>"; };
 		4BA85DCC1C15770400D78EB9 /* JPLeftBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPLeftBarViewController.m; path = ViewControllers/JPLeftBarViewController.m; sourceTree = "<group>"; };
+		5AB516908633D03B040BCD16 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		D40073111D82935F5EE4B268 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B94418F1C05B7E089ED37A64 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,6 +90,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4BA7A1961C17B469000DDEBB /* ListViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				4BA85DC41C15753300D78EB9 /* JPListViewController.h */,
+				4BA85DC51C15753300D78EB9 /* JPListViewController.m */,
+			);
+			name = ListViewControllers;
+			sourceTree = "<group>";
+		};
 		4BA85D841C15748400D78EB9 = {
 			isa = PBXGroup;
 			children = (
@@ -91,6 +106,8 @@
 				4BA85DA91C15748400D78EB9 /* JPPlayerTests */,
 				4BA85DB41C15748400D78EB9 /* JPPlayerUITests */,
 				4BA85D8E1C15748400D78EB9 /* Products */,
+				F336A706EE56DF48FC232614 /* Pods */,
+				B6CB48F7734BB686E1B19EB5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -107,6 +124,7 @@
 		4BA85D8F1C15748400D78EB9 /* JPPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				4BA7A1921C179EE3000DDEBB /* Constants.h */,
 				4BA85DC71C15756E00D78EB9 /* Views */,
 				4BA85DC31C1574CE00D78EB9 /* ViewControllers */,
 				4BA85D931C15748400D78EB9 /* AppDelegate.h */,
@@ -151,8 +169,7 @@
 			children = (
 				4BA85DCB1C15770400D78EB9 /* JPLeftBarViewController.h */,
 				4BA85DCC1C15770400D78EB9 /* JPLeftBarViewController.m */,
-				4BA85DC41C15753300D78EB9 /* JPListViewController.h */,
-				4BA85DC51C15753300D78EB9 /* JPListViewController.m */,
+				4BA7A1961C17B469000DDEBB /* ListViewControllers */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -166,6 +183,23 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
+		B6CB48F7734BB686E1B19EB5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3604C5FF7C837E39F4E3BAB2 /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F336A706EE56DF48FC232614 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D40073111D82935F5EE4B268 /* Pods.debug.xcconfig */,
+				5AB516908633D03B040BCD16 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -173,9 +207,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4BA85DBA1C15748400D78EB9 /* Build configuration list for PBXNativeTarget "JPPlayer" */;
 			buildPhases = (
+				DBC5795279367116C48894E1 /* Check Pods Manifest.lock */,
 				4BA85D891C15748400D78EB9 /* Sources */,
 				4BA85D8A1C15748400D78EB9 /* Frameworks */,
 				4BA85D8B1C15748400D78EB9 /* Resources */,
+				D576729B31C47C3E361670CE /* Embed Pods Frameworks */,
+				29CE037D492DBCC17F5B2BE5 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -291,6 +328,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		29CE037D492DBCC17F5B2BE5 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D576729B31C47C3E361670CE /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DBC5795279367116C48894E1 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		4BA85D891C15748400D78EB9 /* Sources */ = {
@@ -440,6 +525,7 @@
 		};
 		4BA85DBB1C15748400D78EB9 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D40073111D82935F5EE4B268 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -452,6 +538,7 @@
 		};
 		4BA85DBC1C15748400D78EB9 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5AB516908633D03B040BCD16 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -529,6 +616,7 @@
 				4BA85DBC1C15748400D78EB9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4BA85DBD1C15748400D78EB9 /* Build configuration list for PBXNativeTarget "JPPlayerTests" */ = {
 			isa = XCConfigurationList;
@@ -537,6 +625,7 @@
 				4BA85DBF1C15748400D78EB9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4BA85DC01C15748400D78EB9 /* Build configuration list for PBXNativeTarget "JPPlayerUITests" */ = {
 			isa = XCConfigurationList;
@@ -545,6 +634,7 @@
 				4BA85DC21C15748400D78EB9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
