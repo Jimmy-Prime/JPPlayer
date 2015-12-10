@@ -38,7 +38,7 @@
                                                views:NSDictionaryOfVariableBindings(_leftBarView)]];
     
     [constraints addObjectsFromArray:
-     [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_rightContainerView]|"
+     [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_rightContainerView]-50-|"
                                              options:NSLayoutFormatDirectionLeftToRight
                                              metrics:nil
                                                views:NSDictionaryOfVariableBindings(_rightContainerView)]];
