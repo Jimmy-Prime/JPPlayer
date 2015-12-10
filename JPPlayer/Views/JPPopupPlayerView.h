@@ -1,5 +1,5 @@
 //
-//  JPPlayerView.h
+//  JPPopupPlayerView.h
 //  JPPlayer
 //
 //  Created by Prime on 12/10/15.
@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JPPlayerView : UIView
+@interface JPPopupPlayerView : UIView
+
+@property (strong, nonatomic) NSArray *constraints;
 
 @end

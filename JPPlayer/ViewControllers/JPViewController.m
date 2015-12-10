@@ -9,6 +9,7 @@
 #import "JPViewController.h"
 #import "JPLeftBarView.h"
 #import "JPPlayerView.h"
+#import "JPPopupPlayerView.h"
 #import "JPListViewController.h"
 
 @interface JPViewController()
@@ -23,9 +24,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    /****************************************/
-    // JPLeftBarView and rightContainerView //
-    /****************************************/
+    /*****************************************************/
+    // JPLeftBarView & rightContainerView & JPPlayerView //
+    /*****************************************************/
     JPLeftBarView *leftBarView = [[JPLeftBarView alloc] init];
     [leftBarView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [leftBarView setBackgroundColor:[UIColor blackColor]];
@@ -35,6 +36,11 @@
     [_rightContainerView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.view addSubview:_rightContainerView];
     
+    JPPlayerView *playerView = [[JPPlayerView alloc] init];
+    [playerView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [playerView setBackgroundColor:[UIColor redColor]];
+    [self.view addSubview:playerView];
+    
     NSMutableArray *constraints = [[NSMutableArray alloc] init];
     [constraints addObjectsFromArray:
      [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[leftBarView]|"
@@ -43,34 +49,17 @@
                                                views:NSDictionaryOfVariableBindings(leftBarView)]];
     
     [constraints addObjectsFromArray:
-     [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_rightContainerView]-70-|"
+     [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_rightContainerView][playerView(70)]|"
                                              options:NSLayoutFormatDirectionLeftToRight
                                              metrics:nil
-                                               views:NSDictionaryOfVariableBindings(_rightContainerView)]];
+                                               views:NSDictionaryOfVariableBindings(_rightContainerView, playerView)]];
     
     [constraints addObjectsFromArray:
      [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[leftBarView(100)][_rightContainerView]|"
                                              options:NSLayoutFormatDirectionLeftToRight
                                              metrics:nil
                                                views:NSDictionaryOfVariableBindings(leftBarView, _rightContainerView)]];
-    
-    [self.view addConstraints:constraints];
-    
-    /********************************/
-    // JPPlayerView and constraints //
-    /********************************/
-    JPPlayerView *playerView = [[JPPlayerView alloc] init];
-    [playerView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [playerView setBackgroundColor:[UIColor redColor]];
-    [self.view addSubview:playerView];
-    
-    [constraints removeAllObjects];
-    [constraints addObjectsFromArray:
-     [NSLayoutConstraint constraintsWithVisualFormat:@"V:[playerView(70)]|"
-                                             options:NSLayoutFormatDirectionLeftToRight
-                                             metrics:nil
-                                               views:NSDictionaryOfVariableBindings(playerView)]];
-    
+        
     [constraints addObjectsFromArray:
      [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[leftBarView][playerView]|"
                                              options:NSLayoutFormatDirectionLeftToRight
@@ -78,22 +67,29 @@
                                                views:NSDictionaryOfVariableBindings(leftBarView, playerView)]];
     
     [self.view addConstraints:constraints];
-    playerView.normalConstraints = [NSArray arrayWithArray:constraints];
+    
+    /*********************/
+    // JPPopupPlayerView //
+    /*********************/
+    JPPopupPlayerView *popupPlayerView = [[JPPopupPlayerView alloc] init];
+    [popupPlayerView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [popupPlayerView setBackgroundColor:[UIColor lightGrayColor]];
+    [self.view addSubview:popupPlayerView];
     
     [constraints removeAllObjects];
     [constraints addObjectsFromArray:
-     [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[playerView]|"
+     [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[popupPlayerView]|"
                                              options:NSLayoutFormatDirectionLeftToRight
                                              metrics:nil
-                                               views:NSDictionaryOfVariableBindings(playerView)]];
+                                               views:NSDictionaryOfVariableBindings(popupPlayerView)]];
     
     [constraints addObjectsFromArray:
-     [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[playerView]|"
+     [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[popupPlayerView]|"
                                              options:NSLayoutFormatDirectionLeftToRight
                                              metrics:nil
-                                               views:NSDictionaryOfVariableBindings(playerView)]];
-
-    playerView.popupConstraints = [NSArray arrayWithArray:constraints];
+                                               views:NSDictionaryOfVariableBindings(popupPlayerView)]];
+    
+    popupPlayerView.constraints = [NSArray arrayWithArray:constraints];
     
     /*******************************/
     // Setup child viewcontrollers //

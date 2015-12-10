@@ -29,20 +29,7 @@
 }
 
 - (void)togglePopped:(UITapGestureRecognizer *)tap {
-    UIView *superview = self.superview;
-    
-    [UIView animateWithDuration:0.3 animations:^{
-        _popped = !_popped;
-        if (_popped) {
-            [superview removeConstraints:_normalConstraints];
-            [superview addConstraints:_popupConstraints];
-        }
-        else {
-            [superview removeConstraints:_popupConstraints];
-            [superview addConstraints:_normalConstraints];
-        }
-        [superview layoutIfNeeded];
-    }];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"popup" object:nil];
 }
 
 @end

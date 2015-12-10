@@ -78,6 +78,7 @@
     }
     else {
         cell.textLabel.text = @"New Playlist";
+        cell.detailTextLabel.text = @"";
     }
 
     return cell;
