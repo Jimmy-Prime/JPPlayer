@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B41B64F1C19745D0051BC79 /* JPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B41B64E1C19745D0051BC79 /* JPViewController.m */; };
+		4B41B6521C19995C0051BC79 /* JPPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B41B6511C19995C0051BC79 /* JPPlayerView.m */; };
 		4BA7A19C1C17F99E000DDEBB /* JPListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA7A19B1C17F99E000DDEBB /* JPListTableViewController.m */; };
 		4BA85D921C15748400D78EB9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA85D911C15748400D78EB9 /* main.m */; };
 		4BA85D951C15748400D78EB9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA85D941C15748400D78EB9 /* AppDelegate.m */; };
@@ -17,7 +19,6 @@
 		4BA85DB61C15748400D78EB9 /* JPPlayerUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA85DB51C15748400D78EB9 /* JPPlayerUITests.m */; };
 		4BA85DC61C15753300D78EB9 /* JPListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA85DC51C15753300D78EB9 /* JPListViewController.m */; };
 		4BA85DCA1C1575A200D78EB9 /* JPLeftBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA85DC91C1575A200D78EB9 /* JPLeftBarView.m */; };
-		4BA85DCD1C15770400D78EB9 /* JPLeftBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA85DCC1C15770400D78EB9 /* JPLeftBarViewController.m */; };
 		B94418F1C05B7E089ED37A64 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3604C5FF7C837E39F4E3BAB2 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +41,10 @@
 
 /* Begin PBXFileReference section */
 		3604C5FF7C837E39F4E3BAB2 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B41B64D1C19745D0051BC79 /* JPViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPViewController.h; path = ViewControllers/JPViewController.h; sourceTree = "<group>"; };
+		4B41B64E1C19745D0051BC79 /* JPViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPViewController.m; path = ViewControllers/JPViewController.m; sourceTree = "<group>"; };
+		4B41B6501C19995C0051BC79 /* JPPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPPlayerView.h; path = Views/JPPlayerView.h; sourceTree = "<group>"; };
+		4B41B6511C19995C0051BC79 /* JPPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPPlayerView.m; path = Views/JPPlayerView.m; sourceTree = "<group>"; };
 		4BA7A1921C179EE3000DDEBB /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		4BA7A19A1C17F99E000DDEBB /* JPListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPListTableViewController.h; path = ViewControllers/JPListTableViewController.h; sourceTree = "<group>"; };
 		4BA7A19B1C17F99E000DDEBB /* JPListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPListTableViewController.m; path = ViewControllers/JPListTableViewController.m; sourceTree = "<group>"; };
@@ -61,8 +66,6 @@
 		4BA85DC51C15753300D78EB9 /* JPListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPListViewController.m; path = ViewControllers/JPListViewController.m; sourceTree = "<group>"; };
 		4BA85DC81C1575A200D78EB9 /* JPLeftBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPLeftBarView.h; path = Views/JPLeftBarView.h; sourceTree = "<group>"; };
 		4BA85DC91C1575A200D78EB9 /* JPLeftBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPLeftBarView.m; path = Views/JPLeftBarView.m; sourceTree = "<group>"; };
-		4BA85DCB1C15770400D78EB9 /* JPLeftBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPLeftBarViewController.h; path = ViewControllers/JPLeftBarViewController.h; sourceTree = "<group>"; };
-		4BA85DCC1C15770400D78EB9 /* JPLeftBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPLeftBarViewController.m; path = ViewControllers/JPLeftBarViewController.m; sourceTree = "<group>"; };
 		5AB516908633D03B040BCD16 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		D40073111D82935F5EE4B268 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -172,8 +175,8 @@
 		4BA85DC31C1574CE00D78EB9 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				4BA85DCB1C15770400D78EB9 /* JPLeftBarViewController.h */,
-				4BA85DCC1C15770400D78EB9 /* JPLeftBarViewController.m */,
+				4B41B64D1C19745D0051BC79 /* JPViewController.h */,
+				4B41B64E1C19745D0051BC79 /* JPViewController.m */,
 				4BA7A1961C17B469000DDEBB /* ListViewControllers */,
 			);
 			name = ViewControllers;
@@ -184,6 +187,8 @@
 			children = (
 				4BA85DC81C1575A200D78EB9 /* JPLeftBarView.h */,
 				4BA85DC91C1575A200D78EB9 /* JPLeftBarView.m */,
+				4B41B6501C19995C0051BC79 /* JPPlayerView.h */,
+				4B41B6511C19995C0051BC79 /* JPPlayerView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -388,10 +393,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				4BA85D951C15748400D78EB9 /* AppDelegate.m in Sources */,
+				4B41B64F1C19745D0051BC79 /* JPViewController.m in Sources */,
 				4BA85DC61C15753300D78EB9 /* JPListViewController.m in Sources */,
+				4B41B6521C19995C0051BC79 /* JPPlayerView.m in Sources */,
 				4BA85D921C15748400D78EB9 /* main.m in Sources */,
 				4BA7A19C1C17F99E000DDEBB /* JPListTableViewController.m in Sources */,
-				4BA85DCD1C15770400D78EB9 /* JPLeftBarViewController.m in Sources */,
 				4BA85DCA1C1575A200D78EB9 /* JPLeftBarView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

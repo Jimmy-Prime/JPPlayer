@@ -41,6 +41,7 @@
     self.view.translatesAutoresizingMaskIntoConstraints = NO;
     [self.tableView setBackgroundColor:[UIColor darkGrayColor]];
     self.tableView.separatorColor = [UIColor blackColor];
+    self.tableView.bounces = NO;
     [self.tableView registerClass:[MyTableViewCell class] forCellReuseIdentifier:@"OAOCell"];
     [self.tableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:@"header"];
     

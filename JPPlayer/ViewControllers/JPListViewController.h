@@ -7,8 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "JPLeftBarViewController.h"
 
-@interface JPListViewController : JPLeftBarViewController
+@interface JPListViewController : UIViewController
 
 @end

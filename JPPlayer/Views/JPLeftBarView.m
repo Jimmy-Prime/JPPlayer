@@ -10,15 +10,6 @@
 
 @implementation JPLeftBarView
 
-+ (instancetype)view {
-    static JPLeftBarView *sharedView;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedView = [[self alloc] init];
-    });
-    return sharedView;
-}
-
 - (instancetype)init {
     self = [super init];
     if (self) {
