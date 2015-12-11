@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B27F1551C1A6155009FCBE6 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B27F1541C1A6155009FCBE6 /* TestViewController.m */; };
+		4B27F15B1C1A9AFF009FCBE6 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B27F15A1C1A9AFF009FCBE6 /* Constants.m */; };
 		4B41B64F1C19745D0051BC79 /* JPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B41B64E1C19745D0051BC79 /* JPViewController.m */; };
 		4B41B6521C19995C0051BC79 /* JPPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B41B6511C19995C0051BC79 /* JPPlayerView.m */; };
 		4B41B6551C19A6620051BC79 /* JPPopupPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B41B6541C19A6620051BC79 /* JPPopupPlayerView.m */; };
@@ -42,6 +44,9 @@
 
 /* Begin PBXFileReference section */
 		3604C5FF7C837E39F4E3BAB2 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B27F1531C1A6155009FCBE6 /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestViewController.h; path = ViewControllers/TestViewController.h; sourceTree = "<group>"; };
+		4B27F1541C1A6155009FCBE6 /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestViewController.m; path = ViewControllers/TestViewController.m; sourceTree = "<group>"; };
+		4B27F15A1C1A9AFF009FCBE6 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		4B41B64D1C19745D0051BC79 /* JPViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPViewController.h; path = ViewControllers/JPViewController.h; sourceTree = "<group>"; };
 		4B41B64E1C19745D0051BC79 /* JPViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPViewController.m; path = ViewControllers/JPViewController.m; sourceTree = "<group>"; };
 		4B41B6501C19995C0051BC79 /* JPPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPPlayerView.h; path = Views/JPPlayerView.h; sourceTree = "<group>"; };
@@ -136,6 +141,7 @@
 			isa = PBXGroup;
 			children = (
 				4BA7A1921C179EE3000DDEBB /* Constants.h */,
+				4B27F15A1C1A9AFF009FCBE6 /* Constants.m */,
 				4BA85DC71C15756E00D78EB9 /* Views */,
 				4BA85DC31C1574CE00D78EB9 /* ViewControllers */,
 				4BA85D931C15748400D78EB9 /* AppDelegate.h */,
@@ -178,6 +184,8 @@
 		4BA85DC31C1574CE00D78EB9 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				4B27F1531C1A6155009FCBE6 /* TestViewController.h */,
+				4B27F1541C1A6155009FCBE6 /* TestViewController.m */,
 				4B41B64D1C19745D0051BC79 /* JPViewController.h */,
 				4B41B64E1C19745D0051BC79 /* JPViewController.m */,
 				4BA7A1961C17B469000DDEBB /* ListViewControllers */,
@@ -402,7 +410,9 @@
 				4BA85DC61C15753300D78EB9 /* JPListViewController.m in Sources */,
 				4B41B6521C19995C0051BC79 /* JPPlayerView.m in Sources */,
 				4B41B6551C19A6620051BC79 /* JPPopupPlayerView.m in Sources */,
+				4B27F15B1C1A9AFF009FCBE6 /* Constants.m in Sources */,
 				4BA85D921C15748400D78EB9 /* main.m in Sources */,
+				4B27F1551C1A6155009FCBE6 /* TestViewController.m in Sources */,
 				4BA7A19C1C17F99E000DDEBB /* JPListTableViewController.m in Sources */,
 				4BA85DCA1C1575A200D78EB9 /* JPLeftBarView.m in Sources */,
 			);

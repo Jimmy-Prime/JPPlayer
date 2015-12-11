@@ -23,10 +23,14 @@
 }
 
 - (void)popUp:(NSNotification *)notification {
+    [self setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
     UIView *superview = self.superview;
     CGRect frame = superview.frame;
     frame.origin.y = frame.size.height;
     [self setFrame:frame];
+    
+    [superview bringSubviewToFront:self];
     
     [UIView animateWithDuration:0.3 animations:^{
         [superview addConstraints:_constraints];
@@ -36,14 +40,16 @@
 
 - (void)pushDown:(UITapGestureRecognizer *)tap {
     UIView *superview = self.superview;
-    [superview removeConstraints:_constraints];
-    [superview layoutIfNeeded];
-    
-    [self setFrame:superview.frame];
     [UIView animateWithDuration:0.3 animations:^{
+        [superview removeConstraints:_constraints];
+        [superview layoutIfNeeded];
+        [self setTranslatesAutoresizingMaskIntoConstraints:YES];
+        
         CGRect frame = superview.frame;
         frame.origin.y = frame.size.height;
         [self setFrame:frame];
+    } completion:^(BOOL finished) {
+        [superview sendSubviewToBack:self];
     }];
 }
 
