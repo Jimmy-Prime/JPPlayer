@@ -6,6 +6,7 @@
 //  Copyright © 2015 Prime. All rights reserved.
 //
 
+#import <Masonry.h>
 #import "JPLeftBarView.h"
 
 @interface JPLeftBarView()
@@ -31,30 +32,21 @@
     
     CGFloat height = view.frame.size.height;
     
-    // set auto layout constraints
-    NSMutableArray *constraints = [[NSMutableArray alloc] init];
-    [constraints addObjectsFromArray:
-     [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[view]-|"
-                                             options:NSLayoutFormatDirectionLeftToRight
-                                             metrics:nil
-                                               views:NSDictionaryOfVariableBindings(view)]];
-    
     if (_lastView) {
-        [constraints addObjectsFromArray:
-         [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:[_lastView]-[view(%lf)]", height]
-                                                 options:NSLayoutFormatDirectionLeftToRight
-                                                 metrics:nil
-                                                   views:NSDictionaryOfVariableBindings(_lastView, view)]];
+        [view makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(_lastView.bottom).offset(8);
+            make.left.equalTo(self).offset(8);
+            make.right.equalTo(self).offset(-8);
+            make.height.equalTo(@(height));
+        }];
     }
     else {
-        [constraints addObjectsFromArray:
-         [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-[view(%lf)]", height]
-                                                 options:NSLayoutFormatDirectionLeftToRight
-                                                 metrics:nil
-                                                   views:NSDictionaryOfVariableBindings(view)]];
+        [view makeConstraints:^(MASConstraintMaker *make) {
+            make.top.left.equalTo(self).offset(8);
+            make.right.equalTo(self).offset(-8);
+            make.height.equalTo(@(height));
+        }];
     }
-    
-    [self addConstraints:constraints];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
     [view addGestureRecognizer:tap];

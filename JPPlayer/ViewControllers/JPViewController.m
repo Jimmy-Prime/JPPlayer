@@ -6,6 +6,7 @@
 //  Copyright © 2015 Prime. All rights reserved.
 //
 
+#import <Masonry.h>
 #import "JPViewController.h"
 #import "Constants.h"
 #import "JPLeftBarView.h"
@@ -18,6 +19,7 @@
 @interface JPViewController()
 
 @property (strong, nonatomic) UIView *rightContainerView;
+@property (strong, nonatomic) JPPopupPlayerView *popupPlayerView;
 @property (strong, nonatomic) NSMutableArray *childViewControllers;
 
 @end
@@ -27,72 +29,46 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    /*****************************************************/
-    // JPLeftBarView & rightContainerView & JPPlayerView //
-    /*****************************************************/
     JPLeftBarView *leftBarView = [[JPLeftBarView alloc] init];
-    [leftBarView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [leftBarView setBackgroundColor:[UIColor blackColor]];
     [self.view addSubview:leftBarView];
     
     _rightContainerView = [[UIView alloc] init];
-    [_rightContainerView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.view addSubview:_rightContainerView];
     
     JPPlayerView *playerView = [[JPPlayerView alloc] init];
-    [playerView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [playerView setBackgroundColor:[UIColor redColor]];
     [self.view addSubview:playerView];
     
-    NSMutableArray *constraints = [[NSMutableArray alloc] init];
-    [constraints addObjectsFromArray:
-     [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[leftBarView]|"
-                                             options:NSLayoutFormatDirectionLeftToRight
-                                             metrics:nil
-                                               views:NSDictionaryOfVariableBindings(leftBarView)]];
+    _popupPlayerView = [[JPPopupPlayerView alloc] init];
+    [_popupPlayerView setBackgroundColor:[UIColor lightGrayColor]];
+    [self.view addSubview:_popupPlayerView];
     
-    [constraints addObjectsFromArray:
-     [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-20-[_rightContainerView][playerView(%lf)]|", PlayerViewHeight]
-                                             options:NSLayoutFormatDirectionLeftToRight
-                                             metrics:nil
-                                               views:NSDictionaryOfVariableBindings(_rightContainerView, playerView)]];
+    [leftBarView makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.left.equalTo(self.view);
+        make.top.equalTo(self.view).offset(20);
+        make.width.equalTo(@100);
+    }];
     
-    [constraints addObjectsFromArray:
-     [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"H:|[leftBarView(%lf)][_rightContainerView]|", LeftBarWidth]
-                                             options:NSLayoutFormatDirectionLeftToRight
-                                             metrics:nil
-                                               views:NSDictionaryOfVariableBindings(leftBarView, _rightContainerView)]];
-        
-    [constraints addObjectsFromArray:
-     [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[leftBarView][playerView]|"
-                                             options:NSLayoutFormatDirectionLeftToRight
-                                             metrics:nil
-                                               views:NSDictionaryOfVariableBindings(leftBarView, playerView)]];
+    [playerView makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.right.equalTo(self.view);
+        make.left.equalTo(leftBarView.right);
+        make.height.equalTo(@70);
+    }];
     
-    [self.view addConstraints:constraints];
+    [_rightContainerView makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(20);
+        make.bottom.equalTo(playerView.top);
+        make.right.equalTo(self.view);
+        make.left.equalTo(leftBarView.right);
+    }];
     
-    /*********************/
-    // JPPopupPlayerView //
-    /*********************/
-    JPPopupPlayerView *popupPlayerView = [[JPPopupPlayerView alloc] init];
-    [popupPlayerView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [popupPlayerView setBackgroundColor:[UIColor lightGrayColor]];
-    [self.view addSubview:popupPlayerView];
+    [_popupPlayerView makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view.bottom);
+        make.left.equalTo(self.view.left);
+        make.size.equalTo(self.view);
+    }];
     
-    [constraints removeAllObjects];
-    [constraints addObjectsFromArray:
-     [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[popupPlayerView]|"
-                                             options:NSLayoutFormatDirectionLeftToRight
-                                             metrics:nil
-                                               views:NSDictionaryOfVariableBindings(popupPlayerView)]];
-    
-    [constraints addObjectsFromArray:
-     [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[popupPlayerView]|"
-                                             options:NSLayoutFormatDirectionLeftToRight
-                                             metrics:nil
-                                               views:NSDictionaryOfVariableBindings(popupPlayerView)]];
-    
-    popupPlayerView.constraints = [NSArray arrayWithArray:constraints];
     
     /*******************************/
     // Setup child viewcontrollers //
@@ -101,7 +77,7 @@
     CGRect childFrame = CGRectMake(0, 0, _rightContainerView.frame.size.width, _rightContainerView.frame.size.height);
     
     // list tab
-    CGFloat L = LeftBarWidth -16;
+    CGFloat L = LeftBarWidth - 16;
     UIView *listTab = [[UIView alloc] initWithFrame:CGRectMake(0, 0, L, L)];
     [listTab setBackgroundColor:[UIColor lightGrayColor]];
     listTab.layer.cornerRadius = 10;
@@ -138,6 +114,7 @@
     [JPListVC didMoveToParentViewController:self];
     [_rightContainerView bringSubviewToFront:JPListVC.view];
     
+    // register notification
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(swithTab:) name:@"swithTab" object:nil];
 }
 

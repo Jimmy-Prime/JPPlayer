@@ -6,6 +6,7 @@
 //  Copyright © 2015 Prime. All rights reserved.
 //
 
+#import <Masonry.h>
 #import "JPPopupPlayerView.h"
 
 @implementation JPPopupPlayerView
@@ -23,33 +24,24 @@
 }
 
 - (void)popUp:(NSNotification *)notification {
-    [self setTranslatesAutoresizingMaskIntoConstraints:NO];
-    
-    UIView *superview = self.superview;
-    CGRect frame = superview.frame;
-    frame.origin.y = frame.size.height;
-    [self setFrame:frame];
-    
-    [superview bringSubviewToFront:self];
-    
     [UIView animateWithDuration:0.3 animations:^{
-        [superview addConstraints:_constraints];
-        [superview layoutIfNeeded];
+        [self remakeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.superview);
+        }];
+        [self.superview layoutIfNeeded];
     }];
 }
 
 - (void)pushDown:(UITapGestureRecognizer *)tap {
-    UIView *superview = self.superview;
+    // [[NSNotificationCenter defaultCenter] postNotificationName:@"pushDown" object:nil];
+    
     [UIView animateWithDuration:0.3 animations:^{
-        [superview removeConstraints:_constraints];
-        [superview layoutIfNeeded];
-        [self setTranslatesAutoresizingMaskIntoConstraints:YES];
-        
-        CGRect frame = superview.frame;
-        frame.origin.y = frame.size.height;
-        [self setFrame:frame];
-    } completion:^(BOOL finished) {
-        [superview sendSubviewToBack:self];
+        [self remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.superview.bottom);
+            make.left.equalTo(self.superview.left);
+            make.size.equalTo(self.superview);
+        }];
+        [self.superview layoutIfNeeded];
     }];
 }
 
