@@ -53,6 +53,7 @@
 		4B41B6511C19995C0051BC79 /* JPPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPPlayerView.m; path = Views/JPPlayerView.m; sourceTree = "<group>"; };
 		4B41B6531C19A6620051BC79 /* JPPopupPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPPopupPlayerView.h; path = Views/JPPopupPlayerView.h; sourceTree = "<group>"; };
 		4B41B6541C19A6620051BC79 /* JPPopupPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPPopupPlayerView.m; path = Views/JPPopupPlayerView.m; sourceTree = "<group>"; };
+		4B86E7911C27DA3800BF6B34 /* JPPlayer.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JPPlayer.pch; sourceTree = SOURCE_ROOT; };
 		4BA7A1921C179EE3000DDEBB /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		4BA7A19A1C17F99E000DDEBB /* JPListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPListTableViewController.h; path = ViewControllers/JPListTableViewController.h; sourceTree = "<group>"; };
 		4BA7A19B1C17F99E000DDEBB /* JPListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPListTableViewController.m; path = ViewControllers/JPListTableViewController.m; sourceTree = "<group>"; };
@@ -158,6 +159,7 @@
 		4BA85D901C15748400D78EB9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4B86E7911C27DA3800BF6B34 /* JPPlayer.pch */,
 				4BA85D911C15748400D78EB9 /* main.m */,
 			);
 			name = "Supporting Files";
@@ -557,6 +559,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_PREFIX_HEADER = "$(SRCROOT)/JPPlayer.pch";
 				INFOPLIST_FILE = JPPlayer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = prime.JPPlayer;
@@ -570,6 +573,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_PREFIX_HEADER = "$(SRCROOT)/JPPlayer.pch";
 				INFOPLIST_FILE = JPPlayer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = prime.JPPlayer;
