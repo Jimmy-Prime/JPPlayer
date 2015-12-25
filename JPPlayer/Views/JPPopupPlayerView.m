@@ -33,8 +33,6 @@
 }
 
 - (void)pushDown:(UITapGestureRecognizer *)tap {
-    // [[NSNotificationCenter defaultCenter] postNotificationName:@"pushDown" object:nil];
-    
     [UIView animateWithDuration:0.3 animations:^{
         [self remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.superview.bottom);

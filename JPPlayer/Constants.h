@@ -14,3 +14,4 @@ extern NSString *ParseClientKey;
 
 extern CGFloat LeftBarWidth;
 extern CGFloat PlayerViewHeight;
+extern CGFloat ContainerWidth;

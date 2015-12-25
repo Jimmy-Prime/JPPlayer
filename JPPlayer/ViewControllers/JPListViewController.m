@@ -6,15 +6,14 @@
 //  Copyright © 2015 Prime. All rights reserved.
 //
 
+#import <Masonry.h>
 #import "JPListViewController.h"
-#import "JPListTableViewController.h"
+#import "Constants.h"
+#import "JPContainerViewController.h"
 
 @interface JPListViewController ()
 
-@property (strong, nonatomic) JPListTableViewController *listViewController;
-@property (strong, nonatomic) JPListTableViewController *testViewController;
-@property (strong, nonatomic) NSArray *downViewConstraints;
-@property (strong, nonatomic) NSArray *fullScreenConstraints;
+@property (strong, nonatomic) UIView *propView;
 
 @end
 
@@ -24,37 +23,93 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    _listViewController = [[JPListTableViewController alloc] init];
-    [self addChildViewController:_listViewController];
-    [self.view addSubview:_listViewController.view];
+    [self.view setBackgroundColor:[UIColor blackColor]];
     
-    _testViewController = [[JPListTableViewController alloc] init];
-    [self addChildViewController:_testViewController];
-    [self.view addSubview:_testViewController.view];
+    _propView = [[UIView alloc] init];
+    [_propView setBackgroundColor:[UIColor darkGrayColor]];
+    [self.view addSubview:_propView];
+    [_propView makeConstraints:^(MASConstraintMaker *make) {
+        make.size.equalTo(self.view);
+        make.center.equalTo(self.view);
+    }];
     
-    UIView *leftView = _listViewController.view;
-    UIView *rightView = _testViewController.view;
+    JPContainerViewController *container = [[JPContainerViewController alloc] init];
+    [self.view addSubview:container.view];
     
-    NSMutableArray *constraints = [[NSMutableArray alloc] init];
-    [constraints addObjectsFromArray:
-     [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[leftView]|"
-                                             options:NSLayoutFormatDirectionLeftToRight
-                                             metrics:nil
-                                               views:NSDictionaryOfVariableBindings(leftView)]];
+    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
+    [container.view addGestureRecognizer:pan];
     
-    [constraints addObjectsFromArray:
-     [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[rightView]|"
-                                             options:NSLayoutFormatDirectionLeftToRight
-                                             metrics:nil
-                                               views:NSDictionaryOfVariableBindings(rightView)]];
+    [container.view makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.right.equalTo(self.view);
+        make.width.equalTo(@(ContainerWidth));
+    }];
     
-    [constraints addObjectsFromArray:
-     [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[leftView(==rightView)][rightView]|"
-                                             options:NSLayoutFormatDirectionLeftToRight
-                                             metrics:nil
-                                               views:NSDictionaryOfVariableBindings(leftView, rightView, rightView)]];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
+    [container.view addGestureRecognizer:tap];
+}
+
+- (void)tap:(UITapGestureRecognizer *)tap {
+    UIView *view = tap.view;
+    view.tag = 0;
     
-    [self.view addConstraints:constraints];
+    [UIView animateWithDuration:0.3 animations:^{
+        [view remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.bottom.left.equalTo(self.view);
+            make.width.equalTo(@(ContainerWidth));
+        }];
+        [self.view layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        JPContainerViewController *container = [[JPContainerViewController alloc] init];
+        [self.view addSubview:container.view];
+        
+        UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
+        [container.view addGestureRecognizer:pan];
+        
+        [container.view makeConstraints:^(MASConstraintMaker *make) {
+            make.top.bottom.right.equalTo(self.view);
+            make.width.equalTo(@500);
+        }];
+        
+        [container.view addGestureRecognizer:tap];
+    }];
+}
+
+- (void)pan:(UIPanGestureRecognizer *)pan {
+    UIView *view = pan.view;
+    CGPoint move = [pan translationInView:view];
+    
+    if (pan.state == UIGestureRecognizerStateEnded) {
+        [UIView animateWithDuration:0.3 animations:^{
+            [view remakeConstraints:^(MASConstraintMaker *make) {
+                if (view.center.x < view.superview.center.x) {
+                    make.left.equalTo(self.view);
+                    view.tag = 0;
+                }
+                else {
+                    make.right.equalTo(self.view);
+                    view.tag = 1;
+                }
+                make.top.bottom.equalTo(self.view);
+                make.width.equalTo(@500);
+            }];
+            [self.view layoutIfNeeded];
+        }];
+        
+        return;
+    }
+    
+    [view remakeConstraints:^(MASConstraintMaker *make) {
+        if (view.tag) {
+            make.right.equalTo(self.view).offset(move.x).priorityLow();
+        }
+        else {
+            make.left.equalTo(self.view).offset(move.x).priorityLow();
+        }
+        make.left.greaterThanOrEqualTo(self.view).priorityHigh();
+        make.right.lessThanOrEqualTo(self.view).priorityHigh();
+        make.top.bottom.equalTo(self.view);
+        make.width.equalTo(@500);
+    }];
 }
 
 @end

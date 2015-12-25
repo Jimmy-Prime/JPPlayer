@@ -47,13 +47,13 @@
     [leftBarView makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.left.equalTo(self.view);
         make.top.equalTo(self.view).offset(20);
-        make.width.equalTo(@100);
+        make.width.equalTo(@(LeftBarWidth));
     }];
     
     [playerView makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.right.equalTo(self.view);
         make.left.equalTo(leftBarView.right);
-        make.height.equalTo(@70);
+        make.height.equalTo(@(PlayerViewHeight));
     }];
     
     [_rightContainerView makeConstraints:^(MASConstraintMaker *make) {

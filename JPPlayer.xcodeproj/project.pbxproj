@@ -12,6 +12,7 @@
 		4B41B64F1C19745D0051BC79 /* JPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B41B64E1C19745D0051BC79 /* JPViewController.m */; };
 		4B41B6521C19995C0051BC79 /* JPPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B41B6511C19995C0051BC79 /* JPPlayerView.m */; };
 		4B41B6551C19A6620051BC79 /* JPPopupPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B41B6541C19A6620051BC79 /* JPPopupPlayerView.m */; };
+		4B98F7951C2BF236000E8E13 /* JPContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B98F7941C2BF236000E8E13 /* JPContainerViewController.m */; };
 		4BA7A19C1C17F99E000DDEBB /* JPListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA7A19B1C17F99E000DDEBB /* JPListTableViewController.m */; };
 		4BA85D921C15748400D78EB9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA85D911C15748400D78EB9 /* main.m */; };
 		4BA85D951C15748400D78EB9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA85D941C15748400D78EB9 /* AppDelegate.m */; };
@@ -54,6 +55,8 @@
 		4B41B6531C19A6620051BC79 /* JPPopupPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPPopupPlayerView.h; path = Views/JPPopupPlayerView.h; sourceTree = "<group>"; };
 		4B41B6541C19A6620051BC79 /* JPPopupPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPPopupPlayerView.m; path = Views/JPPopupPlayerView.m; sourceTree = "<group>"; };
 		4B86E7911C27DA3800BF6B34 /* JPPlayer.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JPPlayer.pch; sourceTree = SOURCE_ROOT; };
+		4B98F7931C2BF236000E8E13 /* JPContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPContainerViewController.h; sourceTree = "<group>"; };
+		4B98F7941C2BF236000E8E13 /* JPContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JPContainerViewController.m; sourceTree = "<group>"; };
 		4BA7A1921C179EE3000DDEBB /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		4BA7A19A1C17F99E000DDEBB /* JPListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPListTableViewController.h; path = ViewControllers/JPListTableViewController.h; sourceTree = "<group>"; };
 		4BA7A19B1C17F99E000DDEBB /* JPListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPListTableViewController.m; path = ViewControllers/JPListTableViewController.m; sourceTree = "<group>"; };
@@ -186,6 +189,8 @@
 		4BA85DC31C1574CE00D78EB9 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				4B98F7931C2BF236000E8E13 /* JPContainerViewController.h */,
+				4B98F7941C2BF236000E8E13 /* JPContainerViewController.m */,
 				4B27F1531C1A6155009FCBE6 /* TestViewController.h */,
 				4B27F1541C1A6155009FCBE6 /* TestViewController.m */,
 				4B41B64D1C19745D0051BC79 /* JPViewController.h */,
@@ -414,6 +419,7 @@
 				4B41B6551C19A6620051BC79 /* JPPopupPlayerView.m in Sources */,
 				4B27F15B1C1A9AFF009FCBE6 /* Constants.m in Sources */,
 				4BA85D921C15748400D78EB9 /* main.m in Sources */,
+				4B98F7951C2BF236000E8E13 /* JPContainerViewController.m in Sources */,
 				4B27F1551C1A6155009FCBE6 /* TestViewController.m in Sources */,
 				4BA7A19C1C17F99E000DDEBB /* JPListTableViewController.m in Sources */,
 				4BA85DCA1C1575A200D78EB9 /* JPLeftBarView.m in Sources */,
