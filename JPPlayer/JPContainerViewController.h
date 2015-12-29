@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Masonry.h>
 
 @interface JPContainerViewController : UIViewController
+
+@property (strong, nonatomic) MASConstraint *left;
+@property (strong, nonatomic) MASConstraint *right;
+@property (strong, nonatomic) MASConstraint *dock;
+@property (strong, nonatomic) MASConstraint *transient;
 
 @end
