@@ -93,9 +93,6 @@ enum ContainerState {
         container.left = make.left.equalTo(self.view).priorityLow();
         container.right = make.right.equalTo(self.view).priorityLow();
         container.dock = make.left.equalTo(self.view.right).priorityLow();
-        if (prev) {
-            make.left.lessThanOrEqualTo(prev.view.right);
-        }
     }];
     
     [container.left uninstall];
@@ -152,6 +149,7 @@ enum ContainerState {
     if (pan.state == UIGestureRecognizerStateEnded) {
         [UIView animateWithDuration:AnimationInterval animations:^{
             [container.transient uninstall];
+            [container.t2 uninstall];
             [container.left uninstall];
             [container.right uninstall];
             [container.dock uninstall];
@@ -171,6 +169,13 @@ enum ContainerState {
                 // Right | (last & Left)
                 view.tag = Right;
                 [container.right install];
+                
+                if (index != [_containerList count]-1) {
+                    JPContainerViewController *next = [_containerList objectAtIndex:index+1];
+                    next.view.tag = Dock;
+                    [next.right uninstall];
+                    [next.dock install];
+                }
             }
             else {
                 // Left & !last
@@ -199,10 +204,10 @@ enum ContainerState {
         [container.dock uninstall];
         
         if (view.tag == Left) {
-            [UIView animateWithDuration:AnimationInterval animations:^{
+            [view updateConstraints:^(MASConstraintMaker *make) {
                 JPContainerViewController *next = [_containerList objectAtIndex:index+1];
                 [next.right uninstall];
-                [self.view layoutIfNeeded];
+                container.t2 = make.right.lessThanOrEqualTo(next.view.left).priorityHigh();
             }];
         }
     }

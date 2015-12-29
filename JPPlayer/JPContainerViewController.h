@@ -15,5 +15,6 @@
 @property (strong, nonatomic) MASConstraint *right;
 @property (strong, nonatomic) MASConstraint *dock;
 @property (strong, nonatomic) MASConstraint *transient;
+@property (strong, nonatomic) MASConstraint *t2;
 
 @end
