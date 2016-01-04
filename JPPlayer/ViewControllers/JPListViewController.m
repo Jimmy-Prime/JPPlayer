@@ -148,21 +148,29 @@ enum ContainerState {
     
     if (pan.state == UIGestureRecognizerStateEnded) {
         [UIView animateWithDuration:AnimationInterval animations:^{
-            [container.transient uninstall];
-            [container.t2 uninstall];
+            [container.transientSelf uninstall];
+            [container.transientOther uninstall];
             [container.left uninstall];
             [container.right uninstall];
             [container.dock uninstall];
             
-            JPContainerViewController *neighbor;
+            JPContainerViewController *left = index ? [_containerList objectAtIndex:index-1] : nil;
+            JPContainerViewController *right = (index!=[_containerList count]-1) ? [_containerList objectAtIndex:index+1] : nil;
             
             if (view.center.x > self.view.frame.size.width) {
                 // Dock
                 view.tag = Dock;
                 [container.dock install];
                 
-                if (container != [_containerList firstObject]) {
-                    neighbor = [_containerList objectAtIndex:index-1];
+                if (left && left.view.tag != Right) {
+                    left.view.tag = Right;
+                    [left.left uninstall];
+                    [left.right install];
+                }
+                if (right && right.view.tag != Dock) {
+                    right.view.tag = Dock;
+                    [right.right uninstall];
+                    [right.dock install];
                 }
             }
             else if (view.center.x > self.view.center.x || index == [_containerList count]-1) {
@@ -170,11 +178,15 @@ enum ContainerState {
                 view.tag = Right;
                 [container.right install];
                 
-                if (index != [_containerList count]-1) {
-                    JPContainerViewController *next = [_containerList objectAtIndex:index+1];
-                    next.view.tag = Dock;
-                    [next.right uninstall];
-                    [next.dock install];
+                if (left && left.view.tag != Left) {
+                    left.view.tag = Left;
+                    [left.right uninstall];
+                    [left.left install];
+                }
+                if (right && right.view.tag != Dock) {
+                    right.view.tag = Dock;
+                    [right.right uninstall];
+                    [right.dock install];
                 }
             }
             else {
@@ -182,14 +194,16 @@ enum ContainerState {
                 view.tag = Left;
                 [container.left install];
                 
-                neighbor = [_containerList objectAtIndex:index+1];
-            }
-            
-            if (neighbor) {
-                neighbor.view.tag = Right;
-                [neighbor.left uninstall];
-                [neighbor.right install];
-                [neighbor.dock uninstall];
+                if (left && left.view.tag != Left) {
+                    left.view.tag = Left;
+                    [left.right uninstall];
+                    [left.left install];
+                }
+                if (right && right.view.tag != Right) {
+                    right.view.tag = Right;
+                    [right.dock uninstall];
+                    [right.right install];
+                }
             }
             
             [self.view layoutIfNeeded];
@@ -207,17 +221,17 @@ enum ContainerState {
             [view updateConstraints:^(MASConstraintMaker *make) {
                 JPContainerViewController *next = [_containerList objectAtIndex:index+1];
                 [next.right uninstall];
-                container.t2 = make.right.lessThanOrEqualTo(next.view.left).priorityHigh();
+                container.transientOther = make.right.lessThanOrEqualTo(next.view.left).priorityHigh();
             }];
         }
     }
     
     [view updateConstraints:^(MASConstraintMaker *make) {
         if (view.tag == Right) {
-            container.transient = make.right.equalTo(self.view).offset(move.x).priorityHigh();
+            container.transientSelf = make.right.equalTo(self.view).offset(move.x).priorityHigh();
         }
         else if (view.tag == Left) {
-            container.transient = make.left.equalTo(self.view).offset(move.x).priorityHigh();
+            container.transientSelf = make.left.equalTo(self.view).offset(move.x).priorityHigh();
         }
     }];
 }
