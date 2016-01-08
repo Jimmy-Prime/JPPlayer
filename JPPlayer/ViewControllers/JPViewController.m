@@ -11,7 +11,7 @@
 #import "Constants.h"
 #import "JPLeftBarView.h"
 #import "JPPlayerView.h"
-#import "JPPopupPlayerView.h"
+#import "JPPopupPlayerViewController.h"
 #import "JPListViewController.h"
 
 #import "TestViewController.h"
@@ -19,7 +19,7 @@
 @interface JPViewController()
 
 @property (strong, nonatomic) UIView *rightContainerView;
-@property (strong, nonatomic) JPPopupPlayerView *popupPlayerView;
+@property (strong, nonatomic) JPPopupPlayerViewController *popupPlayerViewController;
 @property (strong, nonatomic) NSMutableArray *childViewControllers;
 
 @end
@@ -40,9 +40,9 @@
     [playerView setBackgroundColor:[UIColor redColor]];
     [self.view addSubview:playerView];
     
-    _popupPlayerView = [[JPPopupPlayerView alloc] init];
-    [_popupPlayerView setBackgroundColor:[UIColor lightGrayColor]];
-    [self.view addSubview:_popupPlayerView];
+    _popupPlayerViewController = [[JPPopupPlayerViewController alloc] init];
+    [_popupPlayerViewController.view setBackgroundColor:[UIColor lightGrayColor]];
+    [self.view addSubview:_popupPlayerViewController.view];
     
     [leftBarView makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.left.equalTo(self.view);
@@ -63,7 +63,7 @@
         make.left.equalTo(leftBarView.right);
     }];
     
-    [_popupPlayerView makeConstraints:^(MASConstraintMaker *make) {
+    [_popupPlayerViewController.view makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view.bottom);
         make.left.equalTo(self.view.left);
         make.size.equalTo(self.view);

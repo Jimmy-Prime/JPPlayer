@@ -12,11 +12,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    srand48(arc4random());
-    double x = drand48();
-    
-    [self.view setBackgroundColor:[UIColor colorWithHue:x saturation:0.7 brightness:0.7 alpha:1.f]];
+        
+    [self.view setBackgroundColor:[UIColor colorWithHue:drand48() saturation:0.7 brightness:0.7 alpha:1.f]];
 }
 
 @end
