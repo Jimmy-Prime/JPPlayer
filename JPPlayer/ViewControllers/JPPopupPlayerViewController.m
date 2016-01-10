@@ -32,7 +32,6 @@
     // cover view
     _coverViewController = [[JPCoverScrollViewController alloc] init];
     [self.view addSubview:_coverViewController.view];
-    _coverViewController.view.backgroundColor = [UIColor blackColor];
     
     // control view
     _controlView = [[UIView alloc] init];

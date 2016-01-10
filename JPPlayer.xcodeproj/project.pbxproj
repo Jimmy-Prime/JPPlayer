@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B1CE5EF1C42C3F300AC731A /* JPProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1CE5EE1C42C3F300AC731A /* JPProgressView.m */; };
+		4B1CE5F21C42D37100AC731A /* JPTrackLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1CE5F11C42D37100AC731A /* JPTrackLabel.m */; };
 		4B27F1551C1A6155009FCBE6 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B27F1541C1A6155009FCBE6 /* TestViewController.m */; };
 		4B27F15B1C1A9AFF009FCBE6 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B27F15A1C1A9AFF009FCBE6 /* Constants.m */; };
 		4B41B64F1C19745D0051BC79 /* JPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B41B64E1C19745D0051BC79 /* JPViewController.m */; };
@@ -46,6 +48,10 @@
 
 /* Begin PBXFileReference section */
 		3604C5FF7C837E39F4E3BAB2 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B1CE5ED1C42C3F300AC731A /* JPProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPProgressView.h; path = Views/JPProgressView.h; sourceTree = "<group>"; };
+		4B1CE5EE1C42C3F300AC731A /* JPProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPProgressView.m; path = Views/JPProgressView.m; sourceTree = "<group>"; };
+		4B1CE5F01C42D37100AC731A /* JPTrackLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPTrackLabel.h; path = Views/JPTrackLabel.h; sourceTree = "<group>"; };
+		4B1CE5F11C42D37100AC731A /* JPTrackLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPTrackLabel.m; path = Views/JPTrackLabel.m; sourceTree = "<group>"; };
 		4B27F1531C1A6155009FCBE6 /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestViewController.h; path = ViewControllers/TestViewController.h; sourceTree = "<group>"; };
 		4B27F1541C1A6155009FCBE6 /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestViewController.m; path = ViewControllers/TestViewController.m; sourceTree = "<group>"; };
 		4B27F15A1C1A9AFF009FCBE6 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
@@ -211,6 +217,10 @@
 				4BA85DC91C1575A200D78EB9 /* JPLeftBarView.m */,
 				4B41B6501C19995C0051BC79 /* JPPlayerView.h */,
 				4B41B6511C19995C0051BC79 /* JPPlayerView.m */,
+				4B1CE5ED1C42C3F300AC731A /* JPProgressView.h */,
+				4B1CE5EE1C42C3F300AC731A /* JPProgressView.m */,
+				4B1CE5F01C42D37100AC731A /* JPTrackLabel.h */,
+				4B1CE5F11C42D37100AC731A /* JPTrackLabel.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -426,12 +436,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				4BA85D951C15748400D78EB9 /* AppDelegate.m in Sources */,
+				4B1CE5EF1C42C3F300AC731A /* JPProgressView.m in Sources */,
 				4B41B64F1C19745D0051BC79 /* JPViewController.m in Sources */,
 				4BFCBA461C3F8D8D00B86DD9 /* JPPopupPlayerViewController.m in Sources */,
 				4BFCBA491C3F90FF00B86DD9 /* JPCoverScrollViewController.m in Sources */,
 				4BA85DC61C15753300D78EB9 /* JPListViewController.m in Sources */,
 				4B41B6521C19995C0051BC79 /* JPPlayerView.m in Sources */,
 				4B27F15B1C1A9AFF009FCBE6 /* Constants.m in Sources */,
+				4B1CE5F21C42D37100AC731A /* JPTrackLabel.m in Sources */,
 				4BA85D921C15748400D78EB9 /* main.m in Sources */,
 				4B98F7951C2BF236000E8E13 /* JPContainerViewController.m in Sources */,
 				4B27F1551C1A6155009FCBE6 /* TestViewController.m in Sources */,

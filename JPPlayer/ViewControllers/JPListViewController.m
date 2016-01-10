@@ -199,7 +199,7 @@ enum ContainerState {
                     [left.right uninstall];
                     [left.left install];
                 }
-                if (right && right.view.tag != Right) {
+                if (right) {
                     right.view.tag = Right;
                     [right.dock uninstall];
                     [right.right install];

@@ -87,7 +87,6 @@
         CGFloat pageLength = CGRectGetWidth(self.view.frame);
         _currentPage = floor((scrollView.contentOffset.x - pageLength / 2.f) / pageLength) + 1;
     }
-    NSLog(@"%lu", (unsigned long)_currentPage);
 }
 
 @end

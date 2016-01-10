@@ -37,7 +37,6 @@
     [self.view addSubview:_rightContainerView];
     
     JPPlayerView *playerView = [[JPPlayerView alloc] init];
-    [playerView setBackgroundColor:[UIColor redColor]];
     [self.view addSubview:playerView];
     
     _popupPlayerViewController = [[JPPopupPlayerViewController alloc] init];
