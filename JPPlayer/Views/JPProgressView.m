@@ -28,6 +28,7 @@
         _atTimeLabel.text = @"01:27";
         _atTimeLabel.textColor = [UIColor whiteColor];
         _atTimeLabel.textAlignment = NSTextAlignmentCenter;
+        _atTimeLabel.font = [UIFont systemFontOfSize:10];
         [_atTimeLabel makeConstraints:^(MASConstraintMaker *make) {
             make.top.bottom.left.equalTo(self);
             make.width.equalTo(@(TimeLabelWidth));
@@ -37,6 +38,7 @@
         [self addSubview:_auxTimeButton];
         [_auxTimeButton setTitle:@"04:18" forState:UIControlStateNormal];
         [_auxTimeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _auxTimeButton.titleLabel.font = [UIFont systemFontOfSize:10];
         [_auxTimeButton makeConstraints:^(MASConstraintMaker *make) {
             make.top.bottom.right.equalTo(self);
             make.width.equalTo(@(TimeLabelWidth));

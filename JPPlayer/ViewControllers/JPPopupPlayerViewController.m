@@ -8,13 +8,14 @@
 
 #import <Masonry.h>
 #import "JPPopupPlayerViewController.h"
+#import "JPPopupControlViewController.h"
 #import "JPCoverScrollViewController.h"
 #import "Constants.h"
 
 @interface JPPopupPlayerViewController ()
 
 @property (strong, nonatomic) JPCoverScrollViewController *coverViewController;
-@property (strong, nonatomic) UIView *controlView;
+@property (strong, nonatomic) JPPopupControlViewController *controlViewController;
 
 @end
 
@@ -23,7 +24,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
+        
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
     
@@ -34,14 +35,17 @@
     [self.view addSubview:_coverViewController.view];
     
     // control view
-    _controlView = [[UIView alloc] init];
-    [self.view addSubview:_controlView];
-    _controlView.backgroundColor = [UIColor grayColor];
+    _controlViewController = [[JPPopupControlViewController alloc] init];
+    [self.view addSubview:_controlViewController.view];
     
     // push down button
-    UIButton *pushDownButton = [[UIButton alloc] initWithFrame:CGRectMake(20, 20, 60, 60)];
-    pushDownButton.backgroundColor = [UIColor darkGrayColor];
-    pushDownButton.layer.cornerRadius = 10.f;
+    UIButton *pushDownButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    pushDownButton.frame = CGRectMake(20, 20, 60, 60);
+    [pushDownButton setImage:[UIImage imageNamed:@"ic_keyboard_arrow_down_white_48pt"] forState:UIControlStateNormal];
+    pushDownButton.contentMode = UIViewContentModeScaleToFill;
+    pushDownButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
+    pushDownButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
+    pushDownButton.tintColor = [UIColor redColor];
     [self.view addSubview:pushDownButton];
     [pushDownButton addTarget:self action:@selector(pushDown:) forControlEvents:UIControlEventTouchUpInside];
 }
@@ -65,11 +69,14 @@
                 make.width.equalTo(@(600));
             }];
             
-            [_controlView updateConstraints:^(MASConstraintMaker *make) {
-                make.bottom.equalTo(self.view);
-                make.left.equalTo(self.view);
-                make.height.equalTo(@(shorter));
-                make.width.equalTo(@(longer - 600 - 55));
+            _controlViewController.landscape = YES;
+            [_controlViewController.view updateConstraints:^(MASConstraintMaker *make) {
+                CGFloat heightOffset = 200.f;
+                CGFloat widthOffset = 40.f;
+                make.bottom.equalTo(self.view).offset(-heightOffset);
+                make.left.equalTo(self.view).offset(widthOffset);
+                make.height.equalTo(@(shorter - 2*heightOffset));
+                make.width.equalTo(@(longer - 600 - 2*widthOffset - 55.f));
             }];
             break;
         }
@@ -84,11 +91,13 @@
                 make.width.equalTo(@(shorter));
             }];
             
-            [_controlView updateConstraints:^(MASConstraintMaker *make) {
+            _controlViewController.landscape = NO;
+            [_controlViewController.view updateConstraints:^(MASConstraintMaker *make) {
+                CGFloat widthOffset = 84.f;
                 make.bottom.equalTo(self.view);
-                make.left.equalTo(self.view);
+                make.left.equalTo(self.view).offset(widthOffset);
                 make.height.equalTo(@(longer - 600 - 90));
-                make.width.equalTo(@(shorter));
+                make.width.equalTo(@(shorter - 2*widthOffset));
             }];
             break;
         }
@@ -108,6 +117,8 @@
 }
 
 - (void)pushDown:(UIButton *)button {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"pushdown" object:nil];
+    
     [UIView animateWithDuration:AnimationInterval animations:^{
         [self.view remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.view.superview.bottom);
@@ -117,6 +128,5 @@
         [self.view.superview layoutIfNeeded];
     }];
 }
-
 
 @end

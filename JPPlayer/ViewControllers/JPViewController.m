@@ -22,12 +22,18 @@
 @property (strong, nonatomic) JPPopupPlayerViewController *popupPlayerViewController;
 @property (strong, nonatomic) NSMutableArray *childViewControllers;
 
+@property BOOL pop;
+
 @end
 
 @implementation JPViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _pop = NO;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(togglePop:) name:@"popup" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(togglePop:) name:@"pushdown" object:nil];
     
     JPLeftBarView *leftBarView = [[JPLeftBarView alloc] init];
     [leftBarView setBackgroundColor:[UIColor blackColor]];
@@ -122,6 +128,23 @@
     NSInteger index = [[userInfo objectForKey:@"tab"] integerValue];
     UIViewController *vc = [_childViewControllers objectAtIndex:index];
     [_rightContainerView bringSubviewToFront:vc.view];
+}
+
+- (void)togglePop:(NSNotification *)notification {
+    if ([notification.name isEqualToString:@"popup"]) {
+        _pop = YES;
+    }
+    if ([notification.name isEqualToString:@"pushdown"]) {
+        _pop = NO;
+    }
+
+    [UIView animateWithDuration:AnimationInterval animations:^{
+        [self setNeedsStatusBarAppearanceUpdate];
+    }];
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return _pop;
 }
 
 @end

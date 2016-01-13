@@ -14,7 +14,9 @@ extern NSString *ParseClientKey;
 
 extern CGFloat LeftBarWidth;
 extern CGFloat PlayerViewHeight;
-extern CGFloat ButtonWidth;
+extern CGFloat SmallButtonWidth;
+extern CGFloat LargeButtonWidth;
+extern CGFloat PlayButtonWidth;
 extern CGFloat TimeLabelWidth;
 extern CGFloat ContainerWidth;
 extern CGFloat AnimationInterval;

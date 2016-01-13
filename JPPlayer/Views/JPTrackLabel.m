@@ -11,14 +11,32 @@
 @implementation JPTrackLabel
 
 - (instancetype)init {
+    return [self initWithType:JPTrackLabelTypeTrackAndSinger];
+}
+
+-  (instancetype)initWithType:(JPTrackLabelType)type {
     self = [super init];
     if (self) {
         self.text = @"Album name - Track name";
         self.textColor = [UIColor whiteColor];
         self.textAlignment = NSTextAlignmentCenter;
+        
+        _type = type;
     }
     
     return self;
+}
+
+- (void)setWithStrings:(NSArray<NSString *> *)strings {
+    NSString *dataString = _type== JPTrackLabelTypeTrackAndSinger ?
+        [NSString stringWithFormat:@"%@ - %@", [strings firstObject], [strings lastObject]] :
+        [strings firstObject];
+    
+    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:dataString];
+    if (_type != JPTrackLabelTypeSingerOnly) {
+        [attrString addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:18] range:NSMakeRange(0, [[strings firstObject] length])];
+    }
+    [self setAttributedText:attrString];
 }
 
 - (void)setWithTrack:(NSString *)track Singer:(NSString *)singer {
