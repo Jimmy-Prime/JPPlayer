@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B17435B1C4794BE000B742F /* cover.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4B17435A1C4794BE000B742F /* cover.jpg */; };
 		4B1CE5EF1C42C3F300AC731A /* JPProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1CE5EE1C42C3F300AC731A /* JPProgressView.m */; };
 		4B1CE5F21C42D37100AC731A /* JPTrackLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1CE5F11C42D37100AC731A /* JPTrackLabel.m */; };
 		4B1CE5F51C45777200AC731A /* JPPopupControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1CE5F41C45777200AC731A /* JPPopupControlViewController.m */; };
@@ -49,6 +50,7 @@
 
 /* Begin PBXFileReference section */
 		3604C5FF7C837E39F4E3BAB2 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B17435A1C4794BE000B742F /* cover.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cover.jpg; sourceTree = "<group>"; };
 		4B1CE5ED1C42C3F300AC731A /* JPProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPProgressView.h; path = Views/JPProgressView.h; sourceTree = "<group>"; };
 		4B1CE5EE1C42C3F300AC731A /* JPProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPProgressView.m; path = Views/JPProgressView.m; sourceTree = "<group>"; };
 		4B1CE5F01C42D37100AC731A /* JPTrackLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPTrackLabel.h; path = Views/JPTrackLabel.h; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 		4BA85D841C15748400D78EB9 = {
 			isa = PBXGroup;
 			children = (
+				4B17435A1C4794BE000B742F /* cover.jpg */,
 				4BA85D8F1C15748400D78EB9 /* JPPlayer */,
 				4BA85DA91C15748400D78EB9 /* JPPlayerTests */,
 				4BA85DB41C15748400D78EB9 /* JPPlayerUITests */,
@@ -368,6 +371,7 @@
 				4BA85DA01C15748400D78EB9 /* LaunchScreen.storyboard in Resources */,
 				4BA85D9D1C15748400D78EB9 /* Assets.xcassets in Resources */,
 				4BA85D9B1C15748400D78EB9 /* Main.storyboard in Resources */,
+				4B17435B1C4794BE000B742F /* cover.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

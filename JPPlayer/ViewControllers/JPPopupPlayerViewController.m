@@ -17,6 +17,9 @@
 @property (strong, nonatomic) JPCoverScrollViewController *coverViewController;
 @property (strong, nonatomic) JPPopupControlViewController *controlViewController;
 
+@property (nonatomic, strong) UIVisualEffectView *blurEffectView;
+@property (strong, nonatomic) UIImageView *blurBackgroundImageView;
+
 @end
 
 @implementation JPPopupPlayerViewController
@@ -29,6 +32,19 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(popUp:) name:@"popup" object:nil];
+    
+    _blurBackgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cover.jpg"]];
+    _blurBackgroundImageView.contentMode = UIViewContentModeScaleToFill;
+    [self.view addSubview:_blurBackgroundImageView];
+    [_blurBackgroundImageView makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
+    
+    _blurEffectView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]];
+    [_blurBackgroundImageView addSubview:_blurEffectView];
+    [_blurEffectView makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
     
     // cover view
     _coverViewController = [[JPCoverScrollViewController alloc] init];

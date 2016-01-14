@@ -46,7 +46,6 @@
     [self.view addSubview:playerView];
     
     _popupPlayerViewController = [[JPPopupPlayerViewController alloc] init];
-    [_popupPlayerViewController.view setBackgroundColor:[UIColor lightGrayColor]];
     [self.view addSubview:_popupPlayerViewController.view];
     
     [leftBarView makeConstraints:^(MASConstraintMaker *make) {

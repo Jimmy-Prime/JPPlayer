@@ -37,9 +37,9 @@
     
     _coverImageList = [[NSMutableArray alloc] init];
     for (int i=0; i<5; ++i) {
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 600, 600)];
-        view.layer.cornerRadius = 20.f;
-        view.backgroundColor = [UIColor colorWithHue:drand48() saturation:0.7f brightness:0.7f alpha:1.f];
+        UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 600, 600)];
+        view.image = [UIImage imageNamed:@"cover.jpg"];
+        view.contentMode = UIViewContentModeScaleToFill;
         [_coverScrollView addSubview:view];
         [_coverImageList addObject:view];
     }

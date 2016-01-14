@@ -14,6 +14,9 @@
 
 @interface JPPlayerView()
 
+@property (nonatomic, strong) UIVisualEffectView *blurEffectView;
+@property (strong, nonatomic) UIImageView *blurBackgroundImageView;
+
 @end
 
 @implementation JPPlayerView
@@ -21,7 +24,18 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.backgroundColor = [UIColor lightGrayColor];
+        _blurBackgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cover.jpg"]];
+        _blurBackgroundImageView.contentMode = UIViewContentModeScaleToFill;
+        [self addSubview:_blurBackgroundImageView];
+        [_blurBackgroundImageView makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self);
+        }];
+        
+        _blurEffectView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]];
+        [_blurBackgroundImageView addSubview:_blurEffectView];
+        [_blurEffectView makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self);
+        }];
         
         // popup container
         UIView *popupButtonContainer = [[UIView alloc] init];
@@ -45,10 +59,9 @@
             make.width.height.equalTo(@(SmallButtonWidth));
         }];
         
-        UIImageView *coverImageView = [[UIImageView alloc] init];
+        UIImageView *coverImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cover.jpg"]];
         [popupButtonContainer addSubview:coverImageView];
-        coverImageView.backgroundColor = [UIColor whiteColor];
-        coverImageView.layer.cornerRadius = 5;
+        coverImageView.contentMode = UIViewContentModeScaleToFill;
         [coverImageView makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(popupButtonContainer).offset(-5);
             make.centerY.equalTo(popupButtonContainer);
@@ -138,7 +151,6 @@
             make.right.equalTo(controlContainer.left);
             make.height.equalTo(@(PlayerViewHeight * .5f));
         }];
-        
     }
     
     return self;
