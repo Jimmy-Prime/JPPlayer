@@ -17,9 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    self.view.tag = 1;
-    
+        
     double x = drand48();
     [self.view setBackgroundColor:[UIColor colorWithHue:x saturation:0.7 brightness:0.7 alpha:1.f]];
     self.view.layer.cornerRadius = 20;

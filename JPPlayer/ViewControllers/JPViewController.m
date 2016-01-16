@@ -78,48 +78,43 @@
     // Setup child viewcontrollers //
     /*******************************/
     _childViewControllers = [[NSMutableArray alloc] init];
-    CGRect childFrame = CGRectMake(0, 0, _rightContainerView.frame.size.width, _rightContainerView.frame.size.height);
+    
+    // settings tab
+    UIButton *settingsTab = [UIButton buttonWithType:UIButtonTypeSystem];
+    [settingsTab setImage:[UIImage imageNamed:@"ic_settings_white_48pt"] forState:UIControlStateNormal];
+    [leftBarView addTab:settingsTab];
+    
+    TestViewController *testVC1 = [[TestViewController alloc] init];
+    [_rightContainerView addSubview:testVC1.view];
+    [_childViewControllers addObject:testVC1];
     
     // list tab
-    CGFloat L = LeftBarWidth - 16;
-    UIView *listTab = [[UIView alloc] initWithFrame:CGRectMake(0, 0, L, L)];
-    [listTab setBackgroundColor:[UIColor lightGrayColor]];
-    listTab.layer.cornerRadius = 10;
+    UIButton *listTab = [UIButton buttonWithType:UIButtonTypeSystem];
+    [listTab setImage:[UIImage imageNamed:@"ic_view_list_white_48pt"] forState:UIControlStateNormal];
     [leftBarView addTab:listTab];
     
     JPListViewController *JPListVC = [[JPListViewController alloc] init];
     [_rightContainerView addSubview:JPListVC.view];
-    [JPListVC.view setFrame:childFrame];
     [_childViewControllers addObject:JPListVC];
+    [JPListVC.view makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(_rightContainerView);
+    }];
     
     // test tab
-    UIView *testTab = [[UIView alloc] initWithFrame:CGRectMake(0, 0, L, L)];
-    [testTab setBackgroundColor:[UIColor grayColor]];
+    UIButton *testTab = [UIButton buttonWithType:UIButtonTypeSystem];
+    [testTab setBackgroundColor:[UIColor darkGrayColor]];
     testTab.layer.cornerRadius = 10;
     [leftBarView addTab:testTab];
     
-    TestViewController *testVC1 = [[TestViewController alloc] init];
-    [_rightContainerView addSubview:testVC1.view];
-    [testVC1.view setFrame:childFrame];
-    [_childViewControllers addObject:testVC1];
-    
-    // test tab 2
-    UIView *testTab2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, L, L)];
-    [testTab2 setBackgroundColor:[UIColor darkGrayColor]];
-    testTab2.layer.cornerRadius = 10;
-    [leftBarView addTab:testTab2];
-    
-    TestViewController *testVC2 = [[TestViewController alloc] init];
-    [_rightContainerView addSubview:testVC2.view];
-    [testVC2.view setFrame:childFrame];
-    [_childViewControllers addObject:testVC2];
-    
-    // default tab
-    [JPListVC didMoveToParentViewController:self];
-    [_rightContainerView bringSubviewToFront:JPListVC.view];
+    TestViewController *testVC = [[TestViewController alloc] init];
+    [_rightContainerView addSubview:testVC.view];
+    [_childViewControllers addObject:testVC];
     
     // register notification
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(swithTab:) name:@"swithTab" object:nil];
+    
+    // default tab
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"swithTab" object:nil userInfo:@{@"tab" : @(1)}];
 }
 
 - (void)swithTab:(NSNotification *)notification {

@@ -2,31 +2,22 @@
 //  JPListTableViewController.m
 //  JPPlayer
 //
-//  Created by Prime on 12/9/15.
-//  Copyright © 2015 Prime. All rights reserved.
+//  Created by Prime on 1/16/16.
+//  Copyright © 2016 Prime. All rights reserved.
 //
 
+#import <Masonry.h>
 #import "JPListTableViewController.h"
+#import "Constants.h"
 
+@interface JPListTableViewController () <UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate>
 
-
-@interface MyTableViewCell : UITableViewCell
-@end
-
-@implementation MyTableViewCell
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
-    // overwrite style
-    self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
-    return self;
-}
-@end
-
-
-
-@interface JPListTableViewController() <UIGestureRecognizerDelegate>
-
-@property BOOL editing;
-@property NSUInteger rows;
+@property CGFloat minBlurImageHeight;
+@property CGFloat blurImageHeight;
+@property (strong, nonatomic) UIImageView *blurBackgroundImageView;
+@property (nonatomic, strong) UIVisualEffectView *blurEffectView;
+@property (strong, nonatomic) UIView *fakeHeaderView;
+@property (strong, nonatomic) UITableView *list;
 
 @end
 
@@ -34,189 +25,115 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    // Do any additional setup after loading the view.
     
-    _editing = NO;
-    _rows = 40;
+    _minBlurImageHeight = 100.f;
+    _blurImageHeight = ContainerWidth;
     
-    self.view.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.tableView setBackgroundColor:[UIColor darkGrayColor]];
-    self.tableView.separatorColor = [UIColor blackColor];
-    self.tableView.bounces = NO;
-    [self.tableView registerClass:[MyTableViewCell class] forCellReuseIdentifier:@"OAOCell"];
-    [self.tableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:@"header"];
+    // init
+    _list = [[UITableView alloc] init];
+    [self.view addSubview:_list];
     
-    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
-    longPress.minimumPressDuration = 0.5;
-    longPress.delegate = self;
-    [self.tableView addGestureRecognizer:longPress];
+    _blurBackgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cover.jpg"]];
+    _blurBackgroundImageView.contentMode = UIViewContentModeScaleToFill;
+    [self.view addSubview:_blurBackgroundImageView];
+    
+    _blurEffectView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]];
+    [_blurBackgroundImageView addSubview:_blurEffectView];
+    
+    _fakeHeaderView = [[UIView alloc] init];
+    [self.view addSubview:_fakeHeaderView];
+    
+    // layout
+    [_blurBackgroundImageView makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(self.view);
+        make.height.equalTo(@(_blurImageHeight));
+    }];
+    
+    [_blurEffectView makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(_blurBackgroundImageView);
+    }];
+    
+    [_fakeHeaderView makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.left.right.equalTo(_blurBackgroundImageView);
+        make.height.equalTo(@(_minBlurImageHeight));
+        make.top.greaterThanOrEqualTo(_blurBackgroundImageView);
+    }];
+    
+    [_list makeConstraints:^(MASConstraintMaker *make) {
+        // make.top.equalTo(_blurBackgroundImageView.bottom);
+        // make.bottom.left.right.equalTo(self.view);
+        make.edges.equalTo(self.view);
+    }];
+    
+    // other setup
+    _fakeHeaderView.backgroundColor = [UIColor whiteColor];
+    _fakeHeaderView.alpha = 0.1f;
+    
+    _list.dataSource = self;
+    _list.delegate = self;
+    _list.backgroundColor = [UIColor clearColor];
+    /*
+    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
+    pan.delegate = self;
+    [_blurBackgroundImageView addGestureRecognizer:pan];
+    
+    pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
+    pan.delegate = self;
+    [_list addGestureRecognizer:pan];*/
 }
 
-
-#pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _rows;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *identifier = @"OAOCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
-    }
-    
-    [cell setBackgroundColor:[UIColor darkGrayColor]];
-    cell.textLabel.textColor = [UIColor whiteColor];
-    
-    if (indexPath.row) {
-        cell.textLabel.text = @"Title";
-        cell.detailTextLabel.textColor = [UIColor whiteColor];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"OAO Cell: %ld", (long)indexPath.row];
-    }
-    else {
-        cell.textLabel.text = @"New Playlist";
-        cell.detailTextLabel.text = @"";
-    }
-
-    return cell;
-}
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return indexPath.row;
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        _rows--;
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }
-}
-
-
-#pragma mark - UITableViewDelegate
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 50.f;
+    return 2;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UITableViewHeaderFooterView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"header"];
-    
-    view.textLabel.text = @"Playlist";
-    
-    UIButton *editButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [editButton setTitle:@"Edit" forState:UIControlStateNormal];
-    [editButton sizeToFit];
-    editButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [editButton addTarget:self action:@selector(edit:) forControlEvents:UIControlEventTouchUpInside];
-    [view addSubview:editButton];
-    
-    NSMutableArray *constraints = [[NSMutableArray alloc] init];
-    [constraints addObjectsFromArray:
-     [NSLayoutConstraint constraintsWithVisualFormat:@"H:[editButton]-30-|"
-                                             options:NSLayoutFormatDirectionLeftToRight
-                                             metrics:nil
-                                               views:NSDictionaryOfVariableBindings(editButton)]];
-    
-    [constraints addObject:
-     [NSLayoutConstraint constraintWithItem:editButton
-                                  attribute:NSLayoutAttributeCenterY
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:view
-                                  attribute:NSLayoutAttributeCenterY
-                                 multiplier:1.f
-                                   constant:0.f]];
-    
-    [view addConstraints:constraints];
-    
-    return view;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row) {
-        return;
+    if (section == 0) {
+        UIView *fakeHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ContainerWidth, ContainerWidth)];
+        [fakeHeader setBackgroundColor:[UIColor clearColor]];
+        return fakeHeader;
     }
     
-    UIAlertController *alert =
-    [UIAlertController alertControllerWithTitle:@"Create new playlist"
-                                        message:@""
-                                 preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *confirmAction =
-    [UIAlertAction actionWithTitle:@"OK"
-                             style:UIAlertActionStyleDefault
-                           handler:^(UIAlertAction *action) {
-                               NSLog(@"Create: %@", [alert.textFields objectAtIndex:0].text);
-                           }];
-    UIAlertAction *cancelAction =
-    [UIAlertAction actionWithTitle:@"Cancel"
-                             style:UIAlertActionStyleCancel
-                           handler:^(UIAlertAction *action) {
-                               NSLog(@"Cancel");
-                           }];
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (section == 0) {
+        return _blurImageHeight;
+    }
     
-    [alert addAction:confirmAction];
-    [alert addAction:cancelAction];
+    return 0;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [[UITableViewCell alloc] init];
+    cell.backgroundColor = [UIColor clearColor];
+    return cell;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return section ? 100 : 0;
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return YES;
+}
+
+- (void)pan:(UIPanGestureRecognizer *)pan {
+    // NSLog(@"PAN");
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    // NSLog(@"scrollViewDidScroll");
     
-    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        textField.font = [UIFont systemFontOfSize:32];
+    _blurImageHeight = ContainerWidth - scrollView.contentOffset.y;
+    if (_blurImageHeight < _minBlurImageHeight) {
+        _blurImageHeight = _minBlurImageHeight;
+    }
+
+    [_blurBackgroundImageView updateConstraints:^(MASConstraintMaker *make) {
+        make.height.equalTo(@(_blurImageHeight));
     }];
-    
-    
-    [self presentViewController:alert animated:YES completion:nil];
-}
-
-
-#pragma mark - Other
-- (void)edit:(UIButton *)button {
-    if (_editing) {
-        [button setTitle:@"Edit" forState:UIControlStateNormal];
-        [self.tableView setEditing:NO animated:YES];
-    }
-    else {
-        [button setTitle:@"Done" forState:UIControlStateNormal];
-        [self.tableView setEditing:YES animated:YES];
-    }
-    
-    _editing = !_editing;
-}
-
-- (void)longPress:(UILongPressGestureRecognizer *)longPress {
-    CGPoint point = [longPress locationInView:self.tableView];
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:point];
-    
-    if (indexPath != nil && indexPath.row && longPress.state == UIGestureRecognizerStateBegan) {
-        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-        NSString *title = cell.detailTextLabel.text;
-        
-        UIAlertController *alert =
-        [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"Rename \"%@\"", title]
-                                            message:@""
-                                     preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *confirmAction =
-        [UIAlertAction actionWithTitle:@"Rename"
-                                 style:UIAlertActionStyleDefault
-                               handler:^(UIAlertAction *action) {
-                                   NSLog(@"Rename to %@", [alert.textFields objectAtIndex:0].text);
-                               }];
-        UIAlertAction *cancelAction =
-        [UIAlertAction actionWithTitle:@"Cancel"
-                                 style:UIAlertActionStyleCancel
-                               handler:^(UIAlertAction *action) {
-                                   NSLog(@"Cancel");
-                               }];
-        
-        [alert addAction:confirmAction];
-        [alert addAction:cancelAction];
-        
-        [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.font = [UIFont systemFontOfSize:32];
-        }];
-        
-        
-        [self presentViewController:alert animated:YES completion:nil];
-    }
 }
 
 @end

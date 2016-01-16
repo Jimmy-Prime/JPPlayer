@@ -16,5 +16,6 @@
 @property (strong, nonatomic) MASConstraint *dock;
 @property (strong, nonatomic) MASConstraint *transientSelf;
 @property (strong, nonatomic) MASConstraint *transientOther;
+@property (strong, nonatomic) UIPanGestureRecognizer *pan;
 
 @end

@@ -10,6 +10,6 @@
 
 @interface JPLeftBarView : UIView
 
-- (void)addTab:(UIView *)view;
+- (void)addTab:(UIButton *)tab;
 
 @end

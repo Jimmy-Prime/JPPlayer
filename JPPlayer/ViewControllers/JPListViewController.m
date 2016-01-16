@@ -10,10 +10,10 @@
 #import "JPListViewController.h"
 #import "Constants.h"
 #import "JPContainerViewController.h"
+#import "JPListTableViewController.h"
 
 @interface JPListViewController ()
 
-@property (strong, nonatomic) UIView *propView;
 @property (strong, nonatomic) NSMutableArray *containerList;
 
 enum ContainerState {
@@ -30,22 +30,14 @@ enum ContainerState {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    [self.view setBackgroundColor:[UIColor blackColor]];
+    [self.view setBackgroundColor:[UIColor grayColor]];
     
-    _propView = [[UIView alloc] init];
-    [_propView setBackgroundColor:[UIColor darkGrayColor]];
-    [self.view addSubview:_propView];
-    [_propView makeConstraints:^(MASConstraintMaker *make) {
-        make.size.equalTo(self.view);
-        make.center.equalTo(self.view);
-    }];
-    
-    UIButton *addButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    addButton.backgroundColor = [UIColor blackColor];
-    addButton.frame = CGRectMake(20, 20, 100, 100);
-    addButton.layer.cornerRadius = 20;
-    [addButton addTarget:self action:@selector(addOneContainerButton:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:addButton];
+    UIButton *resetButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    resetButton.backgroundColor = [UIColor blackColor];
+    resetButton.frame = CGRectMake(20, 20, 100, 100);
+    resetButton.layer.cornerRadius = 20;
+    [resetButton addTarget:self action:@selector(resetContainerButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:resetButton];
     
     _containerList = [[NSMutableArray alloc] init];
     
@@ -60,7 +52,7 @@ enum ContainerState {
     }];
 }
 
-- (void)addOneContainerButton:(UIButton *)button {
+- (void)resetContainerButton:(UIButton *)button {
     for (JPContainerViewController *container in _containerList) {
         [container.view removeFromSuperview];
     }
@@ -77,7 +69,7 @@ enum ContainerState {
 }
 
 - (void)addOneContainer {
-    JPContainerViewController *container = [[JPContainerViewController alloc] init];
+    JPContainerViewController *container = arc4random()%2 ? [[JPListTableViewController alloc] init] : [[JPContainerViewController alloc] init];
     [self.view addSubview:container.view];
     
     JPContainerViewController *prev = [_containerList lastObject];
@@ -98,17 +90,21 @@ enum ContainerState {
     [container.left uninstall];
     [container.right uninstall];
     
-    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
-    [container.view addGestureRecognizer:pan];
+    container.pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
+    [container.view addGestureRecognizer:container.pan];
     
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
-    [container.view addGestureRecognizer:tap];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+    button.frame = CGRectMake(30, 30, 50, 50);
+    button.backgroundColor = [UIColor whiteColor];
+    button.layer.cornerRadius = 7.f;
+    [button addTarget:self action:@selector(tap:) forControlEvents:UIControlEventTouchUpInside];
+    [container.view addSubview:button];
     
     [_containerList addObject:container];
 }
 
-- (void)tap:(UITapGestureRecognizer *)tap {
-    UIView *view = tap.view;
+- (void)tap:(UIButton *)button {
+    UIView *view = button.superview;
     
     JPContainerViewController *container;
     container = [_containerList lastObject];

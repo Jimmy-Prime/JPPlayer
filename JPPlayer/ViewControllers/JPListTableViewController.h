@@ -2,12 +2,12 @@
 //  JPListTableViewController.h
 //  JPPlayer
 //
-//  Created by Prime on 12/9/15.
-//  Copyright © 2015 Prime. All rights reserved.
+//  Created by Prime on 1/16/16.
+//  Copyright © 2016 Prime. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "JPContainerViewController.h"
 
-@interface JPListTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate>
+@interface JPListTableViewController : JPContainerViewController
 
 @end
