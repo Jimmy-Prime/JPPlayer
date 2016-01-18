@@ -68,7 +68,7 @@
         _slider.tintColor = [UIColor redColor];
         [_slider setThumbImage:[UIImage imageNamed:@"ic_fiber_manual_record_white_18pt"] forState:UIControlStateNormal];
         [_slider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
-        [_slider addTarget:self action:@selector(sliderRelease:) forControlEvents:UIControlEventTouchUpInside];
+        [_slider addTarget:self action:@selector(sliderRelease:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
         [_slider makeConstraints:^(MASConstraintMaker *make) {
             make.top.bottom.equalTo(self);
             make.left.equalTo(_atTimeLabel.right);

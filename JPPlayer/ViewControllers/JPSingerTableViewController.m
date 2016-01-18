@@ -1,23 +1,23 @@
 //
-//  JPListTableViewController.m
+//  JPSingerTableViewController.m
 //  JPPlayer
 //
-//  Created by Prime on 1/16/16.
+//  Created by Prime on 1/18/16.
 //  Copyright © 2016 Prime. All rights reserved.
 //
 
 #import <Masonry.h>
-#import "JPListTableViewController.h"
+#import "JPSingerTableViewController.h"
 #import "Constants.h"
+#import "UIImageEffects.h"
 
-@interface JPListTableViewController ()
+@interface JPSingerTableViewController () <UIScrollViewDelegate>
 
 @property (strong, nonatomic) UIImageView *blurBackgroundImageView;
-@property (strong, nonatomic) UIVisualEffectView *blurEffectView;
 
 @end
 
-@implementation JPListTableViewController
+@implementation JPSingerTableViewController
 @synthesize topView = _topView;
 @synthesize topViewHeight = _topViewHeight;
 @synthesize list = _list;
@@ -32,17 +32,11 @@
     _list = super.list;
     _fakeHeaderView = super.fakeHeaderView;
     
-    _blurBackgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cover.jpg"]];
-    _blurBackgroundImageView.contentMode = UIViewContentModeScaleToFill;
+    _blurBackgroundImageView = [[UIImageView alloc] initWithImage:[UIImageEffects imageByApplyingDarkEffectToImage:[UIImage imageNamed:@"cover.jpg"]]];
+    _blurBackgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
     [_topView addSubview:_blurBackgroundImageView];
     [_blurBackgroundImageView makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(_topView);
-    }];
-    
-    _blurEffectView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]];
-    [_blurBackgroundImageView addSubview:_blurEffectView];
-    [_blurEffectView makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(_blurBackgroundImageView);
     }];
     
     UIView *overlayView = [[UIView alloc] init];
@@ -57,7 +51,7 @@
     
     // testing UI
     UIView *circle = [[UIView alloc] init];
-    circle.backgroundColor = [UIColor blackColor];
+    circle.backgroundColor = [UIColor greenColor];
     circle.layer.cornerRadius = 100.f;
     [overlayView addSubview:circle];
     [circle makeConstraints:^(MASConstraintMaker *make) {
@@ -75,6 +69,24 @@
         make.left.right.equalTo(overlayView);
         make.top.equalTo(circle.bottom).offset(8);
         make.height.equalTo(@(30));
+    }];
+}
+
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    _topViewHeight = ContainerWidth - scrollView.contentOffset.y;
+    if (_topViewHeight < FakeHeaderHeight) {
+        _topViewHeight = FakeHeaderHeight;
+    }
+    
+    if (_topViewHeight >= ContainerWidth) {
+        // Lower blur radius
+        CGFloat diff = _topViewHeight - ContainerWidth;
+        [_blurBackgroundImageView setImage:[UIImageEffects imageByApplyingBlurToImage:[UIImage imageNamed:@"cover.jpg"] withRadius:40.f-diff tintColor:[UIColor clearColor] saturationDeltaFactor:1.8 maskImage:nil]];
+    }
+    
+    [_topView updateConstraints:^(MASConstraintMaker *make) {
+        make.height.equalTo(@(_topViewHeight));
     }];
 }
 

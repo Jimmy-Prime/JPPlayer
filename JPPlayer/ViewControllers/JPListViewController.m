@@ -10,7 +10,9 @@
 #import "JPListViewController.h"
 #import "Constants.h"
 #import "JPContainerViewController.h"
+#import "JPContainerTableViewController.h"
 #import "JPListTableViewController.h"
+#import "JPSingerTableViewController.h"
 
 @interface JPListViewController ()
 
@@ -69,7 +71,27 @@ enum ContainerState {
 }
 
 - (void)addOneContainer {
-    JPContainerViewController *container = arc4random()%2 ? [[JPListTableViewController alloc] init] : [[JPContainerViewController alloc] init];
+    JPContainerViewController *container;
+    switch (arc4random() % 4) {
+        case 0:
+            container = [[JPContainerViewController alloc] init];
+            break;
+            
+        case 1:
+            container = [[JPContainerTableViewController alloc] init];
+            break;
+            
+        case 2:
+            container = [[JPListTableViewController alloc] init];
+            break;
+            
+        case 3:
+            container = [[JPSingerTableViewController alloc] init];
+            break;
+            
+        default:
+            break;
+    }
     [self.view addSubview:container.view];
     
     JPContainerViewController *prev = [_containerList lastObject];

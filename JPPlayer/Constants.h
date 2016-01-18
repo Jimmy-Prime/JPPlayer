@@ -19,4 +19,5 @@ extern CGFloat LargeButtonWidth;
 extern CGFloat PlayButtonWidth;
 extern CGFloat TimeLabelWidth;
 extern CGFloat ContainerWidth;
+extern CGFloat FakeHeaderHeight;
 extern CGFloat AnimationInterval;
