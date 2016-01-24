@@ -14,6 +14,7 @@
 @interface JPSingerTableViewController () <UIScrollViewDelegate>
 
 @property (strong, nonatomic) UIImageView *blurBackgroundImageView;
+@property (strong, nonatomic) UIView *overlayView;
 
 @end
 
@@ -39,10 +40,10 @@
         make.edges.equalTo(_topView);
     }];
     
-    UIView *overlayView = [[UIView alloc] init];
-    overlayView.layer.cornerRadius = 20.f;
-    [_topView addSubview:overlayView];
-    [overlayView makeConstraints:^(MASConstraintMaker *make) {
+    _overlayView = [[UIView alloc] init];
+    _overlayView.layer.cornerRadius = 20.f;
+    [_topView addSubview:_overlayView];
+    [_overlayView makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(_blurBackgroundImageView);
         make.top.greaterThanOrEqualTo(_blurBackgroundImageView);
         make.bottom.greaterThanOrEqualTo(_topView).offset(-FakeHeaderHeight);
@@ -53,9 +54,9 @@
     UIView *circle = [[UIView alloc] init];
     circle.backgroundColor = [UIColor greenColor];
     circle.layer.cornerRadius = 100.f;
-    [overlayView addSubview:circle];
+    [_overlayView addSubview:circle];
     [circle makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.centerY.equalTo(overlayView);
+        make.centerX.centerY.equalTo(_overlayView);
         make.width.height.equalTo(@(200.f));
     }];
     
@@ -64,9 +65,9 @@
     title.textColor = [UIColor whiteColor];
     title.font = [UIFont systemFontOfSize:24];
     title.textAlignment = NSTextAlignmentCenter;
-    [overlayView addSubview:title];
+    [_overlayView addSubview:title];
     [title makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(overlayView);
+        make.left.right.equalTo(_overlayView);
         make.top.equalTo(circle.bottom).offset(8);
         make.height.equalTo(@(30));
     }];
@@ -83,6 +84,7 @@
         // Lower blur radius
         CGFloat diff = _topViewHeight - ContainerWidth;
         [_blurBackgroundImageView setImage:[UIImageEffects imageByApplyingBlurToImage:[UIImage imageNamed:@"cover.jpg"] withRadius:40.f-diff tintColor:[UIColor clearColor] saturationDeltaFactor:1.8 maskImage:nil]];
+        _overlayView.alpha = 1.f - diff/40.f;
     }
     
     [_topView updateConstraints:^(MASConstraintMaker *make) {
