@@ -6,9 +6,7 @@
 //  Copyright © 2016 Prime. All rights reserved.
 //
 
-#import <Masonry.h>
 #import "JPSingerTableViewController.h"
-#import "Constants.h"
 #import "UIImageEffects.h"
 
 @interface JPSingerTableViewController () <UIScrollViewDelegate>

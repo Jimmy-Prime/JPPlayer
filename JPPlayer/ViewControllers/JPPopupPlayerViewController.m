@@ -6,11 +6,9 @@
 //  Copyright © 2016 Prime. All rights reserved.
 //
 
-#import <Masonry.h>
 #import "JPPopupPlayerViewController.h"
 #import "JPPopupControlViewController.h"
 #import "JPCoverScrollViewController.h"
-#import "Constants.h"
 
 @interface JPPopupPlayerViewController ()
 

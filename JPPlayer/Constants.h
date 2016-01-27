@@ -12,6 +12,9 @@
 extern NSString *ParseApplicationId;
 extern NSString *ParseClientKey;
 
+extern NSString *SpotifyClientId;
+extern NSString *SpotifyRedirectURL;
+
 extern CGFloat LeftBarWidth;
 extern CGFloat PlayerViewHeight;
 extern CGFloat SmallButtonWidth;

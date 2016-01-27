@@ -29,6 +29,10 @@
 		4BE53CBA1C4CB52300CA5B58 /* JPContainerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE53CB91C4CB52300CA5B58 /* JPContainerTableViewController.m */; };
 		4BE53CBE1C4CE45A00CA5B58 /* JPSingerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE53CBD1C4CE45A00CA5B58 /* JPSingerTableViewController.m */; };
 		4BE53CC11C4CF2FD00CA5B58 /* UIImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE53CC01C4CF2FC00CA5B58 /* UIImageEffects.m */; };
+		4BEFCA9D1C552A9A0051750A /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BEFCA9C1C552A9A0051750A /* AVFoundation.framework */; };
+		4BEFCA9F1C552B6C0051750A /* Spotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BEFCA9E1C552B6B0051750A /* Spotify.framework */; };
+		4BEFCAA51C552C820051750A /* JPSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BEFCAA41C552C820051750A /* JPSettingsViewController.m */; };
+		4BEFCAEE1C58FCFF0051750A /* JPSpotifyListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BEFCAED1C58FCFF0051750A /* JPSpotifyListTableViewCell.m */; };
 		4BFCBA461C3F8D8D00B86DD9 /* JPPopupPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BFCBA451C3F8D8D00B86DD9 /* JPPopupPlayerViewController.m */; };
 		4BFCBA491C3F90FF00B86DD9 /* JPCoverScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BFCBA481C3F90FF00B86DD9 /* JPCoverScrollViewController.m */; };
 		B94418F1C05B7E089ED37A64 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3604C5FF7C837E39F4E3BAB2 /* libPods.a */; };
@@ -97,6 +101,12 @@
 		4BE53CBD1C4CE45A00CA5B58 /* JPSingerTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPSingerTableViewController.m; path = ViewControllers/JPSingerTableViewController.m; sourceTree = "<group>"; };
 		4BE53CBF1C4CF2FC00CA5B58 /* UIImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIImageEffects.h; sourceTree = "<group>"; };
 		4BE53CC01C4CF2FC00CA5B58 /* UIImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIImageEffects.m; sourceTree = "<group>"; };
+		4BEFCA9C1C552A9A0051750A /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		4BEFCA9E1C552B6B0051750A /* Spotify.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Spotify.framework; sourceTree = "<group>"; };
+		4BEFCAA31C552C820051750A /* JPSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPSettingsViewController.h; path = ViewControllers/JPSettingsViewController.h; sourceTree = "<group>"; };
+		4BEFCAA41C552C820051750A /* JPSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPSettingsViewController.m; path = ViewControllers/JPSettingsViewController.m; sourceTree = "<group>"; };
+		4BEFCAEC1C58FCFF0051750A /* JPSpotifyListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPSpotifyListTableViewCell.h; path = Views/JPSpotifyListTableViewCell.h; sourceTree = "<group>"; };
+		4BEFCAED1C58FCFF0051750A /* JPSpotifyListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPSpotifyListTableViewCell.m; path = Views/JPSpotifyListTableViewCell.m; sourceTree = "<group>"; };
 		4BFCBA441C3F8D8D00B86DD9 /* JPPopupPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPPopupPlayerViewController.h; path = ViewControllers/JPPopupPlayerViewController.h; sourceTree = "<group>"; };
 		4BFCBA451C3F8D8D00B86DD9 /* JPPopupPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPPopupPlayerViewController.m; path = ViewControllers/JPPopupPlayerViewController.m; sourceTree = "<group>"; };
 		4BFCBA471C3F90FF00B86DD9 /* JPCoverScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPCoverScrollViewController.h; path = ViewControllers/JPCoverScrollViewController.h; sourceTree = "<group>"; };
@@ -110,6 +120,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BEFCA9D1C552A9A0051750A /* AVFoundation.framework in Frameworks */,
+				4BEFCA9F1C552B6C0051750A /* Spotify.framework in Frameworks */,
 				B94418F1C05B7E089ED37A64 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -136,7 +148,10 @@
 			children = (
 				4B27F1531C1A6155009FCBE6 /* TestViewController.h */,
 				4B27F1541C1A6155009FCBE6 /* TestViewController.m */,
-				4BA7A1961C17B469000DDEBB /* List ViewControllers */,
+				4BEFCAA31C552C820051750A /* JPSettingsViewController.h */,
+				4BEFCAA41C552C820051750A /* JPSettingsViewController.m */,
+				4BA85DC41C15753300D78EB9 /* JPListViewController.h */,
+				4BA85DC51C15753300D78EB9 /* JPListViewController.m */,
 			);
 			name = "Tabs ViewControllers";
 			sourceTree = "<group>";
@@ -149,15 +164,6 @@
 				4BE53CBB1C4CE32200CA5B58 /* Container Table ViewControllers */,
 			);
 			name = "Container ViewControllers";
-			sourceTree = "<group>";
-		};
-		4BA7A1961C17B469000DDEBB /* List ViewControllers */ = {
-			isa = PBXGroup;
-			children = (
-				4BA85DC41C15753300D78EB9 /* JPListViewController.h */,
-				4BA85DC51C15753300D78EB9 /* JPListViewController.m */,
-			);
-			name = "List ViewControllers";
 			sourceTree = "<group>";
 		};
 		4BA85D841C15748400D78EB9 = {
@@ -245,6 +251,8 @@
 		4BA85DC71C15756E00D78EB9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4BEFCAEC1C58FCFF0051750A /* JPSpotifyListTableViewCell.h */,
+				4BEFCAED1C58FCFF0051750A /* JPSpotifyListTableViewCell.m */,
 				4BA85DC81C1575A200D78EB9 /* JPLeftBarView.h */,
 				4BA85DC91C1575A200D78EB9 /* JPLeftBarView.m */,
 				4B41B6501C19995C0051BC79 /* JPPlayerView.h */,
@@ -262,12 +270,20 @@
 			children = (
 				4BE53CB81C4CB52300CA5B58 /* JPContainerTableViewController.h */,
 				4BE53CB91C4CB52300CA5B58 /* JPContainerTableViewController.m */,
+				4BEFCAA61C552E210051750A /*   */,
+			);
+			name = "Container Table ViewControllers";
+			sourceTree = "<group>";
+		};
+		4BEFCAA61C552E210051750A /*   */ = {
+			isa = PBXGroup;
+			children = (
 				4B1743631C495EF0000B742F /* JPListTableViewController.h */,
 				4B1743641C495EF0000B742F /* JPListTableViewController.m */,
 				4BE53CBC1C4CE45A00CA5B58 /* JPSingerTableViewController.h */,
 				4BE53CBD1C4CE45A00CA5B58 /* JPSingerTableViewController.m */,
 			);
-			name = "Container Table ViewControllers";
+			name = " ";
 			sourceTree = "<group>";
 		};
 		4BFCBA4A1C3F910C00B86DD9 /* Popup ViewControllers */ = {
@@ -286,6 +302,8 @@
 		B6CB48F7734BB686E1B19EB5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4BEFCA9E1C552B6B0051750A /* Spotify.framework */,
+				4BEFCA9C1C552A9A0051750A /* AVFoundation.framework */,
 				3604C5FF7C837E39F4E3BAB2 /* libPods.a */,
 			);
 			name = Frameworks;
@@ -489,6 +507,7 @@
 				4BFCBA461C3F8D8D00B86DD9 /* JPPopupPlayerViewController.m in Sources */,
 				4BFCBA491C3F90FF00B86DD9 /* JPCoverScrollViewController.m in Sources */,
 				4BA85DC61C15753300D78EB9 /* JPListViewController.m in Sources */,
+				4BEFCAA51C552C820051750A /* JPSettingsViewController.m in Sources */,
 				4B1CE5F51C45777200AC731A /* JPPopupControlViewController.m in Sources */,
 				4B41B6521C19995C0051BC79 /* JPPlayerView.m in Sources */,
 				4B1743651C495EF0000B742F /* JPContainerViewController.m in Sources */,
@@ -500,6 +519,7 @@
 				4BE53CC11C4CF2FD00CA5B58 /* UIImageEffects.m in Sources */,
 				4B27F1551C1A6155009FCBE6 /* TestViewController.m in Sources */,
 				4BE53CBA1C4CB52300CA5B58 /* JPContainerTableViewController.m in Sources */,
+				4BEFCAEE1C58FCFF0051750A /* JPSpotifyListTableViewCell.m in Sources */,
 				4BA85DCA1C1575A200D78EB9 /* JPLeftBarView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -643,6 +663,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/JPPlayer.pch";
 				INFOPLIST_FILE = JPPlayer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -657,6 +681,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/JPPlayer.pch";
 				INFOPLIST_FILE = JPPlayer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

@@ -6,9 +6,9 @@
 //  Copyright © 2015 Prime. All rights reserved.
 //
 
+#import <Parse.h>
 #import "AppDelegate.h"
 #import "Constants.h"
-#import <Parse.h>
 
 @interface AppDelegate ()
 
@@ -16,6 +16,24 @@
 
 @implementation AppDelegate
 
+-(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    SPTAuthCallback authCallback = ^(NSError *error, SPTSession *session) {
+        if (error != nil) {
+            NSLog(@"openURL error: %@", error);
+            return;
+        }
+        
+        _session = session;
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"SpotifySession" object:nil userInfo:@{@"SpotifySession": session}];
+    };
+    
+    if ([[SPTAuth defaultInstance] canHandleURL:url]) {
+        [[SPTAuth defaultInstance] handleAuthCallbackWithTriggeredAuthURL:url callback:authCallback];
+        return YES;
+    }
+    
+    return NO;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.

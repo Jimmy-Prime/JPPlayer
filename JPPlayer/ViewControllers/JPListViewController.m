@@ -6,17 +6,20 @@
 //  Copyright © 2015 Prime. All rights reserved.
 //
 
-#import <Masonry.h>
+#import "AppDelegate.h"
+
 #import "JPListViewController.h"
-#import "Constants.h"
 #import "JPContainerViewController.h"
 #import "JPContainerTableViewController.h"
 #import "JPListTableViewController.h"
 #import "JPSingerTableViewController.h"
+#import "JPSpotifyListTableViewCell.h"
 
-@interface JPListViewController ()
+@interface JPListViewController () <UITableViewDataSource, UITableViewDelegate>
 
+@property (strong, nonatomic) UITableView *listsTableView;
 @property (strong, nonatomic) NSMutableArray *containerList;
+@property (strong, nonatomic) SPTPlaylistList *SpotifyLists;
 
 enum ContainerState {
     Left,
@@ -34,6 +37,18 @@ enum ContainerState {
     
     [self.view setBackgroundColor:[UIColor grayColor]];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spotifySession:) name:@"SpotifySession" object:nil];
+
+    _listsTableView = [[UITableView alloc] init];
+    _listsTableView.dataSource = self;
+    _listsTableView.delegate = self;
+    _listsTableView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:_listsTableView];
+    [_listsTableView makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.left.equalTo(self.view);
+        make.width.equalTo(@(ContainerWidth));
+    }];
+        
     UIButton *resetButton = [UIButton buttonWithType:UIButtonTypeSystem];
     resetButton.backgroundColor = [UIColor blackColor];
     resetButton.frame = CGRectMake(20, 20, 100, 100);
@@ -53,6 +68,70 @@ enum ContainerState {
         [self.view layoutIfNeeded];
     }];
 }
+
+- (void)spotifySession:(NSNotification *)notification {
+    NSDictionary *userInfo = notification.userInfo;
+    SPTSession *session = [userInfo objectForKey:@"SpotifySession"];
+    
+    if ([session isValid]) {
+        [SPTPlaylistList playlistsForUserWithSession:session callback:^(NSError *error, SPTPlaylistList *lists) {
+            if (error) {
+                NSLog(@"error: %@", error);
+                return;
+            }
+            
+            _SpotifyLists = lists;
+            [_listsTableView reloadData];
+        }];
+    }
+}
+
+
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    if (section == 0) { // spotify header
+        UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ContainerWidth, 120)];
+        header.backgroundColor = [UIColor greenColor];
+        return header;
+    }
+    
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 120.f;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (section == 0 && _SpotifyLists != nil) {
+        return _SpotifyLists.tracksForPlayback.count;
+    }
+    
+    return 0;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) { // spotify section
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:JPSpotifyListTableViewCellIdentifier];
+        if (cell == nil) {
+            NSLog(@"create %ld", (long)indexPath.row);
+            cell = [[JPSpotifyListTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:JPSpotifyListTableViewCellIdentifier];
+        }
+        
+        SPTPartialPlaylist *partialPlayList = [[_SpotifyLists tracksForPlayback] objectAtIndex:indexPath.row];
+        cell.textLabel.text = [NSString stringWithFormat:@"%@", partialPlayList.name];
+        cell.detailTextLabel.text = [@(partialPlayList.trackCount) stringValue];
+        
+        return cell;
+    }
+    
+    return nil;
+}
+
 
 - (void)resetContainerButton:(UIButton *)button {
     for (JPContainerViewController *container in _containerList) {

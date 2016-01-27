@@ -6,7 +6,6 @@
 //  Copyright © 2016 Prime. All rights reserved.
 //
 
-#import <Masonry.h>
 #import "JPCoverScrollViewController.h"
 
 @interface JPCoverScrollViewController () <UIScrollViewDelegate>

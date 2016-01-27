@@ -6,9 +6,7 @@
 //  Copyright © 2015 Prime. All rights reserved.
 //
 
-#import <Masonry.h>
 #import "JPPlayerView.h"
-#import "Constants.h"
 #import "JPTrackLabel.h"
 #import "JPProgressView.h"
 

@@ -13,4 +13,8 @@
 // You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
 #define MAS_SHORTHAND
 
+#import <Masonry.h>
+#import <Spotify/Spotify.h>
+#import "Constants.h"
+
 #endif /* JPPlayer_pch */

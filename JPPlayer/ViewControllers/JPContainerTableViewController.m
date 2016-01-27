@@ -6,9 +6,7 @@
 //  Copyright © 2016 Prime. All rights reserved.
 //
 
-#import <Masonry.h>
 #import "JPContainerTableViewController.h"
-#import "Constants.h"
 
 @interface JPContainerTableViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
 

@@ -6,11 +6,9 @@
 //  Copyright © 2016 Prime. All rights reserved.
 //
 
-#import <Masonry.h>
 #import "JPPopupControlViewController.h"
 #import "JPTrackLabel.h"
 #import "JPProgressView.h"
-#import "Constants.h"
 
 @interface JPPopupControlViewController ()
 

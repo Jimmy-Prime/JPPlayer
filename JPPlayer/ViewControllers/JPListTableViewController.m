@@ -6,9 +6,7 @@
 //  Copyright © 2016 Prime. All rights reserved.
 //
 
-#import <Masonry.h>
 #import "JPListTableViewController.h"
-#import "Constants.h"
 
 @interface JPListTableViewController ()
 

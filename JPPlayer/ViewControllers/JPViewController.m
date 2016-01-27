@@ -6,12 +6,12 @@
 //  Copyright © 2015 Prime. All rights reserved.
 //
 
-#import <Masonry.h>
 #import "JPViewController.h"
-#import "Constants.h"
 #import "JPLeftBarView.h"
 #import "JPPlayerView.h"
 #import "JPPopupPlayerViewController.h"
+
+#import "JPSettingsViewController.h"
 #import "JPListViewController.h"
 
 #import "TestViewController.h"
@@ -84,9 +84,12 @@
     [settingsTab setImage:[UIImage imageNamed:@"ic_settings_white_48pt"] forState:UIControlStateNormal];
     [leftBarView addTab:settingsTab];
     
-    TestViewController *testVC1 = [[TestViewController alloc] init];
-    [_rightContainerView addSubview:testVC1.view];
-    [_childViewControllers addObject:testVC1];
+    JPSettingsViewController *JPSettingsVC = [[JPSettingsViewController alloc] init];
+    [_rightContainerView addSubview:JPSettingsVC.view];
+    [_childViewControllers addObject:JPSettingsVC];
+    [JPSettingsVC.view makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(_rightContainerView);
+    }];
     
     // list tab
     UIButton *listTab = [UIButton buttonWithType:UIButtonTypeSystem];
