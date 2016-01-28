@@ -39,6 +39,9 @@ enum ContainerState {
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spotifySession:) name:@"SpotifySession" object:nil];
 
+    SPTSession *session = [(AppDelegate *)[[UIApplication sharedApplication] delegate] session];
+    [self checkSession:session];
+    
     _listsTableView = [[UITableView alloc] init];
     _listsTableView.dataSource = self;
     _listsTableView.delegate = self;
@@ -48,7 +51,7 @@ enum ContainerState {
         make.top.bottom.left.equalTo(self.view);
         make.width.equalTo(@(ContainerWidth));
     }];
-        
+    
     UIButton *resetButton = [UIButton buttonWithType:UIButtonTypeSystem];
     resetButton.backgroundColor = [UIColor blackColor];
     resetButton.frame = CGRectMake(20, 20, 100, 100);
@@ -69,9 +72,10 @@ enum ContainerState {
     }];
 }
 
-- (void)spotifySession:(NSNotification *)notification {
-    NSDictionary *userInfo = notification.userInfo;
-    SPTSession *session = [userInfo objectForKey:@"SpotifySession"];
+- (void)checkSession:(SPTSession *)session {
+    if (!session) {
+        return;
+    }
     
     if ([session isValid]) {
         [SPTPlaylistList playlistsForUserWithSession:session callback:^(NSError *error, SPTPlaylistList *lists) {
@@ -84,6 +88,16 @@ enum ContainerState {
             [_listsTableView reloadData];
         }];
     }
+    else {
+        // refresh token
+         
+    }
+}
+
+- (void)spotifySession:(NSNotification *)notification {
+    NSDictionary *userInfo = notification.userInfo;
+    SPTSession *session = [userInfo objectForKey:@"SpotifySession"];
+    [self checkSession:session];
 }
 
 
@@ -118,8 +132,7 @@ enum ContainerState {
     if (indexPath.section == 0) { // spotify section
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:JPSpotifyListTableViewCellIdentifier];
         if (cell == nil) {
-            NSLog(@"create %ld", (long)indexPath.row);
-            cell = [[JPSpotifyListTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:JPSpotifyListTableViewCellIdentifier];
+            cell = [[JPSpotifyListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:JPSpotifyListTableViewCellIdentifier];
         }
         
         SPTPartialPlaylist *partialPlayList = [[_SpotifyLists tracksForPlayback] objectAtIndex:indexPath.row];
@@ -130,6 +143,14 @@ enum ContainerState {
     }
     
     return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) {
+        return JPSpotifyListCellHeight;
+    }
+    
+    return 0.f;
 }
 
 

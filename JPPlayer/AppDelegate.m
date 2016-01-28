@@ -40,16 +40,12 @@
     
     srand48(arc4random());
     
-    // [Optional] Power your app with Local Datastore. For more info, go to
-    // https://parse.com/docs/ios_guide#localdatastore/iOS
-    // [Parse enableLocalDatastore];
-    
-    // Initialize Parse.
-    [Parse setApplicationId:ParseApplicationId
-                  clientKey:ParseClientKey];
-    
-    // [Optional] Track statistics around application opens.
-    // [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    NSData *spotifySessionData = [[NSUserDefaults standardUserDefaults] objectForKey:@"SpotifySession"];
+    SPTSession *session = [NSKeyedUnarchiver unarchiveObjectWithData:spotifySessionData];
+    if (session) {
+        NSLog(@"available old session");
+        _session = session;
+    }
     
     return YES;
 }
@@ -57,6 +53,12 @@
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    
+    NSLog(@"will resign active");
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSData *spotifySessionData = [NSKeyedArchiver archivedDataWithRootObject:_session];
+    [userDefaults setObject:spotifySessionData forKey:@"SpotifySession"];
+    [userDefaults synchronize];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {

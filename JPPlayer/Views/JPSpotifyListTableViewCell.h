@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 
 #define JPSpotifyListTableViewCellIdentifier @"SpotifyListCell"
-static const CGFloat SpotifyListCellHeight = 64.f;
+static const CGFloat JPSpotifyListCellHeight = 64.f;
 
 @interface JPSpotifyListTableViewCell : UITableViewCell
+
+@property (strong, nonatomic) UIImageView *cover;
 
 @end

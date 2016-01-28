@@ -10,10 +10,13 @@
 
 @implementation JPSpotifyListTableViewCell
 
-- (void)awakeFromNib {
-    // Initialization code
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        
+    }
     
-    NSLog(@"OAO cell");
+    return self;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
