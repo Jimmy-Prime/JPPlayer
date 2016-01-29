@@ -1,2 +1,2 @@
-pod 'Parse'
 pod 'Masonry'
+pod 'AFNetworking'

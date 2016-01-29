@@ -6,12 +6,18 @@
 //  Copyright © 2016 Prime. All rights reserved.
 //
 
+#import <UIImageView+AFNetworking.h>
 #import "JPListTableViewController.h"
+#import "JPSpotifyListTableViewCell.h"
 
-@interface JPListTableViewController ()
+@interface JPListTableViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) UIImageView *blurBackgroundImageView;
 @property (strong, nonatomic) UIVisualEffectView *blurEffectView;
+@property (strong, nonatomic) UIImageView *profileImageView;
+@property (strong, nonatomic) UILabel *titleLabel;
+
+@property (strong, nonatomic) SPTPlaylistSnapshot *SpotifyList;
 
 @end
 
@@ -24,14 +30,21 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
     _topView = super.topView;
     _topViewHeight = super.topViewHeight;
     _list = super.list;
     _fakeHeaderView = super.fakeHeaderView;
     
-    _blurBackgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cover.jpg"]];
+    _list.dataSource = self;
+    _list.delegate = self;
+    
+    self.view.backgroundColor = [UIColor clearColor];
+    
+    UIImage *placeHolder = [[UIImage imageNamed:@"ic_blur_on_white_48pt"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    
+    _blurBackgroundImageView = [[UIImageView alloc] initWithImage:placeHolder];
     _blurBackgroundImageView.contentMode = UIViewContentModeScaleToFill;
+    _blurBackgroundImageView.tintColor = [UIColor redColor];
     [_topView addSubview:_blurBackgroundImageView];
     [_blurBackgroundImageView makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(_topView);
@@ -53,27 +66,115 @@
         make.height.equalTo(@(ContainerWidth - FakeHeaderHeight));
     }];
     
-    // testing UI
-    UIView *circle = [[UIView alloc] init];
-    circle.backgroundColor = [UIColor blackColor];
-    circle.layer.cornerRadius = 100.f;
-    [overlayView addSubview:circle];
-    [circle makeConstraints:^(MASConstraintMaker *make) {
+    _profileImageView = [[UIImageView alloc] initWithImage:placeHolder];
+    _profileImageView.tintColor = [UIColor redColor];
+    [overlayView addSubview:_profileImageView];
+    [_profileImageView makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.centerY.equalTo(overlayView);
         make.width.height.equalTo(@(200.f));
     }];
     
-    UILabel *title = [[UILabel alloc] init];
-    title.text = @"Skyworld";
-    title.textColor = [UIColor whiteColor];
-    title.font = [UIFont systemFontOfSize:24];
-    title.textAlignment = NSTextAlignmentCenter;
-    [overlayView addSubview:title];
-    [title makeConstraints:^(MASConstraintMaker *make) {
+    _titleLabel = [[UILabel alloc] init];
+    _titleLabel.text = @"Not available";
+    _titleLabel.textColor = [UIColor whiteColor];
+    _titleLabel.font = [UIFont systemFontOfSize:24];
+    _titleLabel.textAlignment = NSTextAlignmentCenter;
+    [overlayView addSubview:_titleLabel];
+    [_titleLabel makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(overlayView);
-        make.top.equalTo(circle.bottom).offset(8);
+        make.top.equalTo(_profileImageView.bottom).offset(8);
         make.height.equalTo(@(30));
     }];
+}
+
+- (void)setInformation:(id)information {
+    _information = information;
+    SPTPartialPlaylist *partialPlayList = (SPTPartialPlaylist *)_information;
+    [SPTPlaylistSnapshot playlistWithURI:partialPlayList.uri session:[[SPTAuth defaultInstance] session] callback:^(NSError *error, SPTPlaylistSnapshot *playList) {
+        if (error) {
+            NSLog(@"error: %@", error);
+            return;
+        }
+        
+        [_blurBackgroundImageView setImageWithURL:[[playList largestImage] imageURL]];
+        [_profileImageView setImageWithURL:[[playList largestImage] imageURL]];
+        _titleLabel.text = playList.name;
+        
+        _SpotifyList = playList;
+        [_list reloadData];
+    }];
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 2;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    if (section == 0) {
+        UIView *fakeHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ContainerWidth, ContainerWidth)];
+        [fakeHeader setBackgroundColor:[UIColor clearColor]];
+        return fakeHeader;
+    }
+    
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (section == 0) {
+        return _topViewHeight;
+    }
+    
+    return 0;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 1) { // list section
+        switch (_listType) {
+            case SpotifyPlayList: {
+                JPSpotifyListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:JPSpotifyListTableViewCellIdentifier];
+                if (cell == nil) {
+                    cell = [[JPSpotifyListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:JPSpotifyListTableViewCellIdentifier];
+                }
+                
+                SPTPlaylistTrack *track = [[_SpotifyList tracksForPlayback] objectAtIndex:indexPath.row];
+                cell.titleLabel.text = track.name;
+                SPTPartialArtist *artist0 = [track.artists objectAtIndex:0];
+                cell.auxilaryLabel.text = [NSString stringWithFormat:@"%@ - %@", artist0.name, track.album.name];
+                
+                return cell;
+                break;
+            }
+                
+            default:
+                break;
+        }
+        
+    }
+    
+    return nil;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {    
+    if (section == 1 && _SpotifyList != nil) {
+        return _SpotifyList.tracksForPlayback.count;
+    }
+    
+    return 0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 1) {
+        switch (_listType) {
+            case SpotifyPlayList:
+                return JPSpotifyListTableCellHeight;
+                break;
+                
+            default:
+                return 0.f;
+        }
+    }
+    
+    return 0.f;
 }
 
 @end

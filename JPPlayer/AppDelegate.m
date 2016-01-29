@@ -6,7 +6,6 @@
 //  Copyright © 2015 Prime. All rights reserved.
 //
 
-#import <Parse.h>
 #import "AppDelegate.h"
 #import "Constants.h"
 
@@ -23,7 +22,7 @@
             return;
         }
         
-        _session = session;
+        [SPTAuth defaultInstance].session = session;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"SpotifySession" object:nil userInfo:@{@"SpotifySession": session}];
     };
     
@@ -44,7 +43,7 @@
     SPTSession *session = [NSKeyedUnarchiver unarchiveObjectWithData:spotifySessionData];
     if (session) {
         NSLog(@"available old session");
-        _session = session;
+        [SPTAuth defaultInstance].session = session;
     }
     
     return YES;
@@ -56,7 +55,7 @@
     
     NSLog(@"will resign active");
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSData *spotifySessionData = [NSKeyedArchiver archivedDataWithRootObject:_session];
+    NSData *spotifySessionData = [NSKeyedArchiver archivedDataWithRootObject:[[SPTAuth defaultInstance] session]];
     [userDefaults setObject:spotifySessionData forKey:@"SpotifySession"];
     [userDefaults synchronize];
 }

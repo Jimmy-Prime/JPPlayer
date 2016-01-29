@@ -10,4 +10,11 @@
 
 @interface JPListTableViewController : JPContainerTableViewController
 
+typedef enum {
+    SpotifyPlayList
+} ListType;
+
+@property ListType listType;
+@property (strong, nonatomic) id information;
+
 @end

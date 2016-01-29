@@ -6,19 +6,18 @@
 //  Copyright © 2015 Prime. All rights reserved.
 //
 
-#import "AppDelegate.h"
-
+#import <UIImageView+AFNetworking.h>
 #import "JPListViewController.h"
 #import "JPContainerViewController.h"
 #import "JPContainerTableViewController.h"
 #import "JPListTableViewController.h"
 #import "JPSingerTableViewController.h"
-#import "JPSpotifyListTableViewCell.h"
+#import "JPSpotifyListViewCell.h"
 
 @interface JPListViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) UITableView *listsTableView;
-@property (strong, nonatomic) NSMutableArray *containerList;
+@property (strong, nonatomic) NSMutableArray<JPContainerViewController *> *containerList;
 @property (strong, nonatomic) SPTPlaylistList *SpotifyLists;
 
 enum ContainerState {
@@ -39,7 +38,7 @@ enum ContainerState {
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spotifySession:) name:@"SpotifySession" object:nil];
 
-    SPTSession *session = [(AppDelegate *)[[UIApplication sharedApplication] delegate] session];
+    SPTSession *session = [[SPTAuth defaultInstance] session];
     [self checkSession:session];
     
     _listsTableView = [[UITableView alloc] init];
@@ -52,28 +51,12 @@ enum ContainerState {
         make.width.equalTo(@(ContainerWidth));
     }];
     
-    UIButton *resetButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    resetButton.backgroundColor = [UIColor blackColor];
-    resetButton.frame = CGRectMake(20, 20, 100, 100);
-    resetButton.layer.cornerRadius = 20;
-    [resetButton addTarget:self action:@selector(resetContainerButton:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:resetButton];
-    
     _containerList = [[NSMutableArray alloc] init];
-    
-    [self addOneContainer];
-    [self.view layoutIfNeeded];
-    [UIView animateWithDuration:AnimationInterval animations:^{
-        JPContainerViewController *last = [_containerList lastObject];
-        last.view.tag = Right;
-        [last.dock uninstall];
-        [last.right install];
-        [self.view layoutIfNeeded];
-    }];
 }
 
 - (void)checkSession:(SPTSession *)session {
     if (!session) {
+        NSLog(@"No session");
         return;
     }
     
@@ -89,8 +72,8 @@ enum ContainerState {
         }];
     }
     else {
-        // refresh token
-         
+        // TODO: refresh token
+        NSLog(@"Invalid session");
     }
 }
 
@@ -102,10 +85,40 @@ enum ContainerState {
 
 
 
+#pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (section == 0 && _SpotifyLists != nil) {
+        return _SpotifyLists.tracksForPlayback.count;
+    }
+    
+    return 0;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) { // spotify section
+        JPSpotifyListViewCell *cell = [tableView dequeueReusableCellWithIdentifier:JPSpotifyListViewCellIdentifier];
+        if (cell == nil) {
+            cell = [[JPSpotifyListViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:JPSpotifyListViewCellIdentifier];
+        }
+        
+        SPTPartialPlaylist *partialPlayList = [[_SpotifyLists tracksForPlayback] objectAtIndex:indexPath.row];
+        UIImage *placeHolder = [[UIImage imageNamed:@"ic_blur_on_white_48pt"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        cell.profileImageView.tintColor = [UIColor redColor];
+        [cell.profileImageView setImageWithURL:partialPlayList.smallestImage.imageURL placeholderImage:placeHolder];
+        cell.titleLabel.text = [NSString stringWithFormat:@"%@", partialPlayList.name];
+        cell.auxilaryLabel.text = [@(partialPlayList.trackCount) stringValue];
+        
+        return cell;
+    }
+    
+    return nil;
+}
+
+#pragma mark - UITableViewDelegate
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     if (section == 0) { // spotify header
         UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ContainerWidth, 120)];
@@ -120,31 +133,6 @@ enum ContainerState {
     return 120.f;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section == 0 && _SpotifyLists != nil) {
-        return _SpotifyLists.tracksForPlayback.count;
-    }
-    
-    return 0;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) { // spotify section
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:JPSpotifyListTableViewCellIdentifier];
-        if (cell == nil) {
-            cell = [[JPSpotifyListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:JPSpotifyListTableViewCellIdentifier];
-        }
-        
-        SPTPartialPlaylist *partialPlayList = [[_SpotifyLists tracksForPlayback] objectAtIndex:indexPath.row];
-        cell.textLabel.text = [NSString stringWithFormat:@"%@", partialPlayList.name];
-        cell.detailTextLabel.text = [@(partialPlayList.trackCount) stringValue];
-        
-        return cell;
-    }
-    
-    return nil;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
         return JPSpotifyListCellHeight;
@@ -153,7 +141,31 @@ enum ContainerState {
     return 0.f;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) { // Spotify section
+        for (JPContainerViewController *container in _containerList) {
+            [container.view removeFromSuperview];
+        }
+        [_containerList removeAllObjects];
+        
+        JPListTableViewController *newSpotifyListVC = [[JPListTableViewController alloc] init];
+        newSpotifyListVC.listType = SpotifyPlayList;
+        SPTPartialPlaylist *partialPlayList = [[_SpotifyLists tracksForPlayback] objectAtIndex:indexPath.row];
+        newSpotifyListVC.information = partialPlayList;
+        
+        [self addOneContainer:newSpotifyListVC];
+        [self.view layoutIfNeeded];
+        [UIView animateWithDuration:AnimationInterval animations:^{
+            JPContainerViewController *last = [_containerList lastObject];
+            last.view.tag = Right;
+            [last.dock uninstall];
+            [last.right install];
+            [self.view layoutIfNeeded];
+        }];
+    }
+}
 
+#pragma mark - Other actions
 - (void)resetContainerButton:(UIButton *)button {
     for (JPContainerViewController *container in _containerList) {
         [container.view removeFromSuperview];
@@ -168,6 +180,33 @@ enum ContainerState {
         [last.right install];
         [self.view layoutIfNeeded];
     }];
+}
+
+- (void)addOneContainer:(JPContainerViewController *)container {
+    [self.view addSubview:container.view];
+    
+    JPContainerViewController *prev = [_containerList lastObject];
+    [prev.view updateConstraints:^(MASConstraintMaker *make) {
+        make.right.greaterThanOrEqualTo(container.view.left);
+    }];
+    
+    container.view.tag = Dock;
+    [container.view makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.equalTo(self.view);
+        make.left.greaterThanOrEqualTo(self.view);
+        make.width.equalTo(@(ContainerWidth));
+        container.left = make.left.equalTo(self.view).priorityLow();
+        container.right = make.right.equalTo(self.view).priorityLow();
+        container.dock = make.left.equalTo(self.view.right).priorityLow();
+    }];
+    
+    [container.left uninstall];
+    [container.right uninstall];
+    
+    container.pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
+    [container.view addGestureRecognizer:container.pan];
+    
+    [_containerList addObject:container];
 }
 
 - (void)addOneContainer {
@@ -214,13 +253,6 @@ enum ContainerState {
     
     container.pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
     [container.view addGestureRecognizer:container.pan];
-    
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
-    button.frame = CGRectMake(30, 30, 50, 50);
-    button.backgroundColor = [UIColor whiteColor];
-    button.layer.cornerRadius = 7.f;
-    [button addTarget:self action:@selector(tap:) forControlEvents:UIControlEventTouchUpInside];
-    [container.view addSubview:button];
     
     [_containerList addObject:container];
 }

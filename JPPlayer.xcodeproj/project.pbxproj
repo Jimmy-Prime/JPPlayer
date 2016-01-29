@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B0A95FF1C5B9E900038C9B9 /* JPSpotifyListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B0A95FE1C5B9E900038C9B9 /* JPSpotifyListTableViewCell.m */; };
 		4B17435B1C4794BE000B742F /* cover.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4B17435A1C4794BE000B742F /* cover.jpg */; };
 		4B1743651C495EF0000B742F /* JPContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1743621C495EF0000B742F /* JPContainerViewController.m */; };
 		4B1743661C495EF0000B742F /* JPListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1743641C495EF0000B742F /* JPListTableViewController.m */; };
@@ -32,7 +33,7 @@
 		4BEFCA9D1C552A9A0051750A /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BEFCA9C1C552A9A0051750A /* AVFoundation.framework */; };
 		4BEFCA9F1C552B6C0051750A /* Spotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BEFCA9E1C552B6B0051750A /* Spotify.framework */; };
 		4BEFCAA51C552C820051750A /* JPSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BEFCAA41C552C820051750A /* JPSettingsViewController.m */; };
-		4BEFCAEE1C58FCFF0051750A /* JPSpotifyListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BEFCAED1C58FCFF0051750A /* JPSpotifyListTableViewCell.m */; };
+		4BEFCAEE1C58FCFF0051750A /* JPSpotifyListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BEFCAED1C58FCFF0051750A /* JPSpotifyListViewCell.m */; };
 		4BFCBA461C3F8D8D00B86DD9 /* JPPopupPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BFCBA451C3F8D8D00B86DD9 /* JPPopupPlayerViewController.m */; };
 		4BFCBA491C3F90FF00B86DD9 /* JPCoverScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BFCBA481C3F90FF00B86DD9 /* JPCoverScrollViewController.m */; };
 		B94418F1C05B7E089ED37A64 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3604C5FF7C837E39F4E3BAB2 /* libPods.a */; };
@@ -57,6 +58,8 @@
 
 /* Begin PBXFileReference section */
 		3604C5FF7C837E39F4E3BAB2 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B0A95FD1C5B9E900038C9B9 /* JPSpotifyListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPSpotifyListTableViewCell.h; path = Views/JPSpotifyListTableViewCell.h; sourceTree = "<group>"; };
+		4B0A95FE1C5B9E900038C9B9 /* JPSpotifyListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPSpotifyListTableViewCell.m; path = Views/JPSpotifyListTableViewCell.m; sourceTree = "<group>"; };
 		4B17435A1C4794BE000B742F /* cover.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cover.jpg; sourceTree = "<group>"; };
 		4B1743611C495EF0000B742F /* JPContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPContainerViewController.h; path = ViewControllers/JPContainerViewController.h; sourceTree = "<group>"; };
 		4B1743621C495EF0000B742F /* JPContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPContainerViewController.m; path = ViewControllers/JPContainerViewController.m; sourceTree = "<group>"; };
@@ -105,8 +108,8 @@
 		4BEFCA9E1C552B6B0051750A /* Spotify.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Spotify.framework; sourceTree = "<group>"; };
 		4BEFCAA31C552C820051750A /* JPSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPSettingsViewController.h; path = ViewControllers/JPSettingsViewController.h; sourceTree = "<group>"; };
 		4BEFCAA41C552C820051750A /* JPSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPSettingsViewController.m; path = ViewControllers/JPSettingsViewController.m; sourceTree = "<group>"; };
-		4BEFCAEC1C58FCFF0051750A /* JPSpotifyListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPSpotifyListTableViewCell.h; path = Views/JPSpotifyListTableViewCell.h; sourceTree = "<group>"; };
-		4BEFCAED1C58FCFF0051750A /* JPSpotifyListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPSpotifyListTableViewCell.m; path = Views/JPSpotifyListTableViewCell.m; sourceTree = "<group>"; };
+		4BEFCAEC1C58FCFF0051750A /* JPSpotifyListViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPSpotifyListViewCell.h; path = Views/JPSpotifyListViewCell.h; sourceTree = "<group>"; };
+		4BEFCAED1C58FCFF0051750A /* JPSpotifyListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPSpotifyListViewCell.m; path = Views/JPSpotifyListViewCell.m; sourceTree = "<group>"; };
 		4BFCBA441C3F8D8D00B86DD9 /* JPPopupPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPPopupPlayerViewController.h; path = ViewControllers/JPPopupPlayerViewController.h; sourceTree = "<group>"; };
 		4BFCBA451C3F8D8D00B86DD9 /* JPPopupPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPPopupPlayerViewController.m; path = ViewControllers/JPPopupPlayerViewController.m; sourceTree = "<group>"; };
 		4BFCBA471C3F90FF00B86DD9 /* JPCoverScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPCoverScrollViewController.h; path = ViewControllers/JPCoverScrollViewController.h; sourceTree = "<group>"; };
@@ -251,8 +254,10 @@
 		4BA85DC71C15756E00D78EB9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				4BEFCAEC1C58FCFF0051750A /* JPSpotifyListTableViewCell.h */,
-				4BEFCAED1C58FCFF0051750A /* JPSpotifyListTableViewCell.m */,
+				4BEFCAEC1C58FCFF0051750A /* JPSpotifyListViewCell.h */,
+				4BEFCAED1C58FCFF0051750A /* JPSpotifyListViewCell.m */,
+				4B0A95FD1C5B9E900038C9B9 /* JPSpotifyListTableViewCell.h */,
+				4B0A95FE1C5B9E900038C9B9 /* JPSpotifyListTableViewCell.m */,
 				4BA85DC81C1575A200D78EB9 /* JPLeftBarView.h */,
 				4BA85DC91C1575A200D78EB9 /* JPLeftBarView.m */,
 				4B41B6501C19995C0051BC79 /* JPPlayerView.h */,
@@ -507,6 +512,7 @@
 				4BFCBA461C3F8D8D00B86DD9 /* JPPopupPlayerViewController.m in Sources */,
 				4BFCBA491C3F90FF00B86DD9 /* JPCoverScrollViewController.m in Sources */,
 				4BA85DC61C15753300D78EB9 /* JPListViewController.m in Sources */,
+				4B0A95FF1C5B9E900038C9B9 /* JPSpotifyListTableViewCell.m in Sources */,
 				4BEFCAA51C552C820051750A /* JPSettingsViewController.m in Sources */,
 				4B1CE5F51C45777200AC731A /* JPPopupControlViewController.m in Sources */,
 				4B41B6521C19995C0051BC79 /* JPPlayerView.m in Sources */,
@@ -519,7 +525,7 @@
 				4BE53CC11C4CF2FD00CA5B58 /* UIImageEffects.m in Sources */,
 				4B27F1551C1A6155009FCBE6 /* TestViewController.m in Sources */,
 				4BE53CBA1C4CB52300CA5B58 /* JPContainerTableViewController.m in Sources */,
-				4BEFCAEE1C58FCFF0051750A /* JPSpotifyListTableViewCell.m in Sources */,
+				4BEFCAEE1C58FCFF0051750A /* JPSpotifyListViewCell.m in Sources */,
 				4BA85DCA1C1575A200D78EB9 /* JPLeftBarView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
