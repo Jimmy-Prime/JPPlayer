@@ -6,9 +6,11 @@
 //  Copyright © 2016 Prime. All rights reserved.
 //
 
+#import <UIImageView+AFNetworking.h>
 #import "JPPopupPlayerViewController.h"
 #import "JPPopupControlViewController.h"
 #import "JPCoverScrollViewController.h"
+#import "JPSpotifyPlayer.h"
 
 @interface JPPopupPlayerViewController ()
 
@@ -30,9 +32,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(popUp:) name:@"popup" object:nil];
-    
-    _blurBackgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cover.jpg"]];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(aboutToPlayTrack:) name:@"aboutToPlayTrack" object:nil];
+
+    _blurBackgroundImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"ic_blur_on_white_48pt"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
     _blurBackgroundImageView.contentMode = UIViewContentModeScaleToFill;
+    _blurBackgroundImageView.tintColor = [UIColor redColor];
     [self.view addSubview:_blurBackgroundImageView];
     [_blurBackgroundImageView makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
@@ -141,6 +145,12 @@
         }];
         [self.view.superview layoutIfNeeded];
     }];
+}
+
+- (void)aboutToPlayTrack:(NSNotification *)notification {
+    NSDictionary *userInfo = [notification userInfo];
+    SPTPlaylistTrack *track = [userInfo objectForKey:@"track"];
+    [_blurBackgroundImageView setImageWithURL:[[[track album] largestCover] imageURL]];
 }
 
 @end

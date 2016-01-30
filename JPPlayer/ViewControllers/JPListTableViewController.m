@@ -9,6 +9,7 @@
 #import <UIImageView+AFNetworking.h>
 #import "JPListTableViewController.h"
 #import "JPSpotifyListTableViewCell.h"
+#import "JPSpotifyPlayer.h"
 
 @interface JPListTableViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -175,6 +176,23 @@
     }
     
     return 0.f;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 1) {
+        SPTPlaylistTrack *track = [[_SpotifyList tracksForPlayback] objectAtIndex:indexPath.row];
+        
+        NSLog(@"About to play track: %@", track.name);
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"aboutToPlayTrack" object:nil userInfo:@{@"track" : track}];
+        
+        [[JPSpotifyPlayer playerWithCliendId:[[SPTAuth defaultInstance] clientID]] playURIs:@[track.uri] fromIndex:0 callback:^(NSError *error) {
+            if (error) {
+                NSLog(@"Play back error: %@", error);
+            }
+            
+            NSLog(@"Start playing %@", track.name);
+        }];
+    }
 }
 
 @end

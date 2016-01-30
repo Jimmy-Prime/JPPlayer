@@ -10,4 +10,7 @@
 
 @interface JPProgressView : UIView
 
+- (void)resetDuration:(NSTimeInterval)duration;
+- (void)updateStatus:(BOOL)isPlaying;
+
 @end

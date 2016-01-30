@@ -37,9 +37,6 @@
 }
 
 - (void)spotifyLogin:(UIButton *)button {
-    [[SPTAuth defaultInstance] setClientID:SpotifyClientId];
-    [[SPTAuth defaultInstance] setRedirectURL:[NSURL URLWithString:SpotifyRedirectURL]];
-    [[SPTAuth defaultInstance] setRequestedScopes:@[SPTAuthStreamingScope, SPTAuthPlaylistReadPrivateScope]];
     [[UIApplication sharedApplication] openURL:[SPTAuth defaultInstance].loginURL];
 }
 /*

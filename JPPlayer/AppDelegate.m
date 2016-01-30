@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "Constants.h"
+#import "JPSpotifyPlayer.h"
 
 @interface AppDelegate ()
 
@@ -23,6 +24,7 @@
         }
         
         [SPTAuth defaultInstance].session = session;
+        [self handleSpotifySession];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"SpotifySession" object:nil userInfo:@{@"SpotifySession": session}];
     };
     
@@ -39,14 +41,35 @@
     
     srand48(arc4random());
     
+    [[SPTAuth defaultInstance] setClientID:SpotifyClientId];
+    [[SPTAuth defaultInstance] setRedirectURL:[NSURL URLWithString:SpotifyRedirectURL]];
+    [[SPTAuth defaultInstance] setRequestedScopes:@[SPTAuthStreamingScope, SPTAuthPlaylistReadPrivateScope]];
+    
     NSData *spotifySessionData = [[NSUserDefaults standardUserDefaults] objectForKey:@"SpotifySession"];
     SPTSession *session = [NSKeyedUnarchiver unarchiveObjectWithData:spotifySessionData];
     if (session) {
         NSLog(@"available old session");
         [SPTAuth defaultInstance].session = session;
+        [self handleSpotifySession];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"SpotifySession" object:nil userInfo:@{@"SpotifySession": session}];
     }
     
     return YES;
+}
+
+- (void)handleSpotifySession {
+    SPTAudioStreamingController *player = [JPSpotifyPlayer playerWithCliendId:[[SPTAuth defaultInstance] clientID]];
+    if (![player loggedIn]) {
+        NSLog(@"Not yet logged in");
+        [player loginWithSession:[[SPTAuth defaultInstance] session] callback:^(NSError *error) {
+            if (error) {
+                NSLog(@"Player login error: %@", error);
+                return;
+            }
+            
+            NSLog(@"Logged in");
+        }];
+    }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

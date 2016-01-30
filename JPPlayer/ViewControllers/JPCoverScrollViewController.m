@@ -6,6 +6,7 @@
 //  Copyright © 2016 Prime. All rights reserved.
 //
 
+#import <UIImageView+AFNetworking.h>
 #import "JPCoverScrollViewController.h"
 
 @interface JPCoverScrollViewController () <UIScrollViewDelegate>
@@ -21,7 +22,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(aboutToPlayTrack:) name:@"aboutToPlayTrack" object:nil];
+
     _coverScrollView = [[UIScrollView alloc] init];
     [self.view addSubview:_coverScrollView];
     [_coverScrollView setPagingEnabled:YES];
@@ -37,8 +40,9 @@
     _coverImageList = [[NSMutableArray alloc] init];
     for (int i=0; i<5; ++i) {
         UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 600, 600)];
-        view.image = [UIImage imageNamed:@"cover.jpg"];
+        view.image = [[UIImage imageNamed:@"ic_blur_on_white_48pt"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         view.contentMode = UIViewContentModeScaleToFill;
+        view.tintColor = [UIColor redColor];
         [_coverScrollView addSubview:view];
         [_coverImageList addObject:view];
     }
@@ -85,6 +89,16 @@
     else {
         CGFloat pageLength = CGRectGetWidth(self.view.frame);
         _currentPage = floor((scrollView.contentOffset.x - pageLength / 2.f) / pageLength) + 1;
+    }
+}
+
+
+- (void)aboutToPlayTrack:(NSNotification *)notification {
+    NSDictionary *userInfo = [notification userInfo];
+    SPTPlaylistTrack *track = [userInfo objectForKey:@"track"];
+    for (int i=0; i<_coverImageList.count; ++i) {
+        UIImageView *view = [_coverImageList objectAtIndex:i];
+        [view setImageWithURL:[[[track album] largestCover] imageURL]];
     }
 }
 

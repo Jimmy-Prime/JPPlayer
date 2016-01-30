@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4B0A95FF1C5B9E900038C9B9 /* JPSpotifyListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B0A95FE1C5B9E900038C9B9 /* JPSpotifyListTableViewCell.m */; };
+		4B0A96021C5C877B0038C9B9 /* JPSpotifyPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B0A96011C5C877B0038C9B9 /* JPSpotifyPlayer.m */; };
 		4B17435B1C4794BE000B742F /* cover.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4B17435A1C4794BE000B742F /* cover.jpg */; };
 		4B1743651C495EF0000B742F /* JPContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1743621C495EF0000B742F /* JPContainerViewController.m */; };
 		4B1743661C495EF0000B742F /* JPListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1743641C495EF0000B742F /* JPListTableViewController.m */; };
@@ -60,6 +61,8 @@
 		3604C5FF7C837E39F4E3BAB2 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B0A95FD1C5B9E900038C9B9 /* JPSpotifyListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPSpotifyListTableViewCell.h; path = Views/JPSpotifyListTableViewCell.h; sourceTree = "<group>"; };
 		4B0A95FE1C5B9E900038C9B9 /* JPSpotifyListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPSpotifyListTableViewCell.m; path = Views/JPSpotifyListTableViewCell.m; sourceTree = "<group>"; };
+		4B0A96001C5C877B0038C9B9 /* JPSpotifyPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPSpotifyPlayer.h; path = Tools/JPSpotifyPlayer.h; sourceTree = "<group>"; };
+		4B0A96011C5C877B0038C9B9 /* JPSpotifyPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPSpotifyPlayer.m; path = Tools/JPSpotifyPlayer.m; sourceTree = "<group>"; };
 		4B17435A1C4794BE000B742F /* cover.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cover.jpg; sourceTree = "<group>"; };
 		4B1743611C495EF0000B742F /* JPContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPContainerViewController.h; path = ViewControllers/JPContainerViewController.h; sourceTree = "<group>"; };
 		4B1743621C495EF0000B742F /* JPContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPContainerViewController.m; path = ViewControllers/JPContainerViewController.m; sourceTree = "<group>"; };
@@ -146,6 +149,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4B0A96031C5C87910038C9B9 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				4B0A96001C5C877B0038C9B9 /* JPSpotifyPlayer.h */,
+				4B0A96011C5C877B0038C9B9 /* JPSpotifyPlayer.m */,
+				4BE53CBF1C4CF2FC00CA5B58 /* UIImageEffects.h */,
+				4BE53CC01C4CF2FC00CA5B58 /* UIImageEffects.m */,
+			);
+			name = Tools;
+			sourceTree = "<group>";
+		};
 		4B17435C1C493061000B742F /* Tabs ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -195,14 +209,13 @@
 		4BA85D8F1C15748400D78EB9 /* JPPlayer */ = {
 			isa = PBXGroup;
 			children = (
-				4BA7A1921C179EE3000DDEBB /* Constants.h */,
-				4B27F15A1C1A9AFF009FCBE6 /* Constants.m */,
-				4BE53CBF1C4CF2FC00CA5B58 /* UIImageEffects.h */,
-				4BE53CC01C4CF2FC00CA5B58 /* UIImageEffects.m */,
-				4BA85DC71C15756E00D78EB9 /* Views */,
-				4BA85DC31C1574CE00D78EB9 /* ViewControllers */,
 				4BA85D931C15748400D78EB9 /* AppDelegate.h */,
 				4BA85D941C15748400D78EB9 /* AppDelegate.m */,
+				4BA7A1921C179EE3000DDEBB /* Constants.h */,
+				4B27F15A1C1A9AFF009FCBE6 /* Constants.m */,
+				4B0A96031C5C87910038C9B9 /* Tools */,
+				4BA85DC71C15756E00D78EB9 /* Views */,
+				4BA85DC31C1574CE00D78EB9 /* ViewControllers */,
 				4BA85D991C15748400D78EB9 /* Main.storyboard */,
 				4BA85D9C1C15748400D78EB9 /* Assets.xcassets */,
 				4BA85D9E1C15748400D78EB9 /* LaunchScreen.storyboard */,
@@ -517,6 +530,7 @@
 				4B1CE5F51C45777200AC731A /* JPPopupControlViewController.m in Sources */,
 				4B41B6521C19995C0051BC79 /* JPPlayerView.m in Sources */,
 				4B1743651C495EF0000B742F /* JPContainerViewController.m in Sources */,
+				4B0A96021C5C877B0038C9B9 /* JPSpotifyPlayer.m in Sources */,
 				4B1743661C495EF0000B742F /* JPListTableViewController.m in Sources */,
 				4BE53CBE1C4CE45A00CA5B58 /* JPSingerTableViewController.m in Sources */,
 				4B27F15B1C1A9AFF009FCBE6 /* Constants.m in Sources */,

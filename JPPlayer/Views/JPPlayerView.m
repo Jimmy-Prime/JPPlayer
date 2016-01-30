@@ -6,14 +6,21 @@
 //  Copyright © 2015 Prime. All rights reserved.
 //
 
+#import <UIImageView+AFNetworking.h>
 #import "JPPlayerView.h"
 #import "JPTrackLabel.h"
 #import "JPProgressView.h"
+#import "JPSpotifyPlayer.h"
 
 @interface JPPlayerView()
 
-@property (nonatomic, strong) UIVisualEffectView *blurEffectView;
+@property (strong, nonatomic) UIVisualEffectView *blurEffectView;
 @property (strong, nonatomic) UIImageView *blurBackgroundImageView;
+
+@property (strong, nonatomic) UIImageView *coverImageView;
+@property (strong, nonatomic) UIButton *playPauseButton;
+@property (strong, nonatomic) JPTrackLabel *trackLabel;
+@property (strong, nonatomic) JPProgressView *progressView;
 
 @end
 
@@ -22,8 +29,12 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _blurBackgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cover.jpg"]];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spotifyDidChangePlaybackStatus:) name:SpotifyDidChangePlaybackStatus object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(aboutToPlayTrack:) name:@"aboutToPlayTrack" object:nil];
+        
+        _blurBackgroundImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"ic_blur_on_white_48pt"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
         _blurBackgroundImageView.contentMode = UIViewContentModeScaleToFill;
+        _blurBackgroundImageView.tintColor = [UIColor redColor];
         [self addSubview:_blurBackgroundImageView];
         [_blurBackgroundImageView makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self);
@@ -57,10 +68,11 @@
             make.width.height.equalTo(@(SmallButtonWidth));
         }];
         
-        UIImageView *coverImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cover.jpg"]];
-        [popupButtonContainer addSubview:coverImageView];
-        coverImageView.contentMode = UIViewContentModeScaleToFill;
-        [coverImageView makeConstraints:^(MASConstraintMaker *make) {
+        _coverImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"ic_blur_on_white_48pt"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+        [popupButtonContainer addSubview:_coverImageView];
+        _coverImageView.contentMode = UIViewContentModeScaleToFill;
+        _coverImageView.tintColor = [UIColor redColor];
+        [_coverImageView makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(popupButtonContainer).offset(-5);
             make.centerY.equalTo(popupButtonContainer);
             make.width.height.equalTo(@(LargeButtonWidth));
@@ -101,15 +113,15 @@
             make.width.height.equalTo(@(SmallButtonWidth));
         }];
         
-        UIButton *playPauseButton = [UIButton buttonWithType:UIButtonTypeSystem];
-        [controlContainer addSubview:playPauseButton];
-        [playPauseButton setImage:[UIImage imageNamed:@"ic_play_circle_outline_white_48pt"] forState:UIControlStateNormal];
-        playPauseButton.contentMode = UIViewContentModeScaleAspectFit;
-        playPauseButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
-        playPauseButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
-        playPauseButton.tintColor = [UIColor redColor];
-        [playPauseButton addTarget:self action:@selector(play:) forControlEvents:UIControlEventTouchUpInside];
-        [playPauseButton makeConstraints:^(MASConstraintMaker *make) {
+        _playPauseButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        [controlContainer addSubview:_playPauseButton];
+        [_playPauseButton setImage:[UIImage imageNamed:@"ic_play_circle_outline_white_48pt"] forState:UIControlStateNormal];
+        _playPauseButton.contentMode = UIViewContentModeScaleAspectFit;
+        _playPauseButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
+        _playPauseButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
+        _playPauseButton.tintColor = [UIColor redColor];
+        [_playPauseButton addTarget:self action:@selector(playPause:) forControlEvents:UIControlEventTouchUpInside];
+        [_playPauseButton makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(skipPrevButton.right).offset(5);
             make.centerY.equalTo(controlContainer);
             make.width.height.equalTo(@(LargeButtonWidth));
@@ -124,16 +136,16 @@
         skipNextButton.tintColor = [UIColor redColor];
         [skipNextButton addTarget:self action:@selector(skipNext:) forControlEvents:UIControlEventTouchUpInside];
         [skipNextButton makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(playPauseButton.right).offset(5);
+            make.left.equalTo(_playPauseButton.right).offset(5);
             make.centerY.equalTo(controlContainer);
             make.width.height.equalTo(@(SmallButtonWidth));
         }];
         
         // caption label
-        JPTrackLabel *trackLabel = [[JPTrackLabel alloc] initWithType:JPTrackLabelTypeTrackAndSinger];
-        [self addSubview:trackLabel];
-        [trackLabel setWithStrings:@[@"Good Life", @"OneRepublic"]];
-        [trackLabel makeConstraints:^(MASConstraintMaker *make) {
+        _trackLabel = [[JPTrackLabel alloc] initWithType:JPTrackLabelTypeTrackAndSinger];
+        [self addSubview:_trackLabel];
+        [_trackLabel setWithStrings:@[@"Good Life", @"OneRepublic"]];
+        [_trackLabel makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self);
             make.left.equalTo(popupButtonContainer.right);
             make.right.equalTo(controlContainer.left);
@@ -141,9 +153,9 @@
         }];
         
         // progress view
-        JPProgressView *progressView = [[JPProgressView alloc] init];
-        [self addSubview:progressView];
-        [progressView makeConstraints:^(MASConstraintMaker *make) {
+        _progressView = [[JPProgressView alloc] init];
+        [self addSubview:_progressView];
+        [_progressView makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.equalTo(self);
             make.left.equalTo(popupButtonContainer.right);
             make.right.equalTo(controlContainer.left);
@@ -158,12 +170,40 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"popup" object:nil];
 }
 
+- (void)aboutToPlayTrack:(NSNotification *)notification {
+    NSDictionary *userInfo = [notification userInfo];
+    SPTPlaylistTrack *track = [userInfo objectForKey:@"track"];
+    [_blurBackgroundImageView setImageWithURL:[[[track album] largestCover] imageURL]];
+    [_coverImageView setImageWithURL:[[[track album] smallestCover] imageURL]];
+    
+    NSTimeInterval duration = track.duration;
+    [_progressView resetDuration:duration];
+    
+    NSString *trackName = track.name;
+    NSString *artistName = [(SPTPartialArtist *)[track.artists objectAtIndex:0] name];
+    [_trackLabel setWithStrings:@[trackName, artistName]];
+}
+
+- (void)spotifyDidChangePlaybackStatus:(NSNotification *)notification {
+    NSDictionary *userInfo = [notification userInfo];
+    BOOL isPlaying = [(NSNumber *)[userInfo objectForKey:@"isPlaying"] boolValue];
+        
+    [_progressView updateStatus:isPlaying];
+    if (isPlaying) {
+        [_playPauseButton setImage:[UIImage imageNamed:@"ic_pause_circle_outline_white_48pt"] forState:UIControlStateNormal];
+    }
+    else {
+        [_playPauseButton setImage:[UIImage imageNamed:@"ic_play_circle_outline_white_48pt"] forState:UIControlStateNormal];
+    }
+}
+
 - (void)skipPrev:(UIButton *)button {
     NSLog(@"Prev");
 }
 
-- (void)play:(UIButton *)button {
-    NSLog(@"Play");
+- (void)playPause:(UIButton *)button {
+    SPTAudioStreamingController *player = [JPSpotifyPlayer playerWithCliendId:[[SPTAuth defaultInstance] clientID]];
+    [player setIsPlaying:!player.isPlaying callback:nil];
 }
 
 - (void)skipNext:(UIButton *)button {

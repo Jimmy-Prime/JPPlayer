@@ -9,6 +9,7 @@
 #import "JPPopupControlViewController.h"
 #import "JPTrackLabel.h"
 #import "JPProgressView.h"
+#import "jPSpotifyPlayer.h"
 
 @interface JPPopupControlViewController ()
 
@@ -20,6 +21,10 @@
 @property (strong, nonatomic) UIButton *repeatButton;
 @property (strong, nonatomic) UIView *line;
 
+@property (strong, nonatomic) JPTrackLabel *trackLabel;
+@property (strong, nonatomic) JPTrackLabel *singerLabel;
+@property (strong, nonatomic) JPTrackLabel *albumLabel;
+
 @end
 
 @implementation JPPopupControlViewController
@@ -27,22 +32,26 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spotifyDidChangePlaybackStatus:) name:SpotifyDidChangePlaybackStatus object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(aboutToPlayTrack:) name:@"aboutToPlayTrack" object:nil];
+    
     CGFloat interval = 24.f;
     
-    JPTrackLabel *trackLabel = [[JPTrackLabel alloc] initWithType:JPTrackLabelTypeTrackOnly];
-    [self.view addSubview:trackLabel];
-    [trackLabel setWithStrings:@[@"Good Life"]];
-    [trackLabel makeConstraints:^(MASConstraintMaker *make) {
+    _trackLabel = [[JPTrackLabel alloc] initWithType:JPTrackLabelTypeTrackOnly];
+    [self.view addSubview:_trackLabel];
+    [_trackLabel setWithStrings:@[@"Good Life"]];
+    [_trackLabel makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).offset(interval);
         make.left.right.equalTo(self.view);
         make.height.equalTo(@(PlayerViewHeight / 2.f));
     }];
     
-    JPTrackLabel *singerLabel = [[JPTrackLabel alloc] initWithType:JPTrackLabelTypeSingerOnly];
-    [self.view addSubview:singerLabel];
-    [singerLabel setWithStrings:@[@"OneRepublic"]];
-    [singerLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(trackLabel.bottom);
+    _singerLabel = [[JPTrackLabel alloc] initWithType:JPTrackLabelTypeSingerOnly];
+    [self.view addSubview:_singerLabel];
+    [_singerLabel setWithStrings:@[@"OneRepublic"]];
+    [_singerLabel makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_trackLabel.bottom);
         make.left.right.equalTo(self.view);
         make.height.equalTo(@(PlayerViewHeight / 2.f));
     }];
@@ -50,7 +59,7 @@
     _progressView = [[JPProgressView alloc] init];
     [self.view addSubview:_progressView];
     [_progressView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(singerLabel.bottom).offset(interval);
+        make.top.equalTo(_singerLabel.bottom).offset(interval);
         make.left.width.equalTo(self.view);
         make.height.equalTo(@(40));
     }];
@@ -137,10 +146,10 @@
     }];
     
     // album label
-    JPTrackLabel *albumLabel = [[JPTrackLabel alloc] initWithType:JPTrackLabelTypeSingerOnly];
-    [self.view addSubview:albumLabel];
-    [albumLabel setWithStrings:@[@"Waking Up"]];
-    [albumLabel makeConstraints:^(MASConstraintMaker *make) {
+    _albumLabel = [[JPTrackLabel alloc] initWithType:JPTrackLabelTypeSingerOnly];
+    [self.view addSubview:_albumLabel];
+    [_albumLabel setWithStrings:@[@"Waking Up"]];
+    [_albumLabel makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view).offset(-interval);
         make.left.right.equalTo(self.view);
         make.height.equalTo(@(PlayerViewHeight));
@@ -174,5 +183,35 @@
         make.left.equalTo(_skipNextButton.right).offset(controlOffset);
     }];
 }
+
+
+- (void)aboutToPlayTrack:(NSNotification *)notification {
+    NSDictionary *userInfo = [notification userInfo];
+    SPTPlaylistTrack *track = [userInfo objectForKey:@"track"];
+    
+    NSTimeInterval duration = track.duration;
+    [_progressView resetDuration:duration];
+    
+    NSString *trackName = track.name;
+    [_trackLabel setWithStrings:@[trackName]];
+    NSString *artistName = [(SPTPartialArtist *)[track.artists objectAtIndex:0] name];
+    [_singerLabel setWithStrings:@[artistName]];
+    NSString *albumName = track.album.name;
+    [_albumLabel setWithStrings:@[albumName]];
+}
+
+- (void)spotifyDidChangePlaybackStatus:(NSNotification *)notification {
+    NSDictionary *userInfo = [notification userInfo];
+    BOOL isPlaying = [(NSNumber *)[userInfo objectForKey:@"isPlaying"] boolValue];
+    
+    [_progressView updateStatus:isPlaying];
+    if (isPlaying) {
+        [_playPauseButton setImage:[UIImage imageNamed:@"ic_pause_circle_outline_white_48pt"] forState:UIControlStateNormal];
+    }
+    else {
+        [_playPauseButton setImage:[UIImage imageNamed:@"ic_play_circle_outline_white_48pt"] forState:UIControlStateNormal];
+    }
+}
+
 
 @end

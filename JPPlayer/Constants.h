@@ -9,9 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <CoreGraphics/CoreGraphics.h>
 
-extern NSString *ParseApplicationId;
-extern NSString *ParseClientKey;
-
 extern NSString *SpotifyClientId;
 extern NSString *SpotifyRedirectURL;
 

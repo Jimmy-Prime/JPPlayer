@@ -7,16 +7,19 @@
 //
 
 #import "JPProgressView.h"
+#import "JPSpotifyPlayer.h"
 
 @interface JPProgressView()
 
+@property (nonatomic) BOOL seeking;
 @property (strong, nonatomic) UISlider *slider;
 @property (strong, nonatomic) UILabel *timeIndicator;
 @property (strong, nonatomic) UILabel *atTimeLabel;
 @property (strong, nonatomic) UIButton *auxTimeButton;
 
-@property NSUInteger atTime;
-@property NSUInteger totalTime;
+@property (strong, nonatomic) NSTimer *timer;
+@property (nonatomic) NSUInteger atTime;
+@property (nonatomic) NSUInteger totalTime;
 
 @end
 
@@ -25,12 +28,10 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _atTime = 87;
-        _totalTime = 258;
+        _seeking = NO;
         
         _atTimeLabel = [[UILabel alloc] init];
         [self addSubview:_atTimeLabel];
-        _atTimeLabel.text = [NSString stringWithFormat:@"%02lu:%02lu", _atTime/60, _atTime%60];
         _atTimeLabel.textColor = [UIColor whiteColor];
         _atTimeLabel.textAlignment = NSTextAlignmentCenter;
         _atTimeLabel.font = [UIFont systemFontOfSize:10];
@@ -41,8 +42,6 @@
         
         _auxTimeButton = [[UIButton alloc] init];
         [self addSubview:_auxTimeButton];
-        NSString *totalTimeString = [NSString stringWithFormat:@"%02lu:%02lu", _totalTime/60, _totalTime%60];
-        [_auxTimeButton setTitle:totalTimeString forState:UIControlStateNormal];
         [_auxTimeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _auxTimeButton.titleLabel.font = [UIFont systemFontOfSize:10];
         [_auxTimeButton makeConstraints:^(MASConstraintMaker *make) {
@@ -78,6 +77,8 @@
 }
 
 - (void)sliderValueChanged:(UISlider *)slider {
+    _seeking = YES;
+    
     _atTime = floorf(slider.value + 0.5);
     _atTimeLabel.text = [NSString stringWithFormat:@"%02lu:%02lu", _atTime/60, _atTime%60];
     
@@ -92,7 +93,60 @@
 }
 
 - (void)sliderRelease:(UISlider *)slider {
+    _seeking = NO;
     _timeIndicator.hidden = YES;
+    
+    self.atTime = _atTime;
+    [[JPSpotifyPlayer playerWithCliendId:[[SPTAuth defaultInstance] clientID]] seekToOffset:_atTime callback:nil];
+}
+
+- (void)setAtTime:(NSUInteger)atTime {
+    _atTime = atTime;
+    
+    if (_atTimeLabel) {
+        _atTimeLabel.text = [NSString stringWithFormat:@"%02lu:%02lu", _atTime/60, _atTime%60];
+    }
+    
+    if (_slider) {
+        _slider.value = _atTime;
+    }
+}
+
+- (void)setTotalTime:(NSUInteger)totalTime {
+    _totalTime = totalTime;
+    
+    if (_auxTimeButton) {
+        NSString *totalTimeString = [NSString stringWithFormat:@"%02lu:%02lu", _totalTime/60, _totalTime%60];
+        [_auxTimeButton setTitle:totalTimeString forState:UIControlStateNormal];
+    }
+    
+    if (_slider) {
+        _slider.maximumValue = _totalTime;
+    }
+}
+
+- (void)resetDuration:(NSTimeInterval)duration {
+    self.atTime = 0;
+    self.totalTime = (NSUInteger)duration;
+}
+
+- (void)timerAccumulate {
+    if (_slider && !_seeking) {
+        self.atTime++;
+    }
+}
+
+- (void)updateStatus:(BOOL)isPlaying {
+    if (isPlaying) {
+        if (_timer) {
+            [_timer invalidate];
+        }
+        _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerAccumulate) userInfo:nil repeats:YES];
+        [_timer fire];
+    }
+    else {
+        [_timer invalidate];
+    }
 }
 
 @end
