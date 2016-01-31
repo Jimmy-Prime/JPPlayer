@@ -18,7 +18,8 @@
 @property (strong, nonatomic) UIImageView *profileImageView;
 @property (strong, nonatomic) UILabel *titleLabel;
 
-@property (strong, nonatomic) SPTPlaylistSnapshot *SpotifyList;
+@property (nonatomic, strong) SPTRequestCallback playlistRequestCallback;
+@property (strong, nonatomic) NSMutableArray *SpotifyTracks;
 
 @end
 
@@ -86,6 +87,33 @@
         make.top.equalTo(_profileImageView.bottom).offset(8);
         make.height.equalTo(@(30));
     }];
+    
+    _SpotifyTracks = [[NSMutableArray alloc] init];
+    
+    __weak typeof(self) weakSelf = self;
+    _playlistRequestCallback = ^(NSError *error, SPTPlaylistSnapshot *playList) {
+        if (error) {
+            NSLog(@"error: %@", error);
+            return;
+        }
+        
+        NSLog(@"new page");
+        
+        if (!playList.firstTrackPage.hasPreviousPage) {
+            NSLog(@"First page");
+            [weakSelf.blurBackgroundImageView setImageWithURL:[[playList largestImage] imageURL]];
+            [weakSelf.profileImageView setImageWithURL:[[playList largestImage] imageURL]];
+            weakSelf.titleLabel.text = playList.name;
+        }
+        
+        [weakSelf.SpotifyTracks addObjectsFromArray:playList.tracksForPlayback];
+        [weakSelf.list reloadData];
+        
+        if (playList.firstTrackPage.hasNextPage) {
+            NSLog(@"Has next page");
+            [SPTPlaylistSnapshot playlistWithURI:playList.firstTrackPage.nextPageURL session:[[SPTAuth defaultInstance] session] callback:weakSelf.playlistRequestCallback];
+        }
+    };
 }
 
 - (void)setInformation:(id)information {
@@ -101,9 +129,32 @@
         [_profileImageView setImageWithURL:[[playList largestImage] imageURL]];
         _titleLabel.text = playList.name;
         
-        _SpotifyList = playList;
+        [_SpotifyTracks addObjectsFromArray:playList.tracksForPlayback];
         [_list reloadData];
+        
+        [self checkNewPage:playList.firstTrackPage];
     }];
+}
+
+- (void)checkNewPage:(SPTListPage *)page {
+    if (page.hasNextPage) {
+        NSURLRequest *nextPageRequest = [page createRequestForNextPageWithAccessToken:[[[SPTAuth defaultInstance] session] accessToken] error:nil];
+        [[SPTRequest sharedHandler] performRequest:nextPageRequest callback:^(NSError *error, NSURLResponse *response, NSData *data) {
+            if (error) {
+                NSLog(@"error: %@", error);
+                return;
+            }
+            
+            SPTListPage *nextPage = [SPTListPage listPageFromData:data withResponse:response expectingPartialChildren:YES rootObjectKey:nil error:nil];
+            
+            [_SpotifyTracks addObjectsFromArray:nextPage.tracksForPlayback];
+            [_list reloadData];
+            
+            if (nextPage.hasNextPage) {
+                [self checkNewPage:nextPage];
+            }
+        }];
+    }
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -137,7 +188,7 @@
                     cell = [[JPSpotifyListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:JPSpotifyListTableViewCellIdentifier];
                 }
                 
-                SPTPlaylistTrack *track = [[_SpotifyList tracksForPlayback] objectAtIndex:indexPath.row];
+                SPTPlaylistTrack *track = [_SpotifyTracks objectAtIndex:indexPath.row];
                 cell.titleLabel.text = track.name;
                 SPTPartialArtist *artist0 = [track.artists objectAtIndex:0];
                 cell.auxilaryLabel.text = [NSString stringWithFormat:@"%@ - %@", artist0.name, track.album.name];
@@ -156,8 +207,8 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {    
-    if (section == 1 && _SpotifyList != nil) {
-        return _SpotifyList.tracksForPlayback.count;
+    if (section == 1) {
+        return _SpotifyTracks.count;
     }
     
     return 0;
@@ -180,7 +231,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 1) {
-        SPTPlaylistTrack *track = [[_SpotifyList tracksForPlayback] objectAtIndex:indexPath.row];
+        SPTPlaylistTrack *track = [_SpotifyTracks objectAtIndex:indexPath.row];
         
         NSLog(@"About to play track: %@", track.name);
         [[NSNotificationCenter defaultCenter] postNotificationName:@"aboutToPlayTrack" object:nil userInfo:@{@"track" : track}];

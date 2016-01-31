@@ -8,6 +8,7 @@
 
 #import <UIImageView+AFNetworking.h>
 #import "JPCoverScrollViewController.h"
+#import "JPSpotifyPlayer.h"
 
 @interface JPCoverScrollViewController () <UIScrollViewDelegate>
 
@@ -23,7 +24,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(aboutToPlayTrack:) name:@"aboutToPlayTrack" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spotifyDidChangeToTrack:) name:SpotifyDidChangeToTrack object:nil];
 
     _coverScrollView = [[UIScrollView alloc] init];
     [self.view addSubview:_coverScrollView];
@@ -92,6 +93,14 @@
     }
 }
 
+- (void)spotifyDidChangeToTrack:(NSNotification *)notification {
+    NSDictionary *userInfo = [notification userInfo];
+    SPTTrack *track = [userInfo objectForKey:@"track"];
+    for (int i=0; i<_coverImageList.count; ++i) {
+        UIImageView *view = [_coverImageList objectAtIndex:i];
+        [view setImageWithURL:[[[track album] largestCover] imageURL]];
+    }
+}
 
 - (void)aboutToPlayTrack:(NSNotification *)notification {
     NSDictionary *userInfo = [notification userInfo];

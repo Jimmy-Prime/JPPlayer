@@ -54,7 +54,22 @@
 - (void)audioStreaming:(SPTAudioStreamingController *)audioStreaming didChangeToTrack:(NSDictionary *)trackMetadata {
     NSLog(@"%@", SpotifyDidChangeToTrack);
     if (trackMetadata) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SpotifyDidChangeToTrack object:nil userInfo:@{@"trackMetadata" : trackMetadata}];
+        NSString *trackURI = [trackMetadata objectForKey:@"SPTAudioStreamingMetadataTrackURI"];
+        
+        NSURLRequest *trackRequest = [SPTTrack createRequestForTrack:[NSURL URLWithString:trackURI]
+                                                     withAccessToken:[[[SPTAuth defaultInstance] session] accessToken]
+                                                              market:nil
+                                                               error:nil];
+        
+        [[SPTRequest sharedHandler] performRequest:trackRequest callback:^(NSError *error, NSURLResponse *response, NSData *data) {
+            if (error) {
+                NSLog(@"error: %@", error);
+                return;
+            }
+            
+            SPTTrack *track = [SPTTrack trackFromData:data withResponse:response error:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:SpotifyDidChangeToTrack object:nil userInfo:@{@"track" : track}];
+        }];
     }
     else {
         NSLog(@"nil trackMetadata");

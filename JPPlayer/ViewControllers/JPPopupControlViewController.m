@@ -34,7 +34,7 @@
     // Do any additional setup after loading the view.
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spotifyDidChangePlaybackStatus:) name:SpotifyDidChangePlaybackStatus object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(aboutToPlayTrack:) name:@"aboutToPlayTrack" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spotifyDidChangeToTrack:) name:SpotifyDidChangeToTrack object:nil];
     
     CGFloat interval = 24.f;
     
@@ -184,8 +184,7 @@
     }];
 }
 
-
-- (void)aboutToPlayTrack:(NSNotification *)notification {
+- (void)spotifyDidChangeToTrack:(NSNotification *)notification {
     NSDictionary *userInfo = [notification userInfo];
     SPTPlaylistTrack *track = [userInfo objectForKey:@"track"];
     

@@ -29,8 +29,8 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spotifyDidChangeToTrack:) name:SpotifyDidChangeToTrack object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spotifyDidChangePlaybackStatus:) name:SpotifyDidChangePlaybackStatus object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(aboutToPlayTrack:) name:@"aboutToPlayTrack" object:nil];
         
         _blurBackgroundImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"ic_blur_on_white_48pt"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
         _blurBackgroundImageView.contentMode = UIViewContentModeScaleToFill;
@@ -170,9 +170,10 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"popup" object:nil];
 }
 
-- (void)aboutToPlayTrack:(NSNotification *)notification {
+- (void)spotifyDidChangeToTrack:(NSNotification *)notification {
     NSDictionary *userInfo = [notification userInfo];
-    SPTPlaylistTrack *track = [userInfo objectForKey:@"track"];
+    SPTTrack *track = [userInfo objectForKey:@"track"];
+    
     [_blurBackgroundImageView setImageWithURL:[[[track album] largestCover] imageURL]];
     [_coverImageView setImageWithURL:[[[track album] smallestCover] imageURL]];
     

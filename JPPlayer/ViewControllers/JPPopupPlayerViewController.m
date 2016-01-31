@@ -32,7 +32,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(popUp:) name:@"popup" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(aboutToPlayTrack:) name:@"aboutToPlayTrack" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spotifyDidChangeToTrack:) name:SpotifyDidChangeToTrack object:nil];
 
     _blurBackgroundImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"ic_blur_on_white_48pt"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
     _blurBackgroundImageView.contentMode = UIViewContentModeScaleToFill;
@@ -147,9 +147,9 @@
     }];
 }
 
-- (void)aboutToPlayTrack:(NSNotification *)notification {
+- (void)spotifyDidChangeToTrack:(NSNotification *)notification {
     NSDictionary *userInfo = [notification userInfo];
-    SPTPlaylistTrack *track = [userInfo objectForKey:@"track"];
+    SPTTrack *track = [userInfo objectForKey:@"track"];
     [_blurBackgroundImageView setImageWithURL:[[[track album] largestCover] imageURL]];
 }
 
