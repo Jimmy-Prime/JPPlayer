@@ -81,10 +81,11 @@
         case UIInterfaceOrientationLandscapeRight: {
             _coverViewController.landscape = YES;
             [_coverViewController.view updateConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(self.view);
-                make.right.equalTo(self.view).offset(-55);
-                make.height.equalTo(@(shorter));
-                make.width.equalTo(@(600));
+                CGFloat interval = (shorter - 650.f) / 2.f;
+                make.top.equalTo(self.view).offset(interval + 25.f);
+                make.right.equalTo(self.view).offset(-55.f);
+                make.height.equalTo(@(600.f + interval));
+                make.width.equalTo(@(600.f));
             }];
             
             _controlViewController.landscape = YES;
@@ -104,9 +105,10 @@
             _coverViewController.landscape = NO;
             [_coverViewController.view updateConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(self.view).offset(90);
-                make.right.equalTo(self.view);
+                make.right.equalTo(self.view).offset(-25.f);
                 make.height.equalTo(@(600));
-                make.width.equalTo(@(shorter));
+                CGFloat interval = (shorter - 650.f) / 2.f;
+                make.width.equalTo(@(600.f + interval));
             }];
             
             _controlViewController.landscape = NO;

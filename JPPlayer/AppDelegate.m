@@ -24,7 +24,7 @@
         }
         
         [SPTAuth defaultInstance].session = session;
-        [self handleSpotifySession];
+        [JPSpotifyPlayer player];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"SpotifySession" object:nil userInfo:@{@"SpotifySession": session}];
     };
     
@@ -50,26 +50,11 @@
     if (session) {
         NSLog(@"available old session");
         [SPTAuth defaultInstance].session = session;
-        [self handleSpotifySession];
+        [JPSpotifyPlayer player];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"SpotifySession" object:nil userInfo:@{@"SpotifySession": session}];
     }
     
     return YES;
-}
-
-- (void)handleSpotifySession {
-    SPTAudioStreamingController *player = [JPSpotifyPlayer playerWithCliendId:[[SPTAuth defaultInstance] clientID]];
-    if (![player loggedIn]) {
-        NSLog(@"Not yet logged in");
-        [player loginWithSession:[[SPTAuth defaultInstance] session] callback:^(NSError *error) {
-            if (error) {
-                NSLog(@"Player login error: %@", error);
-                return;
-            }
-            
-            NSLog(@"Logged in");
-        }];
-    }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

@@ -10,27 +10,22 @@
 
 @implementation JPSpotifyPlayer
 
+static id defaultInstance;
+static SPTAudioStreamingController *_player = nil;
+static NSArray *totalURIs = nil;
+static NSArray *localURIs = nil;
+
 + (instancetype)defaultInstance {
     static dispatch_once_t once;
-    static id defaultInstance;
     dispatch_once(&once, ^{
         defaultInstance = [[self alloc] init];
     });
     return defaultInstance;
 }
 
-+ (SPTAudioStreamingController *)playerWithCliendId:(NSString *)clientId {
-    static SPTAudioStreamingController *_player = nil;
-    static NSString *_clientId = nil;
-    
-    BOOL needsReInit = NO;
-    if (![_clientId isEqualToString:clientId]) {
-        _clientId = clientId;
-        needsReInit = YES;
-    }
-    
-    if (!_player || needsReInit) {
-        _player = [[SPTAudioStreamingController alloc] initWithClientId:_clientId];
++ (SPTAudioStreamingController *)player {
+    if (!_player) {
+        _player = [[SPTAudioStreamingController alloc] initWithClientId:[[SPTAuth defaultInstance] clientID]];
         _player.playbackDelegate = [JPSpotifyPlayer defaultInstance];
         _player.diskCache = [[SPTDiskCache alloc] initWithCapacity:1024 * 1024 * 64];
     }
@@ -39,7 +34,7 @@
         NSLog(@"$$$ Not yet logged in");
         [_player loginWithSession:[[SPTAuth defaultInstance] session] callback:^(NSError *error) {
             if (error) {
-                NSLog(@"Player login error: %@", error);
+                NSLog(@"$$$ Player login error: %@", error);
                 return;
             }
             
@@ -48,6 +43,25 @@
     }
     
     return _player;
+}
+
++ (void)playURIs:(NSArray *)URIs fromIndex:(NSInteger)index {
+//  This is part is hanging due to SPTAudioStreamingController can only hold 100 URIs
+//  And issue https://github.com/spotify/ios-sdk/issues/367
+//    NSMutableArray *temp = [[NSMutableArray alloc] initWithArray:URIs];
+//    [temp addObjectsFromArray:URIs];
+//    [temp addObjectsFromArray:URIs];
+//    totalURIs = temp;
+    NSInteger localIndex = index;
+    if (index >= 100) {
+        localURIs = [URIs subarrayWithRange:NSMakeRange(index - 50, [URIs count] - index + 50)];
+        localIndex = 50;
+    }
+    else {
+        localURIs = URIs;
+    }
+    
+    [[self player] playURIs:localURIs fromIndex:(int)localIndex callback:nil];
 }
 
 #pragma mark - SPTAudioStreamingPlaybackDelegate

@@ -199,16 +199,18 @@
 }
 
 - (void)skipPrev:(UIButton *)button {
-    NSLog(@"Prev");
+    SPTAudioStreamingController *player = [JPSpotifyPlayer player];
+    [player skipPrevious:nil];
 }
 
 - (void)playPause:(UIButton *)button {
-    SPTAudioStreamingController *player = [JPSpotifyPlayer playerWithCliendId:[[SPTAuth defaultInstance] clientID]];
+    SPTAudioStreamingController *player = [JPSpotifyPlayer player];
     [player setIsPlaying:!player.isPlaying callback:nil];
 }
 
 - (void)skipNext:(UIButton *)button {
-    NSLog(@"Next");
+    SPTAudioStreamingController *player = [JPSpotifyPlayer player];
+    [player skipNext:nil];
 }
 
 @end

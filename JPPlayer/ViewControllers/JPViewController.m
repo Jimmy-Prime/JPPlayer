@@ -103,15 +103,17 @@
         make.edges.equalTo(_rightContainerView);
     }];
     
-    // test tab
-    UIButton *testTab = [UIButton buttonWithType:UIButtonTypeSystem];
-    [testTab setBackgroundColor:[UIColor darkGrayColor]];
-    testTab.layer.cornerRadius = 10;
-    [leftBarView addTab:testTab];
-    
-    TestViewController *testVC = [[TestViewController alloc] init];
-    [_rightContainerView addSubview:testVC.view];
-    [_childViewControllers addObject:testVC];
+    for (NSUInteger i=0; i<6; ++i) {
+        // test tab
+        UIButton *testTab = [UIButton buttonWithType:UIButtonTypeSystem];
+        [testTab setBackgroundColor:[UIColor darkGrayColor]];
+        testTab.layer.cornerRadius = 10;
+        [leftBarView addTab:testTab];
+        
+        TestViewController *testVC = [[TestViewController alloc] init];
+        [_rightContainerView addSubview:testVC.view];
+        [_childViewControllers addObject:testVC];
+    }
     
     // register notification
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(swithTab:) name:@"swithTab" object:nil];

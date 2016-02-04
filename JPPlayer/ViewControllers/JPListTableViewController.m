@@ -18,8 +18,7 @@
 @property (strong, nonatomic) UIImageView *profileImageView;
 @property (strong, nonatomic) UILabel *titleLabel;
 
-@property (nonatomic, strong) SPTRequestCallback playlistRequestCallback;
-@property (strong, nonatomic) NSMutableArray *SpotifyTracks;
+@property (strong, nonatomic) NSMutableArray<SPTPlaylistTrack *> *SpotifyTracks;
 
 @end
 
@@ -89,31 +88,6 @@
     }];
     
     _SpotifyTracks = [[NSMutableArray alloc] init];
-    
-    __weak typeof(self) weakSelf = self;
-    _playlistRequestCallback = ^(NSError *error, SPTPlaylistSnapshot *playList) {
-        if (error) {
-            NSLog(@"error: %@", error);
-            return;
-        }
-        
-        NSLog(@"new page");
-        
-        if (!playList.firstTrackPage.hasPreviousPage) {
-            NSLog(@"First page");
-            [weakSelf.blurBackgroundImageView setImageWithURL:[[playList largestImage] imageURL]];
-            [weakSelf.profileImageView setImageWithURL:[[playList largestImage] imageURL]];
-            weakSelf.titleLabel.text = playList.name;
-        }
-        
-        [weakSelf.SpotifyTracks addObjectsFromArray:playList.tracksForPlayback];
-        [weakSelf.list reloadData];
-        
-        if (playList.firstTrackPage.hasNextPage) {
-            NSLog(@"Has next page");
-            [SPTPlaylistSnapshot playlistWithURI:playList.firstTrackPage.nextPageURL session:[[SPTAuth defaultInstance] session] callback:weakSelf.playlistRequestCallback];
-        }
-    };
 }
 
 - (void)setInformation:(id)information {
@@ -231,18 +205,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 1) {
-        SPTPlaylistTrack *track = [_SpotifyTracks objectAtIndex:indexPath.row];
+        NSMutableArray *URIs = [[NSMutableArray alloc] init];
+        for (SPTPlaylistTrack *track in _SpotifyTracks) {
+            [URIs addObject:[track uri]];
+        }
         
-        NSLog(@"About to play track: %@", track.name);
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"aboutToPlayTrack" object:nil userInfo:@{@"track" : track}];
-        
-        [[JPSpotifyPlayer playerWithCliendId:[[SPTAuth defaultInstance] clientID]] playURIs:@[track.uri] fromIndex:0 callback:^(NSError *error) {
-            if (error) {
-                NSLog(@"Play back error: %@", error);
-            }
-            
-            NSLog(@"Start playing %@", track.name);
-        }];
+        [JPSpotifyPlayer defaultInstance].URIs = URIs;
+        [JPSpotifyPlayer playURIs:URIs fromIndex:indexPath.row];
+        // [[JPSpotifyPlayer player] playURIs:URIs fromIndex:(int)indexPath.row callback:nil];
     }
 }
 

@@ -92,6 +92,7 @@
     _skipPrevButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
     _skipPrevButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
     _skipPrevButton.tintColor = [UIColor redColor];
+    [_skipPrevButton addTarget:self action:@selector(skipPrev:) forControlEvents:UIControlEventTouchUpInside];
     [_skipPrevButton makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(controlContainer);
         make.width.height.equalTo(@(LargeButtonWidth));
@@ -104,6 +105,7 @@
     _playPauseButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
     _playPauseButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
     _playPauseButton.tintColor = [UIColor redColor];
+    [_playPauseButton addTarget:self action:@selector(playPause:) forControlEvents:UIControlEventTouchUpInside];
     [_playPauseButton makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.centerY.equalTo(controlContainer);
         make.width.height.equalTo(@(PlayButtonWidth));
@@ -116,6 +118,7 @@
     _skipNextButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
     _skipNextButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
     _skipNextButton.tintColor = [UIColor redColor];
+    [_skipNextButton addTarget:self action:@selector(skipNext:) forControlEvents:UIControlEventTouchUpInside];
     [_skipNextButton makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(controlContainer);
         make.width.height.equalTo(@(LargeButtonWidth));
@@ -212,5 +215,19 @@
     }
 }
 
+- (void)skipPrev:(UIButton *)button {
+    SPTAudioStreamingController *player = [JPSpotifyPlayer player];
+    [player skipPrevious:nil];
+}
+
+- (void)playPause:(UIButton *)button {
+    SPTAudioStreamingController *player = [JPSpotifyPlayer player];
+    [player setIsPlaying:!player.isPlaying callback:nil];
+}
+
+- (void)skipNext:(UIButton *)button {
+    SPTAudioStreamingController *player = [JPSpotifyPlayer player];
+    [player skipNext:nil];
+}
 
 @end

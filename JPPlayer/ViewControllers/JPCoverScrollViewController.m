@@ -33,6 +33,7 @@
     [_coverScrollView setShowsVerticalScrollIndicator:NO];
     [_coverScrollView setScrollsToTop:NO];
     [_coverScrollView setDelegate:self];
+    [_coverScrollView setClipsToBounds:NO];
     [_coverScrollView makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
@@ -56,7 +57,7 @@
             UIView *view = [_coverImageList objectAtIndex:i];
             CGRect frame = view.frame;
             frame.origin.x = 0.f;
-            frame.origin.y = CGRectGetHeight(self.view.frame) * (CGFloat)i + CGRectGetHeight(self.view.frame) / 2.f - 300;
+            frame.origin.y = 659.f * (CGFloat)i;
             view.frame = frame;
         }
         
@@ -70,7 +71,8 @@
         for (int i=0; i<_coverImageList.count; ++i) {
             UIView *view = [_coverImageList objectAtIndex:i];
             CGRect frame = view.frame;
-            frame.origin.x = CGRectGetWidth(self.view.frame) * (CGFloat)i + CGRectGetWidth(self.view.frame) / 2.f - 300;
+            frame.origin.x = 659.f * (CGFloat)i;
+//            frame.origin.x = CGRectGetWidth(self.view.frame) * (CGFloat)i + CGRectGetWidth(self.view.frame) / 2.f - 300;
             frame.origin.y = 0.f;
             view.frame = frame;
         }
@@ -96,15 +98,6 @@
 - (void)spotifyDidChangeToTrack:(NSNotification *)notification {
     NSDictionary *userInfo = [notification userInfo];
     SPTTrack *track = [userInfo objectForKey:@"track"];
-    for (int i=0; i<_coverImageList.count; ++i) {
-        UIImageView *view = [_coverImageList objectAtIndex:i];
-        [view setImageWithURL:[[[track album] largestCover] imageURL]];
-    }
-}
-
-- (void)aboutToPlayTrack:(NSNotification *)notification {
-    NSDictionary *userInfo = [notification userInfo];
-    SPTPlaylistTrack *track = [userInfo objectForKey:@"track"];
     for (int i=0; i<_coverImageList.count; ++i) {
         UIImageView *view = [_coverImageList objectAtIndex:i];
         [view setImageWithURL:[[[track album] largestCover] imageURL]];

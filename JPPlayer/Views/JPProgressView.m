@@ -97,7 +97,7 @@
     _timeIndicator.hidden = YES;
     
     self.atTime = _atTime;
-    [[JPSpotifyPlayer playerWithCliendId:[[SPTAuth defaultInstance] clientID]] seekToOffset:_atTime callback:nil];
+    [[JPSpotifyPlayer player] seekToOffset:_atTime callback:nil];
 }
 
 - (void)setAtTime:(NSUInteger)atTime {
@@ -132,7 +132,7 @@
 
 - (void)timerAccumulate {
     if (_slider && !_seeking) {
-        self.atTime++;
+        self.atTime = [[JPSpotifyPlayer player] currentPlaybackPosition];
     }
 }
 

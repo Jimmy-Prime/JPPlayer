@@ -39,27 +39,5 @@
 - (void)spotifyLogin:(UIButton *)button {
     [[UIApplication sharedApplication] openURL:[SPTAuth defaultInstance].loginURL];
 }
-/*
-- (void)spotifySession:(NSNotification *)notification {
-    NSDictionary *userInfo = notification.userInfo;
-    SPTSession *session = [userInfo objectForKey:@"SpotifySession"];
-    
-    [SPTUser requestCurrentUserWithAccessToken:session.accessToken callback:^(NSError *error, SPTUser *user) {
-        if (error) {
-            NSLog(@"error: %@", error);
-            return;
-        }
-        
-        NSString *userDetailsString = [NSString stringWithFormat:@""
-                                       "Display name: %@\n"
-                                       "Canonical name: %@\n"
-                                       "Territory: %@\n"
-                                       "Email: %@\n"
-                                       "Images: %@ images\n"
-                                       , user.displayName, user.canonicalUserName, user.territory, user.emailAddress, @(user.images.count)];
-        
-        NSLog(@"user: %@", userDetailsString);
-    }];
-}
-*/
+
 @end
