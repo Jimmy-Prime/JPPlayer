@@ -8,10 +8,13 @@
 
 #import <UIImageView+AFNetworking.h>
 #import "JPListTableViewController.h"
+#import "JPListControlView.h"
 #import "JPSpotifyListTableViewCell.h"
 #import "JPSpotifyPlayer.h"
 
-@interface JPListTableViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface JPListTableViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, JPListControlDelegate>
+
+@property (strong, nonatomic) JPListControlView *controlView;
 
 @property (strong, nonatomic) UIImageView *blurBackgroundImageView;
 @property (strong, nonatomic) UIVisualEffectView *blurEffectView;
@@ -19,6 +22,8 @@
 @property (strong, nonatomic) UILabel *titleLabel;
 
 @property (strong, nonatomic) NSMutableArray<SPTPlaylistTrack *> *SpotifyTracks;
+@property (strong, nonatomic) NSMutableArray<SPTPlaylistTrack *> *filteredTracks;
+@property (nonatomic) BOOL isSearching;
 
 @end
 
@@ -31,6 +36,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(UIKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(UIKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
     _topView = super.topView;
     _topViewHeight = super.topViewHeight;
     _list = super.list;
@@ -41,11 +51,18 @@
     
     self.view.backgroundColor = [UIColor clearColor];
     
-    UIImage *placeHolder = [[UIImage imageNamed:@"ic_blur_on_white_48pt"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    _controlView = [[JPListControlView alloc] init];
+    _controlView.delegate = self;
+    _controlView.searchBar.delegate = self;
+    [_fakeHeaderView addSubview:_controlView];
+    [_controlView makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(_fakeHeaderView);
+    }];
+    
+    UIImage *placeHolder = [UIImage imageNamed:@"PlaceHolder.jpg"];
     
     _blurBackgroundImageView = [[UIImageView alloc] initWithImage:placeHolder];
     _blurBackgroundImageView.contentMode = UIViewContentModeScaleToFill;
-    _blurBackgroundImageView.tintColor = [UIColor redColor];
     [_topView addSubview:_blurBackgroundImageView];
     [_blurBackgroundImageView makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(_topView);
@@ -88,6 +105,8 @@
     }];
     
     _SpotifyTracks = [[NSMutableArray alloc] init];
+    _filteredTracks = [[NSMutableArray alloc] init];
+    _isSearching = NO;
 }
 
 - (void)setInformation:(id)information {
@@ -162,7 +181,7 @@
                     cell = [[JPSpotifyListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:JPSpotifyListTableViewCellIdentifier];
                 }
                 
-                SPTPlaylistTrack *track = [_SpotifyTracks objectAtIndex:indexPath.row];
+                SPTPlaylistTrack *track = _isSearching ? [_filteredTracks objectAtIndex:indexPath.row] : [_SpotifyTracks objectAtIndex:indexPath.row];
                 cell.titleLabel.text = track.name;
                 SPTPartialArtist *artist0 = [track.artists objectAtIndex:0];
                 cell.auxilaryLabel.text = [NSString stringWithFormat:@"%@ - %@", artist0.name, track.album.name];
@@ -174,7 +193,6 @@
             default:
                 break;
         }
-        
     }
     
     return nil;
@@ -182,7 +200,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {    
     if (section == 1) {
-        return _SpotifyTracks.count;
+        return _isSearching ? _filteredTracks.count : _SpotifyTracks.count;
     }
     
     return 0;
@@ -206,14 +224,140 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 1) {
         NSMutableArray *URIs = [[NSMutableArray alloc] init];
-        for (SPTPlaylistTrack *track in _SpotifyTracks) {
-            [URIs addObject:[track uri]];
+        if (_isSearching) {
+            for (SPTPlaylistTrack *track in _filteredTracks) {
+                [URIs addObject:[track uri]];
+            }
+        }
+        else {
+            for (SPTPlaylistTrack *track in _SpotifyTracks) {
+                [URIs addObject:[track uri]];
+            }
         }
         
         [JPSpotifyPlayer defaultInstance].URIs = URIs;
         [JPSpotifyPlayer playURIs:URIs fromIndex:indexPath.row];
-        // [[JPSpotifyPlayer player] playURIs:URIs fromIndex:(int)indexPath.row callback:nil];
     }
+}
+
+#pragma mark - JPListControlDelegate
+- (void)sendControlEvent:(JPControlEvent)event ascending:(BOOL)ascending {
+    NSMutableArray<SPTPlaylistTrack *> *arrayToSort;
+    if (_isSearching) {
+        arrayToSort = [NSMutableArray arrayWithArray:_filteredTracks];
+    }
+    else {
+        arrayToSort = [NSMutableArray arrayWithArray:_SpotifyTracks];
+    }
+    
+    arrayToSort = (NSMutableArray *)[arrayToSort sortedArrayUsingComparator:^NSComparisonResult(SPTPlaylistTrack *a, SPTPlaylistTrack *b) {
+        switch (event) {
+            case JPSortByTrackName:
+                return ascending ? [a.name compare:b.name] : [b.name compare:a.name];
+                break;
+                
+            case JPSortByArtistName: {
+                NSString *aArtistName = [(SPTPartialArtist *)a.artists.firstObject name];
+                NSString *bArtistName = [(SPTPartialArtist *)b.artists.firstObject name];
+                return ascending ? [aArtistName compare:bArtistName] : [bArtistName compare:aArtistName];
+                break;
+            }
+                
+            case JPSortByAlbumName:
+                return ascending ? [a.album.name compare:b.album.name] : [b.album.name compare:a.album.name];
+                break;
+                
+            case JPSortByAddDate:
+                return ascending ? [a.addedAt compare:b.addedAt] : [b.addedAt compare:a.addedAt];
+                break;
+            
+            case JPSortByTrackDuration:
+                return ascending ? [@(a.duration) compare:@(b.duration)] : [@(b.duration) compare:@(a.duration)];
+                break;
+                
+            default:
+                break;
+        }
+
+        return NSOrderedSame;
+    }];
+    
+    if (_isSearching) {
+        [_filteredTracks removeAllObjects];
+        _filteredTracks = [NSMutableArray arrayWithArray:arrayToSort];
+    }
+    else {
+        [_SpotifyTracks removeAllObjects];
+        _SpotifyTracks = [NSMutableArray arrayWithArray:arrayToSort];
+    }
+    
+    [_list reloadData];
+}
+
+#pragma mark - UISearchBarDelegate
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+    if ((_isSearching && _filteredTracks.count) || (!_isSearching && _SpotifyTracks.count)) {
+        [_list scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    }
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    if(![searchBar isFirstResponder]) { // clear text button tapped in search bar's textfield
+        _isSearching = NO;
+    }
+    
+    if (searchBar.text.length) {
+        _isSearching = YES;
+        [_filteredTracks removeAllObjects];
+        
+        NSString *text = searchBar.text;
+        for (SPTPlaylistTrack *track in _SpotifyTracks) {
+            if ([track.name rangeOfString:text options:NSCaseInsensitiveSearch].location != NSNotFound ||
+                [track.album.name rangeOfString:text options:NSCaseInsensitiveSearch].location != NSNotFound) {
+                [_filteredTracks addObject:track];
+            }
+            else {
+                for (SPTPartialArtist *artist in track.artists) {
+                    if ([artist.name rangeOfString:text options:NSCaseInsensitiveSearch].location != NSNotFound) {
+                        [_filteredTracks addObject:track];
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    else {
+        _isSearching = NO;
+    }
+    
+    [_list reloadData];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    _isSearching = NO;
+    searchBar.text = nil;
+    [_list reloadData];
+    [searchBar resignFirstResponder];
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    [searchBar resignFirstResponder];
+}
+
+#pragma mark - keyboard event
+- (void)UIKeyboardDidShow:(NSNotification*)notification {
+    NSDictionary* info = notification.userInfo;
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height - PlayerViewHeight, 0.0);
+    _list.contentInset = contentInsets;
+    _list.scrollIndicatorInsets = contentInsets;
+}
+
+- (void)UIKeyboardWillHide:(NSNotification*)aNotification {
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    _list.contentInset = contentInsets;
+    _list.scrollIndicatorInsets = contentInsets;
 }
 
 @end

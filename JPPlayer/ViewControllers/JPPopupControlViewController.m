@@ -40,7 +40,7 @@
     
     _trackLabel = [[JPTrackLabel alloc] initWithType:JPTrackLabelTypeTrackOnly];
     [self.view addSubview:_trackLabel];
-    [_trackLabel setWithStrings:@[@"Good Life"]];
+    [_trackLabel setWithStrings:@[@"Not Available"]];
     [_trackLabel makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).offset(interval);
         make.left.right.equalTo(self.view);
@@ -49,7 +49,7 @@
     
     _singerLabel = [[JPTrackLabel alloc] initWithType:JPTrackLabelTypeSingerOnly];
     [self.view addSubview:_singerLabel];
-    [_singerLabel setWithStrings:@[@"OneRepublic"]];
+    [_singerLabel setWithStrings:@[@"Not Available"]];
     [_singerLabel makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_trackLabel.bottom);
         make.left.right.equalTo(self.view);
@@ -151,7 +151,7 @@
     // album label
     _albumLabel = [[JPTrackLabel alloc] initWithType:JPTrackLabelTypeSingerOnly];
     [self.view addSubview:_albumLabel];
-    [_albumLabel setWithStrings:@[@"Waking Up"]];
+    [_albumLabel setWithStrings:@[@"Not Available"]];
     [_albumLabel makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view).offset(-interval);
         make.left.right.equalTo(self.view);

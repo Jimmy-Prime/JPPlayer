@@ -106,8 +106,7 @@ enum ContainerState {
         }
         
         SPTPartialPlaylist *partialPlayList = [[_SpotifyLists tracksForPlayback] objectAtIndex:indexPath.row];
-        UIImage *placeHolder = [[UIImage imageNamed:@"ic_blur_on_white_48pt"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        cell.profileImageView.tintColor = [UIColor redColor];
+        UIImage *placeHolder = [UIImage imageNamed:@"PlaceHolder.jpg"];
         [cell.profileImageView setImageWithURL:partialPlayList.smallestImage.imageURL placeholderImage:placeHolder];
         cell.titleLabel.text = [NSString stringWithFormat:@"%@", partialPlayList.name];
         cell.auxilaryLabel.text = [@(partialPlayList.trackCount) stringValue];

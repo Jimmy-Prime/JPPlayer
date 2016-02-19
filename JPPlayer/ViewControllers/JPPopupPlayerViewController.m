@@ -27,16 +27,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-        
+    
+    self.view.clipsToBounds = YES;
+    
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(popUp:) name:@"popup" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spotifyDidChangeToTrack:) name:SpotifyDidChangeToTrack object:nil];
 
-    _blurBackgroundImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"ic_blur_on_white_48pt"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+    _blurBackgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlaceHolder.jpg"]];
     _blurBackgroundImageView.contentMode = UIViewContentModeScaleToFill;
-    _blurBackgroundImageView.tintColor = [UIColor redColor];
     [self.view addSubview:_blurBackgroundImageView];
     [_blurBackgroundImageView makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);

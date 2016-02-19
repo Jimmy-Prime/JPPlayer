@@ -31,7 +31,7 @@
     _list = super.list;
     _fakeHeaderView = super.fakeHeaderView;
     
-    _blurBackgroundImageView = [[UIImageView alloc] initWithImage:[UIImageEffects imageByApplyingDarkEffectToImage:[UIImage imageNamed:@"cover.jpg"]]];
+    _blurBackgroundImageView = [[UIImageView alloc] initWithImage:[UIImageEffects imageByApplyingDarkEffectToImage:[UIImage imageNamed:@"PlaceHolder.jpg"]]];
     _blurBackgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
     [_topView addSubview:_blurBackgroundImageView];
     [_blurBackgroundImageView makeConstraints:^(MASConstraintMaker *make) {
@@ -81,7 +81,7 @@
     if (_topViewHeight >= ContainerWidth) {
         // Lower blur radius
         CGFloat diff = _topViewHeight - ContainerWidth;
-        [_blurBackgroundImageView setImage:[UIImageEffects imageByApplyingBlurToImage:[UIImage imageNamed:@"cover.jpg"] withRadius:40.f-diff tintColor:[UIColor clearColor] saturationDeltaFactor:1.8 maskImage:nil]];
+        [_blurBackgroundImageView setImage:[UIImageEffects imageByApplyingBlurToImage:[UIImage imageNamed:@"PlaceHolder.jpg"] withRadius:40.f-diff tintColor:[UIColor clearColor] saturationDeltaFactor:1.8 maskImage:nil]];
         _overlayView.alpha = 1.f - diff/40.f;
     }
     

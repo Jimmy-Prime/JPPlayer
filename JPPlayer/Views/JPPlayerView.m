@@ -32,9 +32,8 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spotifyDidChangeToTrack:) name:SpotifyDidChangeToTrack object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spotifyDidChangePlaybackStatus:) name:SpotifyDidChangePlaybackStatus object:nil];
         
-        _blurBackgroundImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"ic_blur_on_white_48pt"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+        _blurBackgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlaceHolder.jpg"]];
         _blurBackgroundImageView.contentMode = UIViewContentModeScaleToFill;
-        _blurBackgroundImageView.tintColor = [UIColor redColor];
         [self addSubview:_blurBackgroundImageView];
         [_blurBackgroundImageView makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self);
@@ -68,10 +67,9 @@
             make.width.height.equalTo(@(SmallButtonWidth));
         }];
         
-        _coverImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"ic_blur_on_white_48pt"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+        _coverImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlaceHolder.jpg"]];
         [popupButtonContainer addSubview:_coverImageView];
         _coverImageView.contentMode = UIViewContentModeScaleToFill;
-        _coverImageView.tintColor = [UIColor redColor];
         [_coverImageView makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(popupButtonContainer).offset(-5);
             make.centerY.equalTo(popupButtonContainer);
@@ -144,7 +142,7 @@
         // caption label
         _trackLabel = [[JPTrackLabel alloc] initWithType:JPTrackLabelTypeTrackAndSinger];
         [self addSubview:_trackLabel];
-        [_trackLabel setWithStrings:@[@"Good Life", @"OneRepublic"]];
+        [_trackLabel setWithStrings:@[@"Not Available", @"Not Available"]];
         [_trackLabel makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self);
             make.left.equalTo(popupButtonContainer.right);

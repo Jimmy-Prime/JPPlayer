@@ -42,9 +42,8 @@
     _coverImageList = [[NSMutableArray alloc] init];
     for (int i=0; i<5; ++i) {
         UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 600, 600)];
-        view.image = [[UIImage imageNamed:@"ic_blur_on_white_48pt"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        view.image = [UIImage imageNamed:@"PlaceHolder.jpg"];
         view.contentMode = UIViewContentModeScaleToFill;
-        view.tintColor = [UIColor redColor];
         [_coverScrollView addSubview:view];
         [_coverImageList addObject:view];
     }
@@ -72,7 +71,6 @@
             UIView *view = [_coverImageList objectAtIndex:i];
             CGRect frame = view.frame;
             frame.origin.x = 659.f * (CGFloat)i;
-//            frame.origin.x = CGRectGetWidth(self.view.frame) * (CGFloat)i + CGRectGetWidth(self.view.frame) / 2.f - 300;
             frame.origin.y = 0.f;
             view.frame = frame;
         }
