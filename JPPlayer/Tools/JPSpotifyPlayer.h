@@ -30,6 +30,6 @@ typedef enum {
 
 #define SpotifyDidChangePlaybackStatus @"SpotifyDidChangePlaybackStatus"
 #define SpotifyDidChangeToTrack @"SpotifyDidChangeToTrack"
-#define SpotifyDidCreateRandomArray @"SpotifyDidCreateRandomArray"
+#define SpotifyDidChangePlaybackMode @"SpotifyDidChangePlaybackMode"
 
 @end

@@ -21,12 +21,17 @@ static SPTAudioStreamingController *_player = nil;
     return defaultInstance;
 }
 
+- (void)setPlaybackState:(JPSpotifyPlayback)playbackState {
+    _playbackState = playbackState;
+    [[NSNotificationCenter defaultCenter] postNotificationName:SpotifyDidChangePlaybackMode object:nil];
+}
+
 - (void)setShuffle:(BOOL)shuffle {
     _shuffle = shuffle;
     
     if (shuffle && _URIs) {
         _URIs = [self shuffleArray];
-        [[NSNotificationCenter defaultCenter] postNotificationName:SpotifyDidCreateRandomArray object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:SpotifyDidChangePlaybackMode object:nil];
     }
 }
 
@@ -78,7 +83,7 @@ static SPTAudioStreamingController *_player = nil;
     _URIs = URIs;
     if (_shuffle) {
         _URIs = [self shuffleArray];
-        [[NSNotificationCenter defaultCenter] postNotificationName:SpotifyDidCreateRandomArray object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:SpotifyDidChangePlaybackMode object:nil];
     }
     _index = index;
     [[JPSpotifyPlayer player] playURIs:@[URIs[index]] fromIndex:0 callback:nil];
@@ -86,12 +91,12 @@ static SPTAudioStreamingController *_player = nil;
 
 - (void)playPrevious {
     if (_index == 0) {
-        if (_playbackState == JPSpotifyPlaybackCycle) {
-            _index = _URIs.count - 1;
-            [[JPSpotifyPlayer player] playURIs:@[_URIs[_index]] fromIndex:0 callback:nil];
+        if (_playbackState == JPSpotifyPlaybackNone) {
+            [[JPSpotifyPlayer player] stop:nil];
         }
         else {
-            [[JPSpotifyPlayer player] stop:nil];
+            _index = _URIs.count - 1;
+            [[JPSpotifyPlayer player] playURIs:@[_URIs[_index]] fromIndex:0 callback:nil];
         }
     }
     else {
