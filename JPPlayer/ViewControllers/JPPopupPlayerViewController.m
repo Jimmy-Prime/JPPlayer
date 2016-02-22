@@ -82,11 +82,11 @@
         case UIInterfaceOrientationLandscapeRight: {
             _coverViewController.landscape = YES;
             [_coverViewController.view updateConstraints:^(MASConstraintMaker *make) {
-                CGFloat interval = (shorter - 650.f) / 2.f;
-                make.top.equalTo(self.view).offset(interval + 25.f);
+                CGFloat interval = (shorter - CoverLength - 2.f * CoverInset) / 2.f;
+                make.top.equalTo(self.view).offset(interval / 2.f + CoverInset);
                 make.right.equalTo(self.view).offset(-55.f);
-                make.height.equalTo(@(600.f + interval));
-                make.width.equalTo(@(600.f));
+                make.height.equalTo(@(CoverLength + interval));
+                make.width.equalTo(@(CoverLength));
             }];
             
             _controlViewController.landscape = YES;
@@ -96,7 +96,7 @@
                 make.bottom.equalTo(self.view).offset(-heightOffset);
                 make.left.equalTo(self.view).offset(widthOffset);
                 make.height.equalTo(@(shorter - 2*heightOffset));
-                make.width.equalTo(@(longer - 600 - 2*widthOffset - 55.f));
+                make.width.equalTo(@(longer - CoverLength - 2*widthOffset - 55.f));
             }];
             break;
         }
@@ -105,11 +105,11 @@
         case UIInterfaceOrientationPortraitUpsideDown: {
             _coverViewController.landscape = NO;
             [_coverViewController.view updateConstraints:^(MASConstraintMaker *make) {
+                CGFloat interval = (shorter - CoverLength - 2.f * CoverInset) / 2.f;
                 make.top.equalTo(self.view).offset(90);
-                make.right.equalTo(self.view).offset(-25.f);
-                make.height.equalTo(@(600));
-                CGFloat interval = (shorter - 650.f) / 2.f;
-                make.width.equalTo(@(600.f + interval));
+                make.right.equalTo(self.view).offset(-interval / 2.f - CoverInset);
+                make.height.equalTo(@(CoverLength));
+                make.width.equalTo(@(CoverLength + interval));
             }];
             
             _controlViewController.landscape = NO;
@@ -117,8 +117,8 @@
                 CGFloat widthOffset = 84.f;
                 make.bottom.equalTo(self.view);
                 make.left.equalTo(self.view).offset(widthOffset);
-                make.height.equalTo(@(longer - 600 - 90));
-                make.width.equalTo(@(shorter - 2*widthOffset));
+                make.height.equalTo(@(longer - CoverLength - 90));
+                make.width.equalTo(@(shorter - 2.f * widthOffset));
             }];
             break;
         }

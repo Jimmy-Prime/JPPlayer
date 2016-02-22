@@ -25,6 +25,7 @@
     // Do any additional setup after loading the view.
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spotifyDidChangeToTrack:) name:SpotifyDidChangeToTrack object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spotifyDidCreateRandomArray) name:SpotifyDidCreateRandomArray object:nil];
 
     _coverScrollView = [[UIScrollView alloc] init];
     [self.view addSubview:_coverScrollView];
@@ -47,16 +48,19 @@
         [_coverScrollView addSubview:view];
         [_coverImageList addObject:view];
     }
+    
+    _currentPage = 2;
 }
 
 - (void)viewDidLayoutSubviews {
     if (_landscape) {
         [_coverScrollView setContentSize:CGSizeMake(CGRectGetWidth(self.view.frame), _coverImageList.count * CGRectGetHeight(self.view.frame))];
+        CGFloat interval = CGRectGetHeight(self.view.frame) - CoverLength;
         for (int i=0; i<_coverImageList.count; ++i) {
             UIView *view = [_coverImageList objectAtIndex:i];
             CGRect frame = view.frame;
             frame.origin.x = 0.f;
-            frame.origin.y = 659.f * (CGFloat)i;
+            frame.origin.y = (CoverLength + interval) * (CGFloat)i + interval / 2.f;
             view.frame = frame;
         }
         
@@ -67,10 +71,11 @@
     }
     else {
         [_coverScrollView setContentSize:CGSizeMake(_coverImageList.count * CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame))];
+        CGFloat interval = CGRectGetWidth(self.view.frame) - CoverLength;
         for (int i=0; i<_coverImageList.count; ++i) {
             UIView *view = [_coverImageList objectAtIndex:i];
             CGRect frame = view.frame;
-            frame.origin.x = 659.f * (CGFloat)i;
+            frame.origin.x = (CoverLength + interval) * (CGFloat)i + interval / 2.f;;
             frame.origin.y = 0.f;
             view.frame = frame;
         }
@@ -83,22 +88,57 @@
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    NSUInteger newPage;
     if (_landscape) {
         CGFloat pageLength = CGRectGetHeight(self.view.frame);
-        _currentPage = floor((scrollView.contentOffset.y - pageLength / 2.f) / pageLength) + 1;
+        newPage = floor((scrollView.contentOffset.y - pageLength / 2.f) / pageLength) + 1;
     }
     else {
         CGFloat pageLength = CGRectGetWidth(self.view.frame);
-        _currentPage = floor((scrollView.contentOffset.x - pageLength / 2.f) / pageLength) + 1;
+        newPage = floor((scrollView.contentOffset.x - pageLength / 2.f) / pageLength) + 1;
     }
+    
+    if (newPage < _currentPage) {
+        [[JPSpotifyPlayer defaultInstance] playPrevious];
+    }
+    else if (newPage > _currentPage) {
+        [[JPSpotifyPlayer defaultInstance] playNext];
+    }
+    
+    _currentPage = newPage;
 }
 
 - (void)spotifyDidChangeToTrack:(NSNotification *)notification {
-    NSDictionary *userInfo = [notification userInfo];
-    SPTTrack *track = [userInfo objectForKey:@"track"];
+    _currentPage = 2;
+    CGRect bounds = _coverScrollView.bounds;
+    if (_landscape) {
+        bounds.origin.x = 0.f;
+        bounds.origin.y = CGRectGetHeight(bounds) * _currentPage;
+    }
+    else {
+        bounds.origin.x = CGRectGetWidth(bounds) * _currentPage;
+        bounds.origin.y = 0.f;
+    }
+    [_coverScrollView scrollRectToVisible:bounds animated:NO];
+    
+    [self spotifyDidCreateRandomArray];
+}
+
+- (void)spotifyDidCreateRandomArray {
+    NSInteger index = [JPSpotifyPlayer defaultInstance].index;
     for (int i=0; i<_coverImageList.count; ++i) {
         UIImageView *view = [_coverImageList objectAtIndex:i];
-        [view setImageWithURL:[[[track album] largestCover] imageURL]];
+        
+        NSUInteger count = [JPSpotifyPlayer defaultInstance].URIs.count;
+        if ([JPSpotifyPlayer defaultInstance].playbackState == JPSpotifyPlaybackNone && (index + i - 2 < 0 || index + i - 2 >= count)) {
+            [view setImage:[UIImage imageNamed:@"PlaceHolder.jpg"]];
+        }
+        else {
+            NSURL *URI = [JPSpotifyPlayer defaultInstance].URIs[(index + i - 2) % count];
+            [SPTTrack trackWithURI:URI session:[SPTAuth defaultInstance].session callback:^(NSError *error, SPTTrack *track) {
+                [view setImageWithURL:track.album.largestCover.imageURL];
+            }];
+        }
     }
 }
 

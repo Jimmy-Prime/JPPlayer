@@ -51,7 +51,8 @@
         CGFloat height = 80.f;
         CGFloat interval = 10.f;
         
-        _sortByTrackName = [[JPListControlCell alloc] initWithImage:alphaImage andCaption:@"Name"];
+        _sortByTrackName = [[JPListControlCell alloc] initWithImage:alphaImage andCaption:@"SONG"];
+        _sortByTrackName.layer.cornerRadius = 5.f;
         [_sortByTrackName addTarget:self action:@selector(controlTapped:) forControlEvents:UIControlEventTouchUpInside];
         [_firstSection addSubview:_sortByTrackName];
         [_sortByTrackName makeConstraints:^(MASConstraintMaker *make) {
@@ -61,7 +62,8 @@
             make.height.equalTo(@(height));
         }];
         
-        _sortByArtistName = [[JPListControlCell alloc] initWithImage:alphaImage andCaption:@"Artist"];
+        _sortByArtistName = [[JPListControlCell alloc] initWithImage:alphaImage andCaption:@"ARTIST"];
+        _sortByArtistName.layer.cornerRadius = 5.f;
         [_sortByArtistName addTarget:self action:@selector(controlTapped:) forControlEvents:UIControlEventTouchUpInside];
         [_firstSection addSubview:_sortByArtistName];
         [_sortByArtistName makeConstraints:^(MASConstraintMaker *make) {
@@ -71,7 +73,8 @@
             make.height.equalTo(@(height));
         }];
         
-        _sortByAlbumName = [[JPListControlCell alloc] initWithImage:alphaImage andCaption:@"Album"];
+        _sortByAlbumName = [[JPListControlCell alloc] initWithImage:alphaImage andCaption:@"ALBUM"];
+        _sortByAlbumName.layer.cornerRadius = 5.f;
         [_sortByAlbumName addTarget:self action:@selector(controlTapped:) forControlEvents:UIControlEventTouchUpInside];
         [_firstSection addSubview:_sortByAlbumName];
         [_sortByAlbumName makeConstraints:^(MASConstraintMaker *make) {
@@ -81,7 +84,8 @@
             make.height.equalTo(@(height));
         }];
         
-        _sortByAddDate = [[JPListControlCell alloc] initWithImage:sortImage andCaption:@"Add"];
+        _sortByAddDate = [[JPListControlCell alloc] initWithImage:sortImage andCaption:@"Date"];
+        _sortByAddDate.layer.cornerRadius = 5.f;
         [_sortByAddDate addTarget:self action:@selector(controlTapped:) forControlEvents:UIControlEventTouchUpInside];
         [_firstSection addSubview:_sortByAddDate];
         [_sortByAddDate makeConstraints:^(MASConstraintMaker *make) {
@@ -91,7 +95,8 @@
             make.height.equalTo(@(height));
         }];
         
-        _sortByTrackDuration = [[JPListControlCell alloc] initWithImage:sortImage andCaption:@"Duration"];
+        _sortByTrackDuration = [[JPListControlCell alloc] initWithImage:sortImage andCaption:@"DURATION"];
+        _sortByTrackDuration.layer.cornerRadius = 5.f;
         [_sortByTrackDuration addTarget:self action:@selector(controlTapped:) forControlEvents:UIControlEventTouchUpInside];
         [_firstSection addSubview:_sortByTrackDuration];
         [_sortByTrackDuration makeConstraints:^(MASConstraintMaker *make) {
@@ -158,6 +163,11 @@
 }
 
 - (void)controlTapped:(JPListControlCell *)cell {
+    cell.backgroundColor = [UIColor colorWithWhite:1.f alpha:0.8f];
+    if (_lastHitCell && _lastHitCell != cell) {
+        _lastHitCell.backgroundColor = [UIColor clearColor];
+    }
+    
     JPControlEvent event;
     if (cell == _sortByTrackName) {
         event = JPSortByTrackName;

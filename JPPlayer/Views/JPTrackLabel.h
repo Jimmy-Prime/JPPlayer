@@ -10,7 +10,7 @@
 
 @interface JPTrackLabel : UILabel
 
-typedef enum JPTrackLabelType{
+typedef enum {
     JPTrackLabelTypeTrackOnly,
     JPTrackLabelTypeSingerOnly,
     JPTrackLabelTypeTrackAndSinger

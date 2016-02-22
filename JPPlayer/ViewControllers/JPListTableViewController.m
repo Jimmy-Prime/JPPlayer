@@ -235,8 +235,7 @@
             }
         }
         
-        [JPSpotifyPlayer defaultInstance].URIs = URIs;
-        [JPSpotifyPlayer playURIs:URIs fromIndex:indexPath.row];
+        [[JPSpotifyPlayer defaultInstance] playURIs:URIs fromIndex:indexPath.row];
     }
 }
 
@@ -253,18 +252,18 @@
     arrayToSort = (NSMutableArray *)[arrayToSort sortedArrayUsingComparator:^NSComparisonResult(SPTPlaylistTrack *a, SPTPlaylistTrack *b) {
         switch (event) {
             case JPSortByTrackName:
-                return ascending ? [a.name compare:b.name] : [b.name compare:a.name];
+                return ascending ? [a.name caseInsensitiveCompare:b.name] : [b.name caseInsensitiveCompare:a.name];
                 break;
                 
             case JPSortByArtistName: {
                 NSString *aArtistName = [(SPTPartialArtist *)a.artists.firstObject name];
                 NSString *bArtistName = [(SPTPartialArtist *)b.artists.firstObject name];
-                return ascending ? [aArtistName compare:bArtistName] : [bArtistName compare:aArtistName];
+                return ascending ? [aArtistName caseInsensitiveCompare:bArtistName] : [bArtistName caseInsensitiveCompare:aArtistName];
                 break;
             }
                 
             case JPSortByAlbumName:
-                return ascending ? [a.album.name compare:b.album.name] : [b.album.name compare:a.album.name];
+                return ascending ? [a.album.name caseInsensitiveCompare:b.album.name] : [b.album.name caseInsensitiveCompare:a.album.name];
                 break;
                 
             case JPSortByAddDate:

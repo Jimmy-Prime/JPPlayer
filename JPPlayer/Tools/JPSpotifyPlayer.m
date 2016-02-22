@@ -12,8 +12,6 @@
 
 static id defaultInstance;
 static SPTAudioStreamingController *_player = nil;
-static NSArray *totalURIs = nil;
-static NSArray *localURIs = nil;
 
 + (instancetype)defaultInstance {
     static dispatch_once_t once;
@@ -21,6 +19,34 @@ static NSArray *localURIs = nil;
         defaultInstance = [[self alloc] init];
     });
     return defaultInstance;
+}
+
+- (void)setShuffle:(BOOL)shuffle {
+    _shuffle = shuffle;
+    
+    if (shuffle && _URIs) {
+        _URIs = [self shuffleArray];
+        [[NSNotificationCenter defaultCenter] postNotificationName:SpotifyDidCreateRandomArray object:nil];
+    }
+}
+
+- (NSArray *)shuffleArray {
+    NSMutableArray *array = [NSMutableArray arrayWithArray:_URIs];
+    
+    for (NSUInteger i = array.count-1; i>0; i--) {
+        if (i == _index) {
+            continue;
+        }
+        
+        NSUInteger swapIndex = arc4random_uniform((u_int32_t)i+1);
+        while (swapIndex == _index) {
+            swapIndex = arc4random_uniform((u_int32_t)i+1);
+        }
+        
+        [array exchangeObjectAtIndex:i withObjectAtIndex:swapIndex];
+    }
+    
+    return array;
 }
 
 + (SPTAudioStreamingController *)player {
@@ -45,28 +71,55 @@ static NSArray *localURIs = nil;
     return _player;
 }
 
-+ (void)playURIs:(NSArray *)URIs fromIndex:(NSInteger)index {
+- (void)playURIs:(NSArray *)URIs fromIndex:(NSInteger)index {
 //  This is part is hanging due to SPTAudioStreamingController can only hold 100 URIs
 //  And issue https://github.com/spotify/ios-sdk/issues/367
-//    NSMutableArray *temp = [[NSMutableArray alloc] initWithArray:URIs];
-//    [temp addObjectsFromArray:URIs];
-//    [temp addObjectsFromArray:URIs];
-//    totalURIs = temp;
-    NSInteger localIndex = index;
-    if (index >= 100) {
-        localURIs = [URIs subarrayWithRange:NSMakeRange(index - 50, [URIs count] - index + 50)];
-        localIndex = 50;
+
+    _URIs = URIs;
+    if (_shuffle) {
+        _URIs = [self shuffleArray];
+        [[NSNotificationCenter defaultCenter] postNotificationName:SpotifyDidCreateRandomArray object:nil];
+    }
+    _index = index;
+    [[JPSpotifyPlayer player] playURIs:@[URIs[index]] fromIndex:0 callback:nil];
+}
+
+- (void)playPrevious {
+    if (_index == 0) {
+        if (_playbackState == JPSpotifyPlaybackCycle) {
+            _index = _URIs.count - 1;
+            [[JPSpotifyPlayer player] playURIs:@[_URIs[_index]] fromIndex:0 callback:nil];
+        }
+        else {
+            [[JPSpotifyPlayer player] stop:nil];
+        }
     }
     else {
-        localURIs = URIs;
+        _index--;
+        [[JPSpotifyPlayer player] playURIs:@[_URIs[_index]] fromIndex:0 callback:nil];
     }
-    
-    [[self player] playURIs:localURIs fromIndex:(int)localIndex callback:nil];
+}
+
+- (void)playNext {
+    _index++;
+    if (_index == _URIs.count) {
+        _index = 0;
+        if (_playbackState == JPSpotifyPlaybackCycle) {
+            [[JPSpotifyPlayer player] playURIs:@[_URIs[_index]] fromIndex:0 callback:nil];
+        }
+        else {
+            _index--;
+            [[JPSpotifyPlayer player] stop:nil];
+        }
+    }
+    else {
+        [[JPSpotifyPlayer player] playURIs:@[_URIs[_index]] fromIndex:0 callback:nil];
+    }
 }
 
 #pragma mark - SPTAudioStreamingPlaybackDelegate
 - (void)audioStreaming:(SPTAudioStreamingController *)audioStreaming didChangeToTrack:(NSDictionary *)trackMetadata {
-    NSLog(@"%@", SpotifyDidChangeToTrack);
+    NSLog(SpotifyDidChangeToTrack);
     if (trackMetadata) {
         NSString *trackURI = [trackMetadata objectForKey:@"SPTAudioStreamingMetadataTrackURI"];
         
@@ -86,12 +139,19 @@ static NSArray *localURIs = nil;
         }];
     }
     else {
-        NSLog(@"nil trackMetadata");
+        NSLog(@"nil trackMetadata"); // skip to next track
+        
+        if (_playbackState == JPSpotifyPlaybackOne) {
+            [[JPSpotifyPlayer player] playURIs:@[_URIs[_index]] fromIndex:0 callback:nil];
+        }
+        else {
+            [self playNext];
+        }
     }
 }
 
 - (void)audioStreaming:(SPTAudioStreamingController *)audioStreaming didChangePlaybackStatus:(BOOL)isPlaying {
-    NSLog(@"%@", SpotifyDidChangePlaybackStatus);
+    NSLog(SpotifyDidChangePlaybackStatus);
     [[NSNotificationCenter defaultCenter] postNotificationName:SpotifyDidChangePlaybackStatus object:nil userInfo:@{@"isPlaying" : @(isPlaying)}];
 }
 

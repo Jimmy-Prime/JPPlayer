@@ -21,3 +21,5 @@ extern CGFloat TimeLabelWidth;
 extern CGFloat ContainerWidth;
 extern CGFloat FakeHeaderHeight;
 extern CGFloat AnimationInterval;
+extern CGFloat CoverLength;
+extern CGFloat CoverInset;

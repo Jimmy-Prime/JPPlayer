@@ -10,13 +10,26 @@
 
 @interface JPSpotifyPlayer : NSObject <SPTAudioStreamingPlaybackDelegate>
 
+typedef enum {
+    JPSpotifyPlaybackNone,
+    JPSpotifyPlaybackCycle,
+    JPSpotifyPlaybackOne,
+    JPSpotifyPlaybackModeCount
+} JPSpotifyPlayback;
+
 + (instancetype)defaultInstance;
 + (SPTAudioStreamingController *)player;
-+ (void)playURIs:(NSArray *)URIs fromIndex:(NSInteger)index;
+- (void)playURIs:(NSArray *)URIs fromIndex:(NSInteger)index;
+- (void)playPrevious;
+- (void)playNext;
+
+@property (nonatomic) JPSpotifyPlayback playbackState;
+@property (nonatomic) BOOL shuffle;
+@property (strong, nonatomic) NSArray *URIs;
+@property (nonatomic) NSUInteger index;
 
 #define SpotifyDidChangePlaybackStatus @"SpotifyDidChangePlaybackStatus"
 #define SpotifyDidChangeToTrack @"SpotifyDidChangeToTrack"
-
-@property (strong, nonatomic) NSArray *URIs;
+#define SpotifyDidCreateRandomArray @"SpotifyDidCreateRandomArray"
 
 @end

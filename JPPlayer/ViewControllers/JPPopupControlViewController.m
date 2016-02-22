@@ -79,7 +79,8 @@
     _shuffleButton.contentMode = UIViewContentModeScaleToFill;
     _shuffleButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
     _shuffleButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
-    _shuffleButton.tintColor = [UIColor redColor];
+    _shuffleButton.tintColor = [UIColor lightGrayColor];
+    [_shuffleButton addTarget:self action:@selector(shuffle:) forControlEvents:UIControlEventTouchUpInside];
     [_shuffleButton makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(controlContainer);
         make.width.height.equalTo(@(SmallButtonWidth));
@@ -130,7 +131,8 @@
     _repeatButton.contentMode = UIViewContentModeScaleToFill;
     _repeatButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
     _repeatButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
-    _repeatButton.tintColor = [UIColor redColor];
+    _repeatButton.tintColor = [UIColor lightGrayColor];
+    [_repeatButton addTarget:self action:@selector(repeat:) forControlEvents:UIControlEventTouchUpInside];
     [_repeatButton makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(controlContainer);
         make.width.height.equalTo(@(SmallButtonWidth));
@@ -215,9 +217,25 @@
     }
 }
 
+- (void)shuffle:(UIButton *)button {
+    [JPSpotifyPlayer defaultInstance].shuffle = ![JPSpotifyPlayer defaultInstance].shuffle;
+    if ([JPSpotifyPlayer defaultInstance].shuffle) {
+        button.tintColor = [UIColor redColor];
+    }
+    else {
+        button.tintColor = [UIColor lightGrayColor];
+    }
+    
+    if ([JPSpotifyPlayer defaultInstance].shuffle) {
+        button.tintColor = [UIColor redColor];
+    }
+    else {
+        button.tintColor = [UIColor lightGrayColor];
+    }
+}
+
 - (void)skipPrev:(UIButton *)button {
-    SPTAudioStreamingController *player = [JPSpotifyPlayer player];
-    [player skipPrevious:nil];
+    [[JPSpotifyPlayer defaultInstance] playPrevious];
 }
 
 - (void)playPause:(UIButton *)button {
@@ -226,8 +244,30 @@
 }
 
 - (void)skipNext:(UIButton *)button {
-    SPTAudioStreamingController *player = [JPSpotifyPlayer player];
-    [player skipNext:nil];
+    [[JPSpotifyPlayer defaultInstance] playNext];
+}
+
+- (void)repeat:(UIButton *)button {
+    [JPSpotifyPlayer defaultInstance].playbackState = ([JPSpotifyPlayer defaultInstance].playbackState + 1) % JPSpotifyPlaybackModeCount;
+    switch ([JPSpotifyPlayer defaultInstance].playbackState) {
+        case JPSpotifyPlaybackNone:
+            button.tintColor = [UIColor lightGrayColor];
+            [button setImage:[UIImage imageNamed:@"ic_repeat_white_48pt"] forState:UIControlStateNormal];
+            break;
+            
+        case JPSpotifyPlaybackCycle:
+            button.tintColor = [UIColor redColor];
+            [button setImage:[UIImage imageNamed:@"ic_repeat_white_48pt"] forState:UIControlStateNormal];
+            break;
+            
+        case JPSpotifyPlaybackOne:
+            button.tintColor = [UIColor redColor];
+            [button setImage:[UIImage imageNamed:@"ic_repeat_one_white_48pt"] forState:UIControlStateNormal];
+            break;
+            
+        default:
+            break;
+    }
 }
 
 @end

@@ -37,7 +37,7 @@
         _captionLabel = [[UILabel alloc] init];
         _captionLabel.font = [UIFont systemFontOfSize:12.f];
         _captionLabel.textAlignment = NSTextAlignmentCenter;
-        _captionLabel.textColor = [UIColor whiteColor];
+        _captionLabel.textColor = [UIColor blackColor];
         _captionLabel.text = caption;
         [self addSubview:_captionLabel];
         [_captionLabel makeConstraints:^(MASConstraintMaker *make) {
