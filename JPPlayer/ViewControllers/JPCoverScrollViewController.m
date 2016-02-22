@@ -26,6 +26,7 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spotifyDidChangeToTrack:) name:SpotifyDidChangeToTrack object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spotifyDidChangePlaybackMode) name:SpotifyDidChangePlaybackMode object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spotifyShowNextTrackAnimation) name:SpotifyShowNextTrackAnimation object:nil];
 
     _coverScrollView = [[UIScrollView alloc] init];
     [self.view addSubview:_coverScrollView];
@@ -160,9 +161,38 @@
                     [view setImageWithURL:track.album.largestCover.imageURL];
                 }];
             }
-            
         }
     }
+}
+
+- (void)spotifyShowNextTrackAnimation {
+    CGRect bounds = _coverScrollView.bounds;
+    if (_landscape) {
+        bounds.origin.x = 0.f;
+        bounds.origin.y = CGRectGetHeight(bounds) * (_midPage + 1);
+    }
+    else {
+        bounds.origin.x = CGRectGetWidth(bounds) * (_midPage + 1);
+        bounds.origin.y = 0.f;
+    }
+    [_coverScrollView scrollRectToVisible:bounds animated:YES];
+        
+    for (NSUInteger i=0; i<_coverScrollView.subviews.count-1; ++i) {
+        JPCoverImageView *destination = _coverScrollView.subviews[i];
+        JPCoverImageView *source = _coverScrollView.subviews[i+1];
+        [destination setWith:source];
+    }
+    
+    bounds = _coverScrollView.bounds;
+    if (_landscape) {
+        bounds.origin.x = 0.f;
+        bounds.origin.y = CGRectGetHeight(bounds) * _midPage;
+    }
+    else {
+        bounds.origin.x = CGRectGetWidth(bounds) * _midPage;
+        bounds.origin.y = 0.f;
+    }
+    [_coverScrollView scrollRectToVisible:bounds animated:NO];
 }
 
 @end

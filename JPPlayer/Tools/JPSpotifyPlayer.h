@@ -28,6 +28,7 @@ typedef enum {
 @property (strong, nonatomic) NSArray *URIs;
 @property (nonatomic) NSUInteger index;
 
+#define SpotifyShowNextTrackAnimation @"SpotifyShowNextTrackAnimation"
 #define SpotifyDidChangePlaybackStatus @"SpotifyDidChangePlaybackStatus"
 #define SpotifyDidChangeToTrack @"SpotifyDidChangeToTrack"
 #define SpotifyDidChangePlaybackMode @"SpotifyDidChangePlaybackMode"

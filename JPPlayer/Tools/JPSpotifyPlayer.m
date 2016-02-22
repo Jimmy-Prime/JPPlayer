@@ -81,11 +81,11 @@ static SPTAudioStreamingController *_player = nil;
 //  And issue https://github.com/spotify/ios-sdk/issues/367
 
     _URIs = URIs;
+    _index = index;
     if (_shuffle) {
         _URIs = [self shuffleArray];
         [[NSNotificationCenter defaultCenter] postNotificationName:SpotifyDidChangePlaybackMode object:nil];
     }
-    _index = index;
     [[JPSpotifyPlayer player] playURIs:@[URIs[index]] fromIndex:0 callback:nil];
 }
 
@@ -151,6 +151,7 @@ static SPTAudioStreamingController *_player = nil;
         }
         else {
             [self playNext];
+            [[NSNotificationCenter defaultCenter] postNotificationName:SpotifyShowNextTrackAnimation object:nil];
         }
     }
 }
