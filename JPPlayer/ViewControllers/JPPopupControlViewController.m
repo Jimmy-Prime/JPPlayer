@@ -92,7 +92,7 @@
     _skipPrevButton.contentMode = UIViewContentModeScaleToFill;
     _skipPrevButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
     _skipPrevButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
-    _skipPrevButton.tintColor = [UIColor redColor];
+    _skipPrevButton.tintColor = [UIColor JPColor];
     [_skipPrevButton addTarget:self action:@selector(skipPrev:) forControlEvents:UIControlEventTouchUpInside];
     [_skipPrevButton makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(controlContainer);
@@ -105,7 +105,7 @@
     _playPauseButton.contentMode = UIViewContentModeScaleToFill;
     _playPauseButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
     _playPauseButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
-    _playPauseButton.tintColor = [UIColor redColor];
+    _playPauseButton.tintColor = [UIColor JPColor];
     [_playPauseButton addTarget:self action:@selector(playPause:) forControlEvents:UIControlEventTouchUpInside];
     [_playPauseButton makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.centerY.equalTo(controlContainer);
@@ -118,7 +118,7 @@
     _skipNextButton.contentMode = UIViewContentModeScaleToFill;
     _skipNextButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
     _skipNextButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
-    _skipNextButton.tintColor = [UIColor redColor];
+    _skipNextButton.tintColor = [UIColor JPColor];
     [_skipNextButton addTarget:self action:@selector(skipNext:) forControlEvents:UIControlEventTouchUpInside];
     [_skipNextButton makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(controlContainer);
@@ -142,7 +142,7 @@
     _line = [[UIView alloc] init];
     [self.view addSubview:_line];
     _line.layer.borderWidth = 1.f;
-    _line.layer.borderColor = [UIColor redColor].CGColor;
+    _line.layer.borderColor = [UIColor JPColor].CGColor;
     [_line makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(controlContainer.bottom).offset(interval);
         make.left.equalTo(self.view).offset(interval);
@@ -220,14 +220,14 @@
 - (void)shuffle:(UIButton *)button {
     [JPSpotifyPlayer defaultInstance].shuffle = ![JPSpotifyPlayer defaultInstance].shuffle;
     if ([JPSpotifyPlayer defaultInstance].shuffle) {
-        button.tintColor = [UIColor redColor];
+        button.tintColor = [UIColor JPColor];
     }
     else {
         button.tintColor = [UIColor lightGrayColor];
     }
     
     if ([JPSpotifyPlayer defaultInstance].shuffle) {
-        button.tintColor = [UIColor redColor];
+        button.tintColor = [UIColor JPColor];
     }
     else {
         button.tintColor = [UIColor lightGrayColor];
@@ -256,12 +256,12 @@
             break;
             
         case JPSpotifyPlaybackCycle:
-            button.tintColor = [UIColor redColor];
+            button.tintColor = [UIColor JPColor];
             [button setImage:[UIImage imageNamed:@"ic_repeat_white_48pt"] forState:UIControlStateNormal];
             break;
             
         case JPSpotifyPlaybackOne:
-            button.tintColor = [UIColor redColor];
+            button.tintColor = [UIColor JPColor];
             [button setImage:[UIImage imageNamed:@"ic_repeat_one_white_48pt"] forState:UIControlStateNormal];
             break;
             

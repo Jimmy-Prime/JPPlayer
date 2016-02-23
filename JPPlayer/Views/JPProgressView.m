@@ -62,7 +62,7 @@
         _slider.maximumValue = _totalTime;
         _slider.minimumValue = 0;
         _slider.value = _atTime;
-        _slider.tintColor = [UIColor redColor];
+        _slider.tintColor = [UIColor JPColor];
         [_slider setThumbImage:[UIImage imageNamed:@"ic_fiber_manual_record_white_18pt"] forState:UIControlStateNormal];
         [_slider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
         [_slider addTarget:self action:@selector(sliderRelease:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];

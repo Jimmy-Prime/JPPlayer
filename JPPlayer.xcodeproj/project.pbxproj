@@ -41,6 +41,7 @@
 		4BEFCAEE1C58FCFF0051750A /* JPSpotifyListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BEFCAED1C58FCFF0051750A /* JPSpotifyListViewCell.m */; };
 		4BFCBA461C3F8D8D00B86DD9 /* JPPopupPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BFCBA451C3F8D8D00B86DD9 /* JPPopupPlayerViewController.m */; };
 		4BFCBA491C3F90FF00B86DD9 /* JPCoverScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BFCBA481C3F90FF00B86DD9 /* JPCoverScrollViewController.m */; };
+		4BFFABF81C7C662E00E9CE37 /* UIColor+JPColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BFFABF71C7C662E00E9CE37 /* UIColor+JPColor.m */; };
 		B94418F1C05B7E089ED37A64 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3604C5FF7C837E39F4E3BAB2 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -128,6 +129,8 @@
 		4BFCBA451C3F8D8D00B86DD9 /* JPPopupPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPPopupPlayerViewController.m; path = ViewControllers/JPPopupPlayerViewController.m; sourceTree = "<group>"; };
 		4BFCBA471C3F90FF00B86DD9 /* JPCoverScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPCoverScrollViewController.h; path = ViewControllers/JPCoverScrollViewController.h; sourceTree = "<group>"; };
 		4BFCBA481C3F90FF00B86DD9 /* JPCoverScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPCoverScrollViewController.m; path = ViewControllers/JPCoverScrollViewController.m; sourceTree = "<group>"; };
+		4BFFABF61C7C662E00E9CE37 /* UIColor+JPColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+JPColor.h"; path = "Tools/UIColor+JPColor.h"; sourceTree = "<group>"; };
+		4BFFABF71C7C662E00E9CE37 /* UIColor+JPColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+JPColor.m"; path = "Tools/UIColor+JPColor.m"; sourceTree = "<group>"; };
 		5AB516908633D03B040BCD16 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		D40073111D82935F5EE4B268 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -163,6 +166,8 @@
 		4B0A96031C5C87910038C9B9 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				4BFFABF61C7C662E00E9CE37 /* UIColor+JPColor.h */,
+				4BFFABF71C7C662E00E9CE37 /* UIColor+JPColor.m */,
 				4B0A96001C5C877B0038C9B9 /* JPSpotifyPlayer.h */,
 				4B0A96011C5C877B0038C9B9 /* JPSpotifyPlayer.m */,
 				4BE53CBF1C4CF2FC00CA5B58 /* UIImageEffects.h */,
@@ -551,6 +556,7 @@
 				4B1743651C495EF0000B742F /* JPContainerViewController.m in Sources */,
 				4B0A96021C5C877B0038C9B9 /* JPSpotifyPlayer.m in Sources */,
 				4B1743661C495EF0000B742F /* JPListTableViewController.m in Sources */,
+				4BFFABF81C7C662E00E9CE37 /* UIColor+JPColor.m in Sources */,
 				4BE53CBE1C4CE45A00CA5B58 /* JPSingerTableViewController.m in Sources */,
 				4BC1091E1C733C7F0050E1EF /* JPListControlView.m in Sources */,
 				4B27F15B1C1A9AFF009FCBE6 /* Constants.m in Sources */,

@@ -64,7 +64,7 @@
     pushDownButton.contentMode = UIViewContentModeScaleToFill;
     pushDownButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
     pushDownButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
-    pushDownButton.tintColor = [UIColor redColor];
+    pushDownButton.tintColor = [UIColor JPColor];
     [self.view addSubview:pushDownButton];
     [pushDownButton addTarget:self action:@selector(pushDown:) forControlEvents:UIControlEventTouchUpInside];
 }

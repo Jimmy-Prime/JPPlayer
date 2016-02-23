@@ -27,7 +27,7 @@
     if (self) {
         _imageView = [[UIImageView alloc] initWithImage:image];
         _imageView.contentMode = UIViewContentModeScaleToFill;
-        _imageView.tintColor = [UIColor redColor];
+        _imageView.tintColor = [UIColor JPColor];
         [self addSubview:_imageView];
         [_imageView makeConstraints:^(MASConstraintMaker *make) {
             make.top.left.right.equalTo(self);
@@ -37,7 +37,7 @@
         _captionLabel = [[UILabel alloc] init];
         _captionLabel.font = [UIFont systemFontOfSize:12.f];
         _captionLabel.textAlignment = NSTextAlignmentCenter;
-        _captionLabel.textColor = [UIColor blackColor];
+        _captionLabel.textColor = [UIColor whiteColor];
         _captionLabel.text = caption;
         [self addSubview:_captionLabel];
         [_captionLabel makeConstraints:^(MASConstraintMaker *make) {

@@ -13,7 +13,11 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.backgroundColor = [UIColor darkGrayColor];
+        self.backgroundColor = [UIColor JPBackgroundColor];
+        
+        UIView *backgroundColorView = [[UIView alloc] init];
+        backgroundColorView.backgroundColor = [UIColor JPSelectedCellColor];
+        self.selectedBackgroundView = backgroundColorView;
         
         _profileImageView = [[UIImageView alloc] init];
         _profileImageView.contentMode = UIViewContentModeScaleToFill;
@@ -27,7 +31,7 @@
         
         UIImageView *rightArrowImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"ic_keyboard_arrow_right_white_48pt"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
         rightArrowImageView.contentMode = UIViewContentModeScaleToFill;
-        rightArrowImageView.tintColor = [UIColor redColor];
+        rightArrowImageView.tintColor = [UIColor JPColor];
         [self addSubview:rightArrowImageView];
         [rightArrowImageView makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self).offset(5.f);
@@ -36,6 +40,7 @@
         }];
         
         _titleLabel = [[UILabel alloc] init];
+        _titleLabel.textColor = [UIColor whiteColor];
         [self addSubview:_titleLabel];
         [_titleLabel makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(_profileImageView);
@@ -45,6 +50,7 @@
         }];
         
         _auxilaryLabel = [[UILabel alloc] init];
+        _auxilaryLabel.textColor = [UIColor grayColor];
         [self addSubview:_auxilaryLabel];
         [_auxilaryLabel makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.equalTo(_profileImageView);

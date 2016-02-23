@@ -28,7 +28,7 @@
         
         _indicator = [[UIView alloc] init];
         [self addSubview:_indicator];
-        _indicator.backgroundColor = [UIColor redColor];
+        _indicator.backgroundColor = [UIColor JPColor];
         [_indicator makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self);
             make.width.equalTo(@(5));
@@ -82,7 +82,7 @@
     UIButton *tab = [_tabs objectAtIndex:_lastIndex];
     tab.tintColor = [UIColor whiteColor];
     tab = [_tabs objectAtIndex:index];
-    tab.tintColor = [UIColor redColor];
+    tab.tintColor = [UIColor JPColor];
     _lastIndex = index;
 }
 

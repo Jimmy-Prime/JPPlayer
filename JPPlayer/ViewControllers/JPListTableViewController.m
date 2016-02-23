@@ -85,7 +85,7 @@
     }];
     
     _profileImageView = [[UIImageView alloc] initWithImage:placeHolder];
-    _profileImageView.tintColor = [UIColor redColor];
+    _profileImageView.tintColor = [UIColor JPColor];
     [overlayView addSubview:_profileImageView];
     [_profileImageView makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.centerY.equalTo(overlayView);

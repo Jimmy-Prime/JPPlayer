@@ -117,7 +117,7 @@
         }];
         
         _indicatorView = [[UIView alloc] init];
-        _indicatorView.backgroundColor = [UIColor redColor];
+        _indicatorView.backgroundColor = [UIColor JPColor];
         [_firstSection addSubview:_indicatorView];
         
         // second section
@@ -147,9 +147,9 @@
         _searchBar = [[UISearchBar alloc] init];
         _searchBar.placeholder = @"Search";
         _searchBar.searchBarStyle = UISearchBarStyleMinimal;
-        _searchBar.tintColor = [UIColor redColor];
+        _searchBar.tintColor = [UIColor JPColor];
         _searchBar.showsCancelButton = YES;
-        [[UITextField appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class]]] setTextColor:[UIColor redColor]];
+        [[UITextField appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class]]] setTextColor:[UIColor JPColor]];
         [_secondSection addSubview:_searchBar];
         [_searchBar makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(_secondSection);
@@ -163,7 +163,7 @@
 }
 
 - (void)controlTapped:(JPListControlCell *)cell {
-    cell.backgroundColor = [UIColor colorWithWhite:1.f alpha:0.8f];
+    cell.backgroundColor = [UIColor JPSelectedCellColor];
     if (_lastHitCell && _lastHitCell != cell) {
         _lastHitCell.backgroundColor = [UIColor clearColor];
     }

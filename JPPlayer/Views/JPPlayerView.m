@@ -60,7 +60,7 @@
         [popupButtonContainer addSubview:upIndicator];
         [upIndicator setImage:[[UIImage imageNamed:@"ic_keyboard_arrow_up_white_48pt"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
         upIndicator.contentMode = UIViewContentModeScaleToFill;
-        upIndicator.tintColor = [UIColor redColor];
+        upIndicator.tintColor = [UIColor JPColor];
         [upIndicator makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(popupButtonContainer).offset(5);
             make.centerY.equalTo(popupButtonContainer);
@@ -90,7 +90,7 @@
         volumeControlButton.contentMode = UIViewContentModeScaleAspectFit;
         volumeControlButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
         volumeControlButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
-        volumeControlButton.tintColor = [UIColor redColor];
+        volumeControlButton.tintColor = [UIColor JPColor];
         [volumeControlButton makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(controlContainer).offset(5);
             make.centerY.equalTo(controlContainer);
@@ -103,7 +103,7 @@
         skipPrevButton.contentMode = UIViewContentModeScaleAspectFit;
         skipPrevButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
         skipPrevButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
-        skipPrevButton.tintColor = [UIColor redColor];
+        skipPrevButton.tintColor = [UIColor JPColor];
         [skipPrevButton addTarget:self action:@selector(skipPrev:) forControlEvents:UIControlEventTouchUpInside];
         [skipPrevButton makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(volumeControlButton.right).offset(5);
@@ -117,7 +117,7 @@
         _playPauseButton.contentMode = UIViewContentModeScaleAspectFit;
         _playPauseButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
         _playPauseButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
-        _playPauseButton.tintColor = [UIColor redColor];
+        _playPauseButton.tintColor = [UIColor JPColor];
         [_playPauseButton addTarget:self action:@selector(playPause:) forControlEvents:UIControlEventTouchUpInside];
         [_playPauseButton makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(skipPrevButton.right).offset(5);
@@ -131,7 +131,7 @@
         skipNextButton.contentMode = UIViewContentModeScaleAspectFit;
         skipNextButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
         skipNextButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
-        skipNextButton.tintColor = [UIColor redColor];
+        skipNextButton.tintColor = [UIColor JPColor];
         [skipNextButton addTarget:self action:@selector(skipNext:) forControlEvents:UIControlEventTouchUpInside];
         [skipNextButton makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(_playPauseButton.right).offset(5);

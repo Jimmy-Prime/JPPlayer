@@ -32,13 +32,14 @@
     _list.dataSource = self;
     _list.delegate = self;
     _list.backgroundColor = [UIColor clearColor];
+    _list.separatorColor = [UIColor JPSeparatorColor];
     [self.view addSubview:_list];
     [_list makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
     
     _fakeHeaderView = [[UIView alloc] init];
-    _fakeHeaderView.backgroundColor = [UIColor lightGrayColor];
+    _fakeHeaderView.backgroundColor = [UIColor JPFakeHeaderColor];
     [self.view addSubview:_fakeHeaderView];
     [_fakeHeaderView makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.left.right.equalTo(_topView);

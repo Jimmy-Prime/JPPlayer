@@ -13,9 +13,14 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.backgroundColor = [UIColor darkGrayColor];
+        self.backgroundColor = [UIColor JPBackgroundColor];
+        
+        UIView *backgroundColorView = [[UIView alloc] init];
+        backgroundColorView.backgroundColor = [UIColor JPSelectedCellColor];
+        self.selectedBackgroundView = backgroundColorView;
         
         _titleLabel = [[UILabel alloc] init];
+        _titleLabel.textColor = [UIColor whiteColor];
         [self addSubview:_titleLabel];
         [_titleLabel makeConstraints:^(MASConstraintMaker *make) {
             make.top.right.equalTo(self);
@@ -24,6 +29,7 @@
         }];
         
         _auxilaryLabel = [[UILabel alloc] init];
+        _auxilaryLabel.textColor = [UIColor grayColor];
         [self addSubview:_auxilaryLabel];
         [_auxilaryLabel makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.right.equalTo(self);

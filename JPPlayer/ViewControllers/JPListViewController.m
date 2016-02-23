@@ -34,7 +34,7 @@ enum ContainerState {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    [self.view setBackgroundColor:[UIColor grayColor]];
+    [self.view setBackgroundColor:[UIColor JPBackgroundColor]];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spotifySession:) name:@"SpotifySession" object:nil];
 
@@ -44,7 +44,8 @@ enum ContainerState {
     _listsTableView = [[UITableView alloc] init];
     _listsTableView.dataSource = self;
     _listsTableView.delegate = self;
-    _listsTableView.backgroundColor = [UIColor clearColor];
+    _listsTableView.backgroundColor = [UIColor JPBackgroundColor];
+    _listsTableView.separatorColor = [UIColor JPSeparatorColor];
     [self.view addSubview:_listsTableView];
     [_listsTableView makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.left.equalTo(self.view);
@@ -121,7 +122,7 @@ enum ContainerState {
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     if (section == 0) { // spotify header
         UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ContainerWidth, 120)];
-        header.backgroundColor = [UIColor greenColor];
+        header.backgroundColor = [UIColor JPColor];
         return header;
     }
     
