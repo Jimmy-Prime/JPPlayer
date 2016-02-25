@@ -20,8 +20,6 @@
     
     self.view.backgroundColor = [UIColor JPColor];
     
-    // [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spotifySession:) name:@"SpotifySession" object:nil];
-    
     UIButton *spotifyLoginButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [spotifyLoginButton setImage: [[UIImage imageNamed: @"spotify_login"] imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal] forState: UIControlStateNormal];
     spotifyLoginButton.contentMode = UIViewContentModeScaleToFill;

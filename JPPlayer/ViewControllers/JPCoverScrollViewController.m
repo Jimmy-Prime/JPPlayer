@@ -43,7 +43,7 @@
     
     _midPage = 2;
     for (int i=0; i<2*_midPage+1; ++i) {
-        JPCoverImageView *view = [[JPCoverImageView alloc] initWithFrame:CGRectMake(0, 0, 600, 600)];
+        JPCoverImageView *view = [[JPCoverImageView alloc] initWithFrame:CGRectMake(0, 0, CoverLength, CoverLength)];
         view.image = [UIImage imageNamed:@"PlaceHolder.jpg"];
         view.contentMode = UIViewContentModeScaleToFill;
         [_coverScrollView addSubview:view];

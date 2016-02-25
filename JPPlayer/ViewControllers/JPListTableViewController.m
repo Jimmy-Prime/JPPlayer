@@ -78,11 +78,23 @@
     overlayView.layer.cornerRadius = 20.f;
     [_topView addSubview:overlayView];
     [overlayView makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(_blurBackgroundImageView);
-        make.top.greaterThanOrEqualTo(_blurBackgroundImageView);
+        make.left.equalTo(_blurBackgroundImageView.right);
+        make.width.equalTo(_blurBackgroundImageView);
         make.bottom.greaterThanOrEqualTo(_topView).offset(-FakeHeaderHeight);
         make.height.equalTo(@(ContainerWidth - FakeHeaderHeight));
     }];
+    [self.view layoutIfNeeded];
+    
+    [UIView animateWithDuration:AnimationInterval delay:AnimationInterval options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        [overlayView remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.equalTo(_blurBackgroundImageView);
+            make.top.greaterThanOrEqualTo(_blurBackgroundImageView);
+            make.bottom.greaterThanOrEqualTo(_topView).offset(-FakeHeaderHeight);
+            make.height.equalTo(@(ContainerWidth - FakeHeaderHeight));
+        }];
+        [self.view layoutIfNeeded];
+    } completion:nil];
+    
     
     _profileImageView = [[UIImageView alloc] initWithImage:placeHolder];
     _profileImageView.tintColor = [UIColor JPColor];

@@ -12,6 +12,7 @@
 @interface JPSingerTableViewController () <UIScrollViewDelegate>
 
 @property (strong, nonatomic) UIImageView *blurBackgroundImageView;
+@property (strong, nonatomic) UIVisualEffectView *blurEffectView;
 @property (strong, nonatomic) UIView *overlayView;
 
 @end
@@ -36,6 +37,12 @@
     [_topView addSubview:_blurBackgroundImageView];
     [_blurBackgroundImageView makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(_topView);
+    }];
+    
+    _blurEffectView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]];
+    [_blurBackgroundImageView addSubview:_blurEffectView];
+    [_blurEffectView makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(_blurBackgroundImageView);
     }];
     
     _overlayView = [[UIView alloc] init];
