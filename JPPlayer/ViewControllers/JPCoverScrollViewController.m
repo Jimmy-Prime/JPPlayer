@@ -47,6 +47,11 @@
         view.image = [UIImage imageNamed:@"PlaceHolder.jpg"];
         view.contentMode = UIViewContentModeScaleToFill;
         [_coverScrollView addSubview:view];
+        
+        view.needsCrossFade = YES;
+        if (i == _midPage) {
+            view.needsCrossFade = NO;
+        }
     }
 }
 
@@ -104,7 +109,10 @@
             for (NSUInteger i=_coverScrollView.subviews.count-1; i>0; --i) {
                 JPCoverImageView *destination = _coverScrollView.subviews[i];
                 JPCoverImageView *source = _coverScrollView.subviews[i-1];
+                BOOL needsCrossFade = destination.needsCrossFade;
+                destination.needsCrossFade = NO;
                 [destination setWith:source];
+                destination.needsCrossFade = needsCrossFade;
             }
         }
         else if (newPage > _midPage) {
@@ -113,7 +121,10 @@
             for (NSUInteger i=0; i<_coverScrollView.subviews.count-1; ++i) {
                 JPCoverImageView *destination = _coverScrollView.subviews[i];
                 JPCoverImageView *source = _coverScrollView.subviews[i+1];
+                BOOL needsCrossFade = destination.needsCrossFade;
+                destination.needsCrossFade = NO;
                 [destination setWith:source];
+                destination.needsCrossFade = needsCrossFade;
             }
         }
     }
@@ -151,13 +162,13 @@
     for (int i=0; i<_coverScrollView.subviews.count; ++i) {
         JPCoverImageView *view = _coverScrollView.subviews[i];
         
-        NSUInteger count = [JPSpotifyPlayer defaultInstance].URIs.count;
+        NSUInteger count = [JPSpotifyPlayer defaultInstance].activeURIs.count;
         if ([JPSpotifyPlayer defaultInstance].playbackState == JPSpotifyPlaybackNone && (index + i - 2 < 0 || index + i - 2 >= count)) {
             [view setImage:[UIImage imageNamed:@"PlaceHolder.jpg"]];
             view.spotifyURI = nil;
         }
         else {
-            NSURL *URI = [JPSpotifyPlayer defaultInstance].URIs[(index + i - 2 + count) % count];
+            NSURL *URI = [JPSpotifyPlayer defaultInstance].activeURIs[(index + i - 2 + count) % count];
             if (view.spotifyURI != URI) {
                 view.spotifyURI = URI;
                 [SPTTrack trackWithURI:URI session:[SPTAuth defaultInstance].session callback:^(NSError *error, SPTTrack *track) {

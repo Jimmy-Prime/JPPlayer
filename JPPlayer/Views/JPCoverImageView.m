@@ -15,4 +15,17 @@
     self.image = JPCover.image;
 }
 
+- (void)setImage:(UIImage *)image {
+    if (!_needsCrossFade) {
+        [super setImage:image];
+    }
+    else {
+        CATransition *fadeTransition = [CATransition animation];
+        fadeTransition.duration = AnimationInterval;
+        fadeTransition.type = kCATransitionFade;
+        [super setImage:image];
+        [self.layer addAnimation:fadeTransition forKey:nil];
+    }
+}
+
 @end

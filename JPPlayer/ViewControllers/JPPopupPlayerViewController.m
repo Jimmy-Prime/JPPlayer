@@ -17,7 +17,7 @@
 @property (strong, nonatomic) JPCoverScrollViewController *coverViewController;
 @property (strong, nonatomic) JPPopupControlViewController *controlViewController;
 
-@property (nonatomic, strong) UIVisualEffectView *blurEffectView;
+@property (strong, nonatomic) UIVisualEffectView *blurEffectView;
 @property (strong, nonatomic) UIImageView *blurBackgroundImageView;
 
 @end

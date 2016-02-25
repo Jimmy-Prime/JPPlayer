@@ -25,7 +25,7 @@ typedef enum {
 
 @property (nonatomic) JPSpotifyPlayback playbackState;
 @property (nonatomic) BOOL shuffle;
-@property (strong, nonatomic) NSArray *URIs;
+@property (strong, nonatomic) NSArray *activeURIs;
 @property (nonatomic) NSUInteger index;
 
 #define SpotifyShowNextTrackAnimation @"SpotifyShowNextTrackAnimation"

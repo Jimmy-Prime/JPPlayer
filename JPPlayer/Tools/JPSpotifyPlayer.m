@@ -8,6 +8,13 @@
 
 #import "JPSpotifyPlayer.h"
 
+@interface JPSpotifyPlayer()
+
+@property (strong, nonatomic) NSArray *URIs;
+@property (strong, nonatomic) NSArray *shuffleURIs;
+
+@end
+
 @implementation JPSpotifyPlayer
 
 static id defaultInstance;
@@ -29,10 +36,22 @@ static SPTAudioStreamingController *_player = nil;
 - (void)setShuffle:(BOOL)shuffle {
     _shuffle = shuffle;
     
-    if (shuffle && _URIs) {
-        _URIs = [self shuffleArray];
-        [[NSNotificationCenter defaultCenter] postNotificationName:SpotifyDidChangePlaybackMode object:nil];
+    if (shuffle) {
+        _shuffleURIs = [self shuffleArray];
+        _activeURIs = _shuffleURIs;
     }
+    else {
+        _activeURIs = _URIs;
+        
+        for (NSUInteger i=0; i<_URIs.count; ++i) {
+            if ([_URIs[i] isEqual:_shuffleURIs[_index]]) {
+                _index = i;
+                break;
+            }
+        }
+    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SpotifyDidChangePlaybackMode object:nil];
 }
 
 - (NSArray *)shuffleArray {
@@ -77,16 +96,22 @@ static SPTAudioStreamingController *_player = nil;
 }
 
 - (void)playURIs:(NSArray *)URIs fromIndex:(NSInteger)index {
-//  This is part is hanging due to SPTAudioStreamingController can only hold 100 URIs
+//  This is part is a work around due to SPTAudioStreamingController can only hold 100 URIs
 //  And issue https://github.com/spotify/ios-sdk/issues/367
-
-    _URIs = URIs;
+// Trick is place only one URI in SPTAudioStreamingController
+    
     _index = index;
+    _URIs = URIs;
+    _shuffleURIs = [self shuffleArray];
+    
     if (_shuffle) {
-        _URIs = [self shuffleArray];
-        [[NSNotificationCenter defaultCenter] postNotificationName:SpotifyDidChangePlaybackMode object:nil];
+        _activeURIs = _shuffleURIs;
     }
-    [[JPSpotifyPlayer player] playURIs:@[URIs[index]] fromIndex:0 callback:nil];
+    else {
+        _activeURIs = _URIs;
+    }
+    
+    [[JPSpotifyPlayer player] playURIs:@[_activeURIs[index]] fromIndex:0 callback:nil];
 }
 
 - (void)playPrevious {
@@ -95,30 +120,30 @@ static SPTAudioStreamingController *_player = nil;
             [[JPSpotifyPlayer player] stop:nil];
         }
         else {
-            _index = _URIs.count - 1;
-            [[JPSpotifyPlayer player] playURIs:@[_URIs[_index]] fromIndex:0 callback:nil];
+            _index = _activeURIs.count - 1;
+            [[JPSpotifyPlayer player] playURIs:@[_activeURIs[_index]] fromIndex:0 callback:nil];
         }
     }
     else {
         _index--;
-        [[JPSpotifyPlayer player] playURIs:@[_URIs[_index]] fromIndex:0 callback:nil];
+        [[JPSpotifyPlayer player] playURIs:@[_activeURIs[_index]] fromIndex:0 callback:nil];
     }
 }
 
 - (void)playNext {
     _index++;
-    if (_index == _URIs.count) {
+    if (_index == _activeURIs.count) {
         _index = 0;
         if (_playbackState == JPSpotifyPlaybackNone) {
-            _index = _URIs.count - 1;
+            _index = _activeURIs.count - 1;
             [[JPSpotifyPlayer player] stop:nil];
         }
         else {
-            [[JPSpotifyPlayer player] playURIs:@[_URIs[_index]] fromIndex:0 callback:nil];
+            [[JPSpotifyPlayer player] playURIs:@[_activeURIs[_index]] fromIndex:0 callback:nil];
         }
     }
     else {
-        [[JPSpotifyPlayer player] playURIs:@[_URIs[_index]] fromIndex:0 callback:nil];
+        [[JPSpotifyPlayer player] playURIs:@[_activeURIs[_index]] fromIndex:0 callback:nil];
     }
 }
 
@@ -147,7 +172,7 @@ static SPTAudioStreamingController *_player = nil;
         NSLog(@"nil trackMetadata"); // skip to next track
         
         if (_playbackState == JPSpotifyPlaybackOne) {
-            [[JPSpotifyPlayer player] playURIs:@[_URIs[_index]] fromIndex:0 callback:nil];
+            [[JPSpotifyPlayer player] playURIs:@[_activeURIs[_index]] fromIndex:0 callback:nil];
         }
         else {
             [self playNext];

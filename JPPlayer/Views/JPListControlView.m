@@ -205,12 +205,12 @@
 }
 
 - (void)more:(UIControl *)control {
-    [UIView animateWithDuration:0.3f animations:^{
+    [UIView animateWithDuration:AnimationInterval animations:^{
         _more.alpha = 0.f;
         _less.alpha = 1.f;
         _secondSection.alpha = 1.f;
     } completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.3f animations:^{
+        [UIView animateWithDuration:AnimationInterval animations:^{
             [_firstLeft uninstall];
             [_secondLeft install];
             [self layoutIfNeeded];
@@ -219,12 +219,12 @@
 }
 
 - (void)less:(UIControl *)control {
-    [UIView animateWithDuration:0.3f animations:^{
+    [UIView animateWithDuration:AnimationInterval animations:^{
         [_firstLeft install];
         [_secondLeft uninstall];
         [self layoutIfNeeded];
     } completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.3f animations:^{
+        [UIView animateWithDuration:AnimationInterval animations:^{
             _more.alpha = 1.f;
             _less.alpha = 0.f;
             _secondSection.alpha = 0.f;

@@ -12,6 +12,7 @@
 
 - (void)setWith:(JPCoverImageView *)JPCover;
 
+@property (nonatomic) BOOL needsCrossFade;
 @property (strong, nonatomic) NSURL *spotifyURI;
 
 @end
