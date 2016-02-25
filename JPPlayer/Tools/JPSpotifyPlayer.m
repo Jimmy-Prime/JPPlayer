@@ -109,12 +109,12 @@ static SPTAudioStreamingController *_player = nil;
     _index++;
     if (_index == _URIs.count) {
         _index = 0;
-        if (_playbackState == JPSpotifyPlaybackCycle) {
-            [[JPSpotifyPlayer player] playURIs:@[_URIs[_index]] fromIndex:0 callback:nil];
+        if (_playbackState == JPSpotifyPlaybackNone) {
+            _index = _URIs.count - 1;
+            [[JPSpotifyPlayer player] stop:nil];
         }
         else {
-            _index--;
-            [[JPSpotifyPlayer player] stop:nil];
+            [[JPSpotifyPlayer player] playURIs:@[_URIs[_index]] fromIndex:0 callback:nil];
         }
     }
     else {

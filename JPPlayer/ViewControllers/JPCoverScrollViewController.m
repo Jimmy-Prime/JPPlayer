@@ -96,22 +96,25 @@
         newPage = floor((scrollView.contentOffset.x - pageLength / 2.f) / pageLength) + 1;
     }
     
-    if (newPage < _midPage) {
-        [[JPSpotifyPlayer defaultInstance] playPrevious];
-        
-        for (NSUInteger i=_coverScrollView.subviews.count-1; i>0; --i) {
-            JPCoverImageView *destination = _coverScrollView.subviews[i];
-            JPCoverImageView *source = _coverScrollView.subviews[i-1];
-            [destination setWith:source];
+    JPCoverImageView *targetTrack = _coverScrollView.subviews[newPage];
+    if (targetTrack.spotifyURI) {
+        if (newPage < _midPage) {
+            [[JPSpotifyPlayer defaultInstance] playPrevious];
+            
+            for (NSUInteger i=_coverScrollView.subviews.count-1; i>0; --i) {
+                JPCoverImageView *destination = _coverScrollView.subviews[i];
+                JPCoverImageView *source = _coverScrollView.subviews[i-1];
+                [destination setWith:source];
+            }
         }
-    }
-    else if (newPage > _midPage) {
-        [[JPSpotifyPlayer defaultInstance] playNext];
-        
-        for (NSUInteger i=0; i<_coverScrollView.subviews.count-1; ++i) {
-            JPCoverImageView *destination = _coverScrollView.subviews[i];
-            JPCoverImageView *source = _coverScrollView.subviews[i+1];
-            [destination setWith:source];
+        else if (newPage > _midPage) {
+            [[JPSpotifyPlayer defaultInstance] playNext];
+            
+            for (NSUInteger i=0; i<_coverScrollView.subviews.count-1; ++i) {
+                JPCoverImageView *destination = _coverScrollView.subviews[i];
+                JPCoverImageView *source = _coverScrollView.subviews[i+1];
+                [destination setWith:source];
+            }
         }
     }
     
@@ -124,7 +127,7 @@
         bounds.origin.x = CGRectGetWidth(bounds) * _midPage;
         bounds.origin.y = 0.f;
     }
-    [_coverScrollView scrollRectToVisible:bounds animated:NO];
+    [_coverScrollView scrollRectToVisible:bounds animated:!targetTrack.spotifyURI];
 }
 
 - (void)spotifyDidChangeToTrack:(NSNotification *)notification {
@@ -154,7 +157,7 @@
             view.spotifyURI = nil;
         }
         else {
-            NSURL *URI = [JPSpotifyPlayer defaultInstance].URIs[(index + i - 2) % count];
+            NSURL *URI = [JPSpotifyPlayer defaultInstance].URIs[(index + i - 2 + count) % count];
             if (view.spotifyURI != URI) {
                 view.spotifyURI = URI;
                 [SPTTrack trackWithURI:URI session:[SPTAuth defaultInstance].session callback:^(NSError *error, SPTTrack *track) {
