@@ -71,6 +71,8 @@
             
             NSLog(@"Session refreshed");
             [SPTAuth defaultInstance].session = session;
+            [JPSpotifyPlayer player];
+            [[NSNotificationCenter defaultCenter] postNotificationName:SpotifySessionKey object:nil userInfo:@{SpotifySessionKey: session}];
         }];
     }
     else {
