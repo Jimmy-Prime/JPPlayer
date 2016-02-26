@@ -34,7 +34,6 @@
 		4BC109211C7341430050E1EF /* JPListControlCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC109201C7341430050E1EF /* JPListControlCell.m */; };
 		4BE53CBA1C4CB52300CA5B58 /* JPContainerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE53CB91C4CB52300CA5B58 /* JPContainerTableViewController.m */; };
 		4BE53CBE1C4CE45A00CA5B58 /* JPSingerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE53CBD1C4CE45A00CA5B58 /* JPSingerTableViewController.m */; };
-		4BE53CC11C4CF2FD00CA5B58 /* UIImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE53CC01C4CF2FC00CA5B58 /* UIImageEffects.m */; };
 		4BEFCA9D1C552A9A0051750A /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BEFCA9C1C552A9A0051750A /* AVFoundation.framework */; };
 		4BEFCA9F1C552B6C0051750A /* Spotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BEFCA9E1C552B6B0051750A /* Spotify.framework */; };
 		4BEFCAA51C552C820051750A /* JPSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BEFCAA41C552C820051750A /* JPSettingsViewController.m */; };
@@ -117,8 +116,6 @@
 		4BE53CB91C4CB52300CA5B58 /* JPContainerTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPContainerTableViewController.m; path = ViewControllers/JPContainerTableViewController.m; sourceTree = "<group>"; };
 		4BE53CBC1C4CE45A00CA5B58 /* JPSingerTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPSingerTableViewController.h; path = ViewControllers/JPSingerTableViewController.h; sourceTree = "<group>"; };
 		4BE53CBD1C4CE45A00CA5B58 /* JPSingerTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPSingerTableViewController.m; path = ViewControllers/JPSingerTableViewController.m; sourceTree = "<group>"; };
-		4BE53CBF1C4CF2FC00CA5B58 /* UIImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIImageEffects.h; sourceTree = "<group>"; };
-		4BE53CC01C4CF2FC00CA5B58 /* UIImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIImageEffects.m; sourceTree = "<group>"; };
 		4BEFCA9C1C552A9A0051750A /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		4BEFCA9E1C552B6B0051750A /* Spotify.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Spotify.framework; sourceTree = "<group>"; };
 		4BEFCAA31C552C820051750A /* JPSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPSettingsViewController.h; path = ViewControllers/JPSettingsViewController.h; sourceTree = "<group>"; };
@@ -170,8 +167,6 @@
 				4BFFABF71C7C662E00E9CE37 /* UIColor+JPColor.m */,
 				4B0A96001C5C877B0038C9B9 /* JPSpotifyPlayer.h */,
 				4B0A96011C5C877B0038C9B9 /* JPSpotifyPlayer.m */,
-				4BE53CBF1C4CF2FC00CA5B58 /* UIImageEffects.h */,
-				4BE53CC01C4CF2FC00CA5B58 /* UIImageEffects.m */,
 			);
 			name = Tools;
 			sourceTree = "<group>";
@@ -562,7 +557,6 @@
 				4B27F15B1C1A9AFF009FCBE6 /* Constants.m in Sources */,
 				4B1CE5F21C42D37100AC731A /* JPTrackLabel.m in Sources */,
 				4BA85D921C15748400D78EB9 /* main.m in Sources */,
-				4BE53CC11C4CF2FD00CA5B58 /* UIImageEffects.m in Sources */,
 				4B27F1551C1A6155009FCBE6 /* TestViewController.m in Sources */,
 				4BE53CBA1C4CB52300CA5B58 /* JPContainerTableViewController.m in Sources */,
 				4B81D9AC1C7B21C400585711 /* JPCoverImageView.m in Sources */,

@@ -9,8 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <CoreGraphics/CoreGraphics.h>
 
+extern NSString *SpotifySessionKey;
 extern NSString *SpotifyClientId;
 extern NSString *SpotifyRedirectURL;
+extern NSString *SpotifySwapURL;
+extern NSString *SpotifyRefreshURL;
 
 extern CGFloat LeftBarWidth;
 extern CGFloat PlayerViewHeight;

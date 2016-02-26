@@ -36,11 +36,6 @@ enum ContainerState {
     
     [self.view setBackgroundColor:[UIColor JPBackgroundColor]];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spotifySession:) name:@"SpotifySession" object:nil];
-
-    SPTSession *session = [[SPTAuth defaultInstance] session];
-    [self checkSession:session];
-    
     _listsTableView = [[UITableView alloc] init];
     _listsTableView.dataSource = self;
     _listsTableView.delegate = self;
@@ -53,15 +48,15 @@ enum ContainerState {
     }];
     
     _containerList = [[NSMutableArray alloc] init];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spotifySession:) name:SpotifySessionKey object:nil];
+    
+    [self checkSession];
 }
 
-- (void)checkSession:(SPTSession *)session {
-    if (!session) {
-        NSLog(@"No session");
-        return;
-    }
-    
-    if ([session isValid]) {
+- (void)checkSession {
+    SPTSession *session = [SPTAuth defaultInstance].session;
+    if (session && [session isValid]) {
         [SPTPlaylistList playlistsForUserWithSession:session callback:^(NSError *error, SPTPlaylistList *lists) {
             if (error) {
                 NSLog(@"error: %@", error);
@@ -72,16 +67,10 @@ enum ContainerState {
             [_listsTableView reloadData];
         }];
     }
-    else {
-        // TODO: refresh token
-        NSLog(@"Invalid session");
-    }
 }
 
 - (void)spotifySession:(NSNotification *)notification {
-    NSDictionary *userInfo = notification.userInfo;
-    SPTSession *session = [userInfo objectForKey:@"SpotifySession"];
-    [self checkSession:session];
+    [self checkSession];
 }
 
 
@@ -123,6 +112,15 @@ enum ContainerState {
     if (section == 0) { // spotify header
         UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ContainerWidth, 120)];
         header.backgroundColor = [UIColor JPColor];
+//        
+//        UIView *view = [[UIView alloc] init];
+//        view.backgroundColor = [UIColor orangeColor];
+//        [header addSubview:view];
+//        [view makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.left.equalTo(header).offset(20);
+//            make.width.height.equalTo(@(50));
+//        }];
+//        
         return header;
     }
     
@@ -166,22 +164,6 @@ enum ContainerState {
 }
 
 #pragma mark - Other actions
-- (void)resetContainerButton:(UIButton *)button {
-    for (JPContainerViewController *container in _containerList) {
-        [container.view removeFromSuperview];
-    }
-    [_containerList removeAllObjects];
-    [self addOneContainer];
-    [self.view layoutIfNeeded];
-    [UIView animateWithDuration:AnimationInterval animations:^{
-        JPContainerViewController *last = [_containerList lastObject];
-        last.view.tag = Right;
-        [last.dock uninstall];
-        [last.right install];
-        [self.view layoutIfNeeded];
-    }];
-}
-
 - (void)addOneContainer:(JPContainerViewController *)container {
     [self.view addSubview:container.view];
     
@@ -207,80 +189,6 @@ enum ContainerState {
     [container.view addGestureRecognizer:container.pan];
     
     [_containerList addObject:container];
-}
-
-- (void)addOneContainer {
-    JPContainerViewController *container;
-    switch (arc4random() % 4) {
-        case 0:
-            container = [[JPContainerViewController alloc] init];
-            break;
-            
-        case 1:
-            container = [[JPContainerTableViewController alloc] init];
-            break;
-            
-        case 2:
-            container = [[JPListTableViewController alloc] init];
-            break;
-            
-        case 3:
-            container = [[JPSingerTableViewController alloc] init];
-            break;
-            
-        default:
-            break;
-    }
-    [self.view addSubview:container.view];
-    
-    JPContainerViewController *prev = [_containerList lastObject];
-    [prev.view updateConstraints:^(MASConstraintMaker *make) {
-        make.right.greaterThanOrEqualTo(container.view.left);
-    }];
-    
-    container.view.tag = Dock;
-    [container.view makeConstraints:^(MASConstraintMaker *make) {
-        make.top.bottom.equalTo(self.view);
-        make.left.greaterThanOrEqualTo(self.view);
-        make.width.equalTo(@(ContainerWidth));
-        container.left = make.left.equalTo(self.view).priorityLow();
-        container.right = make.right.equalTo(self.view).priorityLow();
-        container.dock = make.left.equalTo(self.view.right).priorityLow();
-    }];
-    
-    [container.left uninstall];
-    [container.right uninstall];
-    
-    container.pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
-    [container.view addGestureRecognizer:container.pan];
-    
-    [_containerList addObject:container];
-}
-
-- (void)tap:(UIButton *)button {
-    UIView *view = button.superview;
-    
-    JPContainerViewController *container;
-    container = [_containerList lastObject];
-    if (container.view != view) {
-        return;
-    }
-    
-    [self addOneContainer];
-    [self.view layoutIfNeeded];
-    
-    view.tag = Left;
-    [UIView animateWithDuration:AnimationInterval animations:^{
-        [container.right uninstall];
-        [container.left install];
-        
-        JPContainerViewController *last = [_containerList lastObject];
-        last.view.tag = Right;
-        [last.dock uninstall];
-        [last.right install];
-        
-        [self.view layoutIfNeeded];
-    }];
 }
 
 - (void)pan:(UIPanGestureRecognizer *)pan {

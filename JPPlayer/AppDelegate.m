@@ -25,7 +25,7 @@
         
         [SPTAuth defaultInstance].session = session;
         [JPSpotifyPlayer player];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"SpotifySession" object:nil userInfo:@{@"SpotifySession": session}];
+        [[NSNotificationCenter defaultCenter] postNotificationName:SpotifySessionKey object:nil userInfo:@{SpotifySessionKey: session}];
     };
     
     if ([[SPTAuth defaultInstance] canHandleURL:url]) {
@@ -37,35 +37,52 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
-    
     srand48(arc4random());
     
-    [[SPTAuth defaultInstance] setClientID:SpotifyClientId];
-    [[SPTAuth defaultInstance] setRedirectURL:[NSURL URLWithString:SpotifyRedirectURL]];
-    [[SPTAuth defaultInstance] setRequestedScopes:@[SPTAuthStreamingScope, SPTAuthPlaylistReadPrivateScope]];
+    SPTAuth *auth = [SPTAuth defaultInstance];
+    auth.sessionUserDefaultsKey = SpotifySessionKey;
+    auth.clientID = SpotifyClientId;
+    auth.redirectURL = [NSURL URLWithString:SpotifyRedirectURL];
+    auth.tokenRefreshURL = [NSURL URLWithString:SpotifyRefreshURL];
+    auth.tokenSwapURL = [NSURL URLWithString:SpotifySwapURL];
+    auth.requestedScopes = @[SPTAuthPlaylistReadPrivateScope,
+                             SPTAuthStreamingScope,
+                             SPTAuthUserLibraryReadScope,
+                             SPTAuthUserReadPrivateScope];
     
-    NSData *spotifySessionData = [[NSUserDefaults standardUserDefaults] objectForKey:@"SpotifySession"];
-    SPTSession *session = [NSKeyedUnarchiver unarchiveObjectWithData:spotifySessionData];
-    if (session) {
-        NSLog(@"available old session");
-        [SPTAuth defaultInstance].session = session;
-        [JPSpotifyPlayer player];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"SpotifySession" object:nil userInfo:@{@"SpotifySession": session}];
+    SPTSession *session = [SPTAuth defaultInstance].session;
+    if (!session) {
+        NSLog(@"No session");
     }
-    
+    else if ([session isValid]) {
+        NSLog(@"Valid session");
+        
+        [JPSpotifyPlayer player];
+        [[NSNotificationCenter defaultCenter] postNotificationName:SpotifySessionKey object:nil userInfo:@{SpotifySessionKey: session}];
+    }
+    else if ([SPTAuth defaultInstance].hasTokenRefreshService) {
+        NSLog(@"Session expired");
+        
+        [[SPTAuth defaultInstance] renewSession:session callback:^(NSError *error, SPTSession *session) {
+            if (error) {
+                NSLog(@"Renew session error: %@", error);
+                return;
+            }
+            
+            NSLog(@"Session refreshed");
+            [SPTAuth defaultInstance].session = session;
+        }];
+    }
+    else {
+        NSLog(@"Session expired, cannot refresh");
+    }
+        
     return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-    
-    NSLog(@"will resign active");
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSData *spotifySessionData = [NSKeyedArchiver archivedDataWithRootObject:[[SPTAuth defaultInstance] session]];
-    [userDefaults setObject:spotifySessionData forKey:@"SpotifySession"];
-    [userDefaults synchronize];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {

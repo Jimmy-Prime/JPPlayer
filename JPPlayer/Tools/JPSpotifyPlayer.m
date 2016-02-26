@@ -82,7 +82,7 @@ static SPTAudioStreamingController *_player = nil;
     
     if (![_player loggedIn]) {
         NSLog(@"$$$ Not yet logged in");
-        [_player loginWithSession:[[SPTAuth defaultInstance] session] callback:^(NSError *error) {
+        [_player loginWithSession:[SPTAuth defaultInstance].session callback:^(NSError *error) {
             if (error) {
                 NSLog(@"$$$ Player login error: %@", error);
                 return;
