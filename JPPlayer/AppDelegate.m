@@ -17,19 +17,16 @@
 @implementation AppDelegate
 
 -(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    SPTAuthCallback authCallback = ^(NSError *error, SPTSession *session) {
-        if (error != nil) {
-            NSLog(@"openURL error: %@", error);
-            return;
-        }
-        
-        [SPTAuth defaultInstance].session = session;
-        [JPSpotifyPlayer player];
-        [[NSNotificationCenter defaultCenter] postNotificationName:SpotifySessionKey object:nil userInfo:@{SpotifySessionKey: session}];
-    };
-    
     if ([[SPTAuth defaultInstance] canHandleURL:url]) {
-        [[SPTAuth defaultInstance] handleAuthCallbackWithTriggeredAuthURL:url callback:authCallback];
+        [[SPTAuth defaultInstance] handleAuthCallbackWithTriggeredAuthURL:url callback:^(NSError *error, SPTSession *session) {
+            if (error != nil) {
+                NSLog(@"openURL error: %@", error);
+                return;
+            }
+            
+            [SPTAuth defaultInstance].session = session;
+            [[NSNotificationCenter defaultCenter] postNotificationName:SpotifySessionKey object:nil];
+        }];
         return YES;
     }
     
@@ -50,35 +47,6 @@
                              SPTAuthUserLibraryReadScope,
                              SPTAuthUserReadPrivateScope];
     
-    SPTSession *session = [SPTAuth defaultInstance].session;
-    if (!session) {
-        NSLog(@"No session");
-    }
-    else if ([session isValid]) {
-        NSLog(@"Valid session");
-        
-        [JPSpotifyPlayer player];
-        [[NSNotificationCenter defaultCenter] postNotificationName:SpotifySessionKey object:nil userInfo:@{SpotifySessionKey: session}];
-    }
-    else if ([SPTAuth defaultInstance].hasTokenRefreshService) {
-        NSLog(@"Session expired");
-        
-        [[SPTAuth defaultInstance] renewSession:session callback:^(NSError *error, SPTSession *session) {
-            if (error) {
-                NSLog(@"Renew session error: %@", error);
-                return;
-            }
-            
-            NSLog(@"Session refreshed");
-            [SPTAuth defaultInstance].session = session;
-            [JPSpotifyPlayer player];
-            [[NSNotificationCenter defaultCenter] postNotificationName:SpotifySessionKey object:nil userInfo:@{SpotifySessionKey: session}];
-        }];
-    }
-    else {
-        NSLog(@"Session expired, cannot refresh");
-    }
-        
     return YES;
 }
 

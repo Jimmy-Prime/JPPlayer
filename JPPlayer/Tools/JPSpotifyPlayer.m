@@ -80,18 +80,6 @@ static SPTAudioStreamingController *_player = nil;
         _player.diskCache = [[SPTDiskCache alloc] initWithCapacity:1024 * 1024 * 64];
     }
     
-    if (![_player loggedIn]) {
-        NSLog(@"$$$ Not yet logged in");
-        [_player loginWithSession:[SPTAuth defaultInstance].session callback:^(NSError *error) {
-            if (error) {
-                NSLog(@"$$$ Player login error: %@", error);
-                return;
-            }
-            
-            NSLog(@"$$$ Logged in");
-        }];
-    }
-    
     return _player;
 }
 

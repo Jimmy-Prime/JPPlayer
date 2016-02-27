@@ -116,10 +116,10 @@
     }
     
     // register notification
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(swithTab:) name:@"swithTab" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(swithTab:) name:@"switchTab" object:nil];
     
     // default tab
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"swithTab" object:nil userInfo:@{@"tab" : @(1)}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"switchTab" object:nil userInfo:@{@"tab" : @(1)}];
 }
 
 - (void)swithTab:(NSNotification *)notification {
@@ -127,6 +127,7 @@
     NSInteger index = [[userInfo objectForKey:@"tab"] integerValue];
     UIViewController *vc = [_childViewControllers objectAtIndex:index];
     [_rightContainerView bringSubviewToFront:vc.view];
+    [vc viewWillAppear:YES];
 }
 
 - (void)togglePop:(NSNotification *)notification {

@@ -24,7 +24,7 @@
         _tabs = [[NSMutableArray alloc] init];
         _lastIndex = 0;
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(swithTab:) name:@"swithTab" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchTab:) name:@"switchTab" object:nil];
         
         _indicator = [[UIView alloc] init];
         [self addSubview:_indicator];
@@ -69,10 +69,10 @@
 }
 
 - (void)tapped:(UIButton *)tab {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"swithTab" object:nil userInfo:@{@"tab" : @(tab.tag)}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"switchTab" object:nil userInfo:@{@"tab" : @(tab.tag)}];
 }
 
-- (void)swithTab:(NSNotification *)notification {
+- (void)switchTab:(NSNotification *)notification {
     NSDictionary *userInfo = notification.userInfo;
     NSInteger index = [[userInfo objectForKey:@"tab"] integerValue];
     [_indicator updateConstraints:^(MASConstraintMaker *make) {

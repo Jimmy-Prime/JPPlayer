@@ -13,6 +13,8 @@
 #import "JPListTableViewController.h"
 #import "JPSingerTableViewController.h"
 #import "JPSpotifyListViewCell.h"
+#import "JPSpotifyPlayer.h"
+#import "JPSpotifyListHeaderView.h"
 
 @interface JPListViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -36,6 +38,8 @@ enum ContainerState {
     
     [self.view setBackgroundColor:[UIColor JPBackgroundColor]];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkSpotifySession) name:SpotifySessionKey object:nil];
+    
     _listsTableView = [[UITableView alloc] init];
     _listsTableView.dataSource = self;
     _listsTableView.delegate = self;
@@ -48,32 +52,65 @@ enum ContainerState {
     }];
     
     _containerList = [[NSMutableArray alloc] init];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spotifySession:) name:SpotifySessionKey object:nil];
-    
-    [self checkSession];
 }
 
-- (void)checkSession {
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+        
+    [self checkSpotifySession];
+}
+
+- (void)checkSpotifySession {
+    NSLog(@"Check Spotify Session");
+    
     SPTSession *session = [SPTAuth defaultInstance].session;
-    if (session && [session isValid]) {
-        [SPTPlaylistList playlistsForUserWithSession:session callback:^(NSError *error, SPTPlaylistList *lists) {
+    if (!session) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"SpotifyListHeaderText" object:nil userInfo:@{@"Text" : @"No Spotify session, please log in"}];
+    }
+    else if ([session isValid]) {
+        SPTAudioStreamingController *player = [JPSpotifyPlayer player];
+        if (!player.loggedIn) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"SpotifyListHeaderText" object:nil userInfo:@{@"Text" : @"Logging in..."}];
+            
+            [player loginWithSession:session callback:^(NSError *error) {
+                if (error) {
+                    NSLog(@"Player login error: %@", error);
+                    return;
+                }
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"SpotifyListHeaderText" object:nil userInfo:@{@"Text" : @"Retrieving playlists"}];
+                
+                [SPTPlaylistList playlistsForUserWithSession:session callback:^(NSError *error, SPTPlaylistList *lists) {
+                    if (error) {
+                        NSLog(@"Get playlist error: %@", error);
+                        return;
+                    }
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"SpotifyListHeaderText" object:nil userInfo:@{@"Text" : @""}];
+                    
+                    _SpotifyLists = lists;
+                    [_listsTableView reloadData];
+                }];
+            }];
+        }
+    }
+    else if ([SPTAuth defaultInstance].hasTokenRefreshService) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"SpotifyListHeaderText" object:nil userInfo:@{@"Text" : @"Renewing session..."}];
+        
+        [[SPTAuth defaultInstance] renewSession:[SPTAuth defaultInstance].session callback:^(NSError *error, SPTSession *session) {
             if (error) {
-                NSLog(@"error: %@", error);
+                NSLog(@"Renew session error: %@", error);
                 return;
             }
             
-            _SpotifyLists = lists;
-            [_listsTableView reloadData];
+            [SPTAuth defaultInstance].session = session;
+            [self checkSpotifySession];
         }];
     }
+    else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"SpotifyListHeaderText" object:nil userInfo:@{@"Text" : @"No Spotify session, please log in"}];
+    }
 }
-
-- (void)spotifySession:(NSNotification *)notification {
-    [self checkSession];
-}
-
-
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -110,18 +147,7 @@ enum ContainerState {
 #pragma mark - UITableViewDelegate
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     if (section == 0) { // spotify header
-        UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ContainerWidth, 120)];
-        header.backgroundColor = [UIColor JPColor];
-//        
-//        UIView *view = [[UIView alloc] init];
-//        view.backgroundColor = [UIColor orangeColor];
-//        [header addSubview:view];
-//        [view makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.left.equalTo(header).offset(20);
-//            make.width.height.equalTo(@(50));
-//        }];
-//        
-        return header;
+        return [[JPSpotifyListHeaderView alloc] initWithFrame:CGRectMake(0, 0, ContainerWidth, 120)];
     }
     
     return nil;
