@@ -8,6 +8,26 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol JPSpotifyListHeaderDelegate <NSObject>
+
+- (void)refresh;
+
+@end
+
 @interface JPSpotifyListHeaderView : UIView
+
+typedef enum {
+    JPSpotifyHeaderNone,
+    JPSpotifyHeaderCreating,
+    JPSpotifyHeaderRenewing,
+    JPSpotifyHeaderLogging,
+    JPSpotifyHeaderRetrieving,
+    JPSpotifyHeaderDone,
+    JPSpotifyHeaderError
+} JPSpotifyHeaderState;
+
+@property (nonatomic) JPSpotifyHeaderState state;
+
+@property (strong, nonatomic) id<JPSpotifyListHeaderDelegate> delegate;
 
 @end

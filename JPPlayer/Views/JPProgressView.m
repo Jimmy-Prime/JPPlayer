@@ -66,6 +66,7 @@
         [_slider setThumbImage:[UIImage imageNamed:@"ic_fiber_manual_record_white_18pt"] forState:UIControlStateNormal];
         [_slider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
         [_slider addTarget:self action:@selector(sliderRelease:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
+        _slider.enabled = NO;
         [_slider makeConstraints:^(MASConstraintMaker *make) {
             make.top.bottom.equalTo(self);
             make.left.equalTo(_atTimeLabel.right);
@@ -103,26 +104,18 @@
 - (void)setAtTime:(NSUInteger)atTime {
     _atTime = atTime;
     
-    if (_atTimeLabel) {
-        _atTimeLabel.text = [NSString stringWithFormat:@"%02lu:%02lu", _atTime/60, _atTime%60];
-    }
-    
-    if (_slider) {
-        _slider.value = _atTime;
-    }
+    _atTimeLabel.text = [NSString stringWithFormat:@"%02lu:%02lu", _atTime/60, _atTime%60];
+    _slider.value = _atTime;
 }
 
 - (void)setTotalTime:(NSUInteger)totalTime {
     _totalTime = totalTime;
     
-    if (_auxTimeButton) {
-        NSString *totalTimeString = [NSString stringWithFormat:@"%02lu:%02lu", _totalTime/60, _totalTime%60];
-        [_auxTimeButton setTitle:totalTimeString forState:UIControlStateNormal];
-    }
+    _slider.enabled = YES;
     
-    if (_slider) {
-        _slider.maximumValue = _totalTime;
-    }
+    NSString *totalTimeString = [NSString stringWithFormat:@"%02lu:%02lu", _totalTime/60, _totalTime%60];
+    [_auxTimeButton setTitle:totalTimeString forState:UIControlStateNormal];
+    _slider.maximumValue = _totalTime;
 }
 
 - (void)resetDuration:(NSTimeInterval)duration {

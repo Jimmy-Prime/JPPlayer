@@ -56,8 +56,8 @@ static SPTAudioStreamingController *_player = nil;
 
 - (NSArray *)shuffleArray {
     NSMutableArray *array = [NSMutableArray arrayWithArray:_URIs];
-    
-    for (NSUInteger i = array.count-1; i>0; i--) {
+
+    for (NSInteger i = array.count-1; i>0; i--) {
         if (i == _index) {
             continue;
         }
@@ -103,6 +103,10 @@ static SPTAudioStreamingController *_player = nil;
 }
 
 - (void)playPrevious {
+    if (!_activeURIs.count) {
+        return;
+    }
+    
     if (_index == 0) {
         if (_playbackState == JPSpotifyPlaybackNone) {
             [[JPSpotifyPlayer player] stop:nil];
@@ -119,6 +123,10 @@ static SPTAudioStreamingController *_player = nil;
 }
 
 - (void)playNext {
+    if (!_activeURIs.count) {
+        return;
+    }
+    
     _index++;
     if (_index == _activeURIs.count) {
         _index = 0;
@@ -141,18 +149,12 @@ static SPTAudioStreamingController *_player = nil;
     if (trackMetadata) {
         NSString *trackURI = [trackMetadata objectForKey:@"SPTAudioStreamingMetadataTrackURI"];
         
-        NSURLRequest *trackRequest = [SPTTrack createRequestForTrack:[NSURL URLWithString:trackURI]
-                                                     withAccessToken:[[[SPTAuth defaultInstance] session] accessToken]
-                                                              market:nil
-                                                               error:nil];
-        
-        [[SPTRequest sharedHandler] performRequest:trackRequest callback:^(NSError *error, NSURLResponse *response, NSData *data) {
+        [SPTTrack trackWithURI:[NSURL URLWithString:trackURI] session:[SPTAuth defaultInstance].session callback:^(NSError *error, SPTTrack *track) {
             if (error) {
                 NSLog(@"error: %@", error);
                 return;
             }
             
-            SPTTrack *track = [SPTTrack trackFromData:data withResponse:response error:nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:SpotifyDidChangeToTrack object:nil userInfo:@{@"track" : track}];
         }];
     }

@@ -33,6 +33,7 @@
 		4BC1091E1C733C7F0050E1EF /* JPListControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC1091D1C733C7F0050E1EF /* JPListControlView.m */; };
 		4BC109211C7341430050E1EF /* JPListControlCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC109201C7341430050E1EF /* JPListControlCell.m */; };
 		4BC9E9FB1C820E3800B867CE /* JPSpotifyListHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC9E9FA1C820E3800B867CE /* JPSpotifyListHeaderView.m */; };
+		4BC9E9FE1C8291E900B867CE /* JPSpotifySession.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC9E9FD1C8291E900B867CE /* JPSpotifySession.m */; };
 		4BE53CBA1C4CB52300CA5B58 /* JPContainerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE53CB91C4CB52300CA5B58 /* JPContainerTableViewController.m */; };
 		4BE53CBE1C4CE45A00CA5B58 /* JPSingerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE53CBD1C4CE45A00CA5B58 /* JPSingerTableViewController.m */; };
 		4BEFCA9D1C552A9A0051750A /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BEFCA9C1C552A9A0051750A /* AVFoundation.framework */; };
@@ -115,6 +116,8 @@
 		4BC109201C7341430050E1EF /* JPListControlCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = JPListControlCell.m; path = Views/JPListControlCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		4BC9E9F91C820E3800B867CE /* JPSpotifyListHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPSpotifyListHeaderView.h; path = Views/JPSpotifyListHeaderView.h; sourceTree = "<group>"; };
 		4BC9E9FA1C820E3800B867CE /* JPSpotifyListHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPSpotifyListHeaderView.m; path = Views/JPSpotifyListHeaderView.m; sourceTree = "<group>"; };
+		4BC9E9FC1C8291E900B867CE /* JPSpotifySession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPSpotifySession.h; path = Tools/JPSpotifySession.h; sourceTree = "<group>"; };
+		4BC9E9FD1C8291E900B867CE /* JPSpotifySession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPSpotifySession.m; path = Tools/JPSpotifySession.m; sourceTree = "<group>"; };
 		4BE53CB81C4CB52300CA5B58 /* JPContainerTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = JPContainerTableViewController.h; path = ViewControllers/JPContainerTableViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		4BE53CB91C4CB52300CA5B58 /* JPContainerTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPContainerTableViewController.m; path = ViewControllers/JPContainerTableViewController.m; sourceTree = "<group>"; };
 		4BE53CBC1C4CE45A00CA5B58 /* JPSingerTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPSingerTableViewController.h; path = ViewControllers/JPSingerTableViewController.h; sourceTree = "<group>"; };
@@ -170,6 +173,8 @@
 				4BFFABF71C7C662E00E9CE37 /* UIColor+JPColor.m */,
 				4B0A96001C5C877B0038C9B9 /* JPSpotifyPlayer.h */,
 				4B0A96011C5C877B0038C9B9 /* JPSpotifyPlayer.m */,
+				4BC9E9FC1C8291E900B867CE /* JPSpotifySession.h */,
+				4BC9E9FD1C8291E900B867CE /* JPSpotifySession.m */,
 			);
 			name = Tools;
 			sourceTree = "<group>";
@@ -554,6 +559,7 @@
 				4BFCBA461C3F8D8D00B86DD9 /* JPPopupPlayerViewController.m in Sources */,
 				4BFCBA491C3F90FF00B86DD9 /* JPCoverScrollViewController.m in Sources */,
 				4BA85DC61C15753300D78EB9 /* JPListViewController.m in Sources */,
+				4BC9E9FE1C8291E900B867CE /* JPSpotifySession.m in Sources */,
 				4B0A95FF1C5B9E900038C9B9 /* JPSpotifyListTableViewCell.m in Sources */,
 				4BEFCAA51C552C820051750A /* JPSettingsViewController.m in Sources */,
 				4B1CE5F51C45777200AC731A /* JPPopupControlViewController.m in Sources */,

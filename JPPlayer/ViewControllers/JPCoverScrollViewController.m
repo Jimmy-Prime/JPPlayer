@@ -158,6 +158,10 @@
 }
 
 - (void)spotifyDidChangePlaybackMode {
+    if (![JPSpotifyPlayer defaultInstance].activeURIs.count) {
+        return;
+    }
+    
     NSInteger index = [JPSpotifyPlayer defaultInstance].index;
     for (int i=0; i<_coverScrollView.subviews.count; ++i) {
         JPCoverImageView *view = _coverScrollView.subviews[i];

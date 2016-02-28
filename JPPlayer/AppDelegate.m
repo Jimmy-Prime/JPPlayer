@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import "Constants.h"
-#import "JPSpotifyPlayer.h"
+#import "JPSpotifySession.h"
 
 @interface AppDelegate ()
 
@@ -18,15 +18,7 @@
 
 -(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     if ([[SPTAuth defaultInstance] canHandleURL:url]) {
-        [[SPTAuth defaultInstance] handleAuthCallbackWithTriggeredAuthURL:url callback:^(NSError *error, SPTSession *session) {
-            if (error != nil) {
-                NSLog(@"openURL error: %@", error);
-                return;
-            }
-            
-            [SPTAuth defaultInstance].session = session;
-            [[NSNotificationCenter defaultCenter] postNotificationName:SpotifySessionKey object:nil];
-        }];
+        [[SPTAuth defaultInstance] handleAuthCallbackWithTriggeredAuthURL:url callback:[JPSpotifySession defaultInstance].openURLBlock];
         return YES;
     }
     
