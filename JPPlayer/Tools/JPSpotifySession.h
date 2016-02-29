@@ -18,6 +18,7 @@ typedef enum {
 } JPSpotifySessionState;
 
 + (instancetype)defaultInstance;
+- (SPTSession *)session;
 - (void)checkSession;
 
 @property (strong, nonatomic) SPTAuthCallback openURLBlock;

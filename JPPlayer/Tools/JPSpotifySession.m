@@ -40,6 +40,11 @@ static id defaultInstance;
     return self;
 }
 
+- (SPTSession *)session {
+    [self checkSession];
+    return [SPTAuth defaultInstance].session;
+}
+
 - (void)setState:(JPSpotifySessionState)state {
     if (_state != state) {
         _state = state;

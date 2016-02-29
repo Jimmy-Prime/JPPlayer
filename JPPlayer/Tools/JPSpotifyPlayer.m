@@ -7,6 +7,7 @@
 //
 
 #import "JPSpotifyPlayer.h"
+#import "JPSpotifySession.h"
 
 @interface JPSpotifyPlayer()
 
@@ -149,7 +150,7 @@ static SPTAudioStreamingController *_player = nil;
     if (trackMetadata) {
         NSString *trackURI = [trackMetadata objectForKey:@"SPTAudioStreamingMetadataTrackURI"];
         
-        [SPTTrack trackWithURI:[NSURL URLWithString:trackURI] session:[SPTAuth defaultInstance].session callback:^(NSError *error, SPTTrack *track) {
+        [SPTTrack trackWithURI:[NSURL URLWithString:trackURI] session:[JPSpotifySession defaultInstance].session callback:^(NSError *error, SPTTrack *track) {
             if (error) {
                 NSLog(@"error: %@", error);
                 return;

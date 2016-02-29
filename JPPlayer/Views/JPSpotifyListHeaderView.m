@@ -59,7 +59,7 @@
             
         case JPSpotifyHeaderRenewing:
             _loginButton.enabled = NO;
-            _indicator.text = @"Renwing session";
+            _indicator.text = @"Renewing session";
             break;
             
         case JPSpotifyHeaderLogging:

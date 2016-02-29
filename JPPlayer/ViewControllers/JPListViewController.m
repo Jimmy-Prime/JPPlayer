@@ -67,7 +67,7 @@ typedef enum {
 }
 
 - (void)validateSpotifySession {    
-    SPTSession *session = [SPTAuth defaultInstance].session;
+    SPTSession *session = [JPSpotifySession defaultInstance].session;
     
     switch ([JPSpotifySession defaultInstance].state) {
         case JPSpotifySessionValid: {
@@ -193,7 +193,7 @@ typedef enum {
 - (void)refresh {
     _header.state = JPSpotifyHeaderRetrieving;
     
-    [SPTPlaylistList playlistsForUserWithSession:[SPTAuth defaultInstance].session callback:^(NSError *error, SPTPlaylistList *lists) {
+    [SPTPlaylistList playlistsForUserWithSession:[JPSpotifySession defaultInstance].session callback:^(NSError *error, SPTPlaylistList *lists) {
         if (error) {
             NSLog(@"Get playlist error: %@", error);
             _header.state = JPSpotifyHeaderError;

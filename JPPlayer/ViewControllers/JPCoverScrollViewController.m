@@ -9,6 +9,7 @@
 #import <UIImageView+AFNetworking.h>
 #import "JPCoverScrollViewController.h"
 #import "JPSpotifyPlayer.h"
+#import "JPSpotifySession.h"
 #import "JPCoverImageView.h"
 
 @interface JPCoverScrollViewController () <UIScrollViewDelegate>
@@ -175,7 +176,7 @@
             NSURL *URI = [JPSpotifyPlayer defaultInstance].activeURIs[(index + i - 2 + count) % count];
             if (view.spotifyURI != URI) {
                 view.spotifyURI = URI;
-                [SPTTrack trackWithURI:URI session:[SPTAuth defaultInstance].session callback:^(NSError *error, SPTTrack *track) {
+                [SPTTrack trackWithURI:URI session:[JPSpotifySession defaultInstance].session callback:^(NSError *error, SPTTrack *track) {
                     [view setImageWithURL:track.album.largestCover.imageURL];
                 }];
             }
