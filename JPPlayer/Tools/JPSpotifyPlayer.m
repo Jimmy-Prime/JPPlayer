@@ -8,6 +8,7 @@
 
 #import "JPSpotifyPlayer.h"
 #import "JPSpotifySession.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 @interface JPSpotifyPlayer()
 
@@ -27,6 +28,20 @@ static SPTAudioStreamingController *_player = nil;
         defaultInstance = [[self alloc] init];
     });
     return defaultInstance;
+}
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
+        [commandCenter.playCommand addTarget:self action:@selector(playPause)];
+        [commandCenter.pauseCommand addTarget:self action:@selector(playPause)];
+        [commandCenter.togglePlayPauseCommand addTarget:self action:@selector(playPause)];
+        [commandCenter.previousTrackCommand addTarget:self action:@selector(playPrevious)];
+        [commandCenter.nextTrackCommand addTarget:self action:@selector(playNext)];
+    }
+    
+    return self;
 }
 
 - (void)setPlaybackState:(JPSpotifyPlayback)playbackState {
@@ -103,6 +118,11 @@ static SPTAudioStreamingController *_player = nil;
     [[JPSpotifyPlayer player] playURIs:@[_activeURIs[index]] fromIndex:0 callback:nil];
 }
 
+- (void)playPause {
+    SPTAudioStreamingController *player = [JPSpotifyPlayer player];
+    [player setIsPlaying:!player.isPlaying callback:nil];
+}
+
 - (void)playPrevious {
     if (!_activeURIs.count) {
         return;
@@ -155,6 +175,21 @@ static SPTAudioStreamingController *_player = nil;
                 NSLog(@"error: %@", error);
                 return;
             }
+            
+            [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+            
+            UIImage *urlImage = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:track.album.largestCover.imageURL]];
+            MPMediaItemArtwork *cover = [[MPMediaItemArtwork alloc] initWithImage:urlImage];
+            
+            NSMutableDictionary *nowPlayingInfo = [[NSMutableDictionary alloc] init];
+            nowPlayingInfo[MPMediaItemPropertyTitle] = track.name;
+            nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = track.album.name;
+            nowPlayingInfo[MPMediaItemPropertyArtist] = ((SPTPartialArtist *)track.artists.firstObject).name;
+            nowPlayingInfo[MPMediaItemPropertyArtwork] = cover;
+            nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = @(track.duration);
+            nowPlayingInfo[MPMediaItemPropertyAlbumTrackNumber] = @(track.trackNumber);
+            
+            [MPNowPlayingInfoCenter defaultCenter].nowPlayingInfo = nowPlayingInfo;
             
             [[NSNotificationCenter defaultCenter] postNotificationName:SpotifyDidChangeToTrack object:nil userInfo:@{@"track" : track}];
         }];

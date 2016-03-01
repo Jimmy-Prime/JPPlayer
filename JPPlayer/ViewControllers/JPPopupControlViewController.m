@@ -239,8 +239,7 @@
 }
 
 - (void)playPause:(UIButton *)button {
-    SPTAudioStreamingController *player = [JPSpotifyPlayer player];
-    [player setIsPlaying:!player.isPlaying callback:nil];
+    [[JPSpotifyPlayer defaultInstance] playPause];
 }
 
 - (void)skipNext:(UIButton *)button {

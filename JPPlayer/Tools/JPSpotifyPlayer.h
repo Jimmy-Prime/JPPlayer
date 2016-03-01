@@ -20,6 +20,7 @@ typedef enum {
 + (instancetype)defaultInstance;
 + (SPTAudioStreamingController *)player;
 - (void)playURIs:(NSArray *)URIs fromIndex:(NSInteger)index;
+- (void)playPause;
 - (void)playPrevious;
 - (void)playNext;
 
