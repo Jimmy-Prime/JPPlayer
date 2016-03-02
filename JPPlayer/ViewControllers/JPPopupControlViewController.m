@@ -142,7 +142,7 @@
     _line = [[UIView alloc] init];
     [self.view addSubview:_line];
     _line.layer.borderWidth = 1.f;
-    _line.layer.borderColor = [UIColor JPColor].CGColor;
+    _line.layer.borderColor = [[UIColor JPColor] CGColor];
     [_line makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(controlContainer.bottom).offset(interval);
         make.left.equalTo(self.view).offset(interval);

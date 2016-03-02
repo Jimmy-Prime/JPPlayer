@@ -6,8 +6,8 @@
 //  Copyright © 2016 Prime. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "JPTabViewController.h"
 
-@interface JPSettingsViewController : UIViewController
+@interface JPSettingsViewController : JPTabViewController
 
 @end

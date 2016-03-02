@@ -7,91 +7,71 @@
 //
 
 #import "JPSettingsViewController.h"
+#import "JPSettingsColorViewController.h"
 
-@interface JPSettingsViewController ()
+@interface JPSettingsViewController () <UITableViewDataSource, UITableViewDelegate>
+
+
 
 @end
 
 @implementation JPSettingsViewController
+@synthesize tableView = _tableView;
+@synthesize containerList = _containerList;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     
-    self.view.backgroundColor = [UIColor JPColor];
+    _tableView = super.tableView;
+    _containerList = super.containerList;
     
-    UIButton *spotifyLoginButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [spotifyLoginButton setImage: [[UIImage imageNamed: @"spotify_login"] imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal] forState: UIControlStateNormal];
-    spotifyLoginButton.contentMode = UIViewContentModeScaleToFill;
-    spotifyLoginButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
-    spotifyLoginButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
-    [spotifyLoginButton addTarget:self action:@selector(spotifyLogin:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:spotifyLoginButton];
-    [spotifyLoginButton makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.equalTo(self.view).offset(20);
-        make.width.equalTo(@(488));
-        make.height.equalTo(@(88));
-    }];
+    [self.view setBackgroundColor:[UIColor JPBackgroundColor]];
     
-    UIButton *testButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    testButton.backgroundColor = [UIColor greenColor];
-    testButton.layer.cornerRadius = 5.f;
-    [testButton addTarget:self action:@selector(test:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:testButton];
-    [testButton makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(self.view);
-        make.width.height.equalTo(@(50));
-    }];
+    _tableView.dataSource = self;
+    _tableView.delegate = self;
 }
 
-- (void)spotifyLogin:(UIButton *)button {
-    [[UIApplication sharedApplication] openURL:[SPTAuth defaultInstance].loginURL];
+#pragma mark - UITableViewDataSource
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 10;
 }
 
-- (void)test:(UIButton *)button {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SettingsCell"];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"SettingsCell"];
+    }
     
-    SPTAuthCallback authCallback = ^(NSError *error, SPTSession *session) {
-        if (error != nil) {
-            NSLog(@"openURL error: %@", error);
-            return;
+    UIView *backgroundColorView = [[UIView alloc] init];
+    backgroundColorView.backgroundColor = [UIColor JPSelectedCellColor];
+    cell.selectedBackgroundView = backgroundColorView;
+    
+    cell.backgroundColor = [UIColor JPBackgroundColor];
+    cell.textLabel.textColor = [UIColor whiteColor];
+    cell.textLabel.text = @"Change theme color";
+    
+    return cell;
+}
+
+#pragma mark - UITableViewDelegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) { // Spotify section
+        for (JPContainerViewController *container in _containerList) {
+            [container.view removeFromSuperview];
         }
+        [_containerList removeAllObjects];
         
-        NSLog(@"Renewed session");
-        
-        [SPTAuth defaultInstance].session = session;
-        [[NSNotificationCenter defaultCenter] postNotificationName:SpotifySessionKey object:nil userInfo:@{SpotifySessionKey : session}];
-    };
-    
-    NSLog(@"Test renew session");
-    
-    NSLog(@"hasTokenRefreshService: %d", [SPTAuth defaultInstance].hasTokenRefreshService);
-    
-    NSLog(@"encryptedRefreshToken: %@", [SPTAuth defaultInstance].session.encryptedRefreshToken);
-    
-    NSLog(@"expirationDate: %@", [SPTAuth defaultInstance].session.expirationDate);
-    
-    NSLog(@"canonicalUsername: %@", [SPTAuth defaultInstance].session.canonicalUsername);
-    
-    
-    [[SPTAuth defaultInstance] renewSession:[SPTAuth defaultInstance].session callback:authCallback];
-    
-    
-    /*
-     SPTAuthCallback authCallback = ^(NSError *error, SPTSession *session) {
-     if (error != nil) {
-     NSLog(@"openURL error: %@", error);
-     return;
-     }
-     
-     NSLog(@"Renewed session");
-     
-     [SPTAuth defaultInstance].session = session;
-     [JPSpotifyPlayer player];
-     [[NSNotificationCenter defaultCenter] postNotificationName:@"SpotifySession" object:nil userInfo:@{@"SpotifySession": session}];
-     };
-     
-     [[SPTAuth defaultInstance] renewSession:session callback:authCallback];
-     */
+        JPSettingsColorViewController *containerVC = [[JPSettingsColorViewController alloc] init];
+        [self addOneContainer:containerVC];
+        [self.view layoutIfNeeded];
+        [UIView animateWithDuration:AnimationInterval animations:^{
+            JPContainerViewController *last = [_containerList lastObject];
+            last.view.tag = Right;
+            [last.dock uninstall];
+            [last.right install];
+            [self.view layoutIfNeeded];
+        }];
+    }
 }
 
 @end

@@ -25,11 +25,12 @@
         _indicator = [[UILabel alloc] init];
         _indicator.textColor = [UIColor whiteColor];
         _indicator.textAlignment = NSTextAlignmentCenter;
+        _indicator.font = [UIFont systemFontOfSize:11];
         [self addSubview:_indicator];
         [_indicator makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.equalTo(self).offset(-8.f);
             make.left.right.equalTo(self);
-            make.height.equalTo(@(24.f));
+            make.height.equalTo(@(14.f));
         }];
         
         _loginButton = [UIButton buttonWithType:UIButtonTypeSystem];
