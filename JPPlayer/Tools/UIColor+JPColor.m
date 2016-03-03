@@ -20,6 +20,12 @@
 //    return [UIColor colorWithR:255 G:40 B:0]; // FERRARI
 //    return [UIColor colorWithR:207 G:0 B:15]; // MONZA
 //    return [UIColor colorWithR:239 G:72 B:54]; // FLAMINGO
+    NSData *themeColorData = [[NSUserDefaults standardUserDefaults] objectForKey:UserDefaultsThemeColorKey];
+    if (themeColorData) {
+        UIColor *themeColor = [NSKeyedUnarchiver unarchiveObjectWithData:themeColorData];
+        return themeColor;
+    }
+    
     return [UIColor colorWithR:242 G:38 B:19]; // POMEGRANATE
 }
 

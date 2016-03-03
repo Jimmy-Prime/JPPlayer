@@ -15,6 +15,8 @@ extern NSString *SpotifyRedirectURL;
 extern NSString *SpotifySwapURL;
 extern NSString *SpotifyRefreshURL;
 
+extern NSString *UserDefaultsThemeColorKey;
+
 extern CGFloat LeftBarWidth;
 extern CGFloat PlayerViewHeight;
 extern CGFloat SmallButtonWidth;

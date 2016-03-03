@@ -10,6 +10,7 @@
 		4B0899911C85BF7700B1396F /* JPTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B0899901C85BF7700B1396F /* JPTabViewController.m */; };
 		4B0899941C86B13800B1396F /* JPSettingsColorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B0899931C86B13800B1396F /* JPSettingsColorViewController.m */; };
 		4B0899971C86EDBC00B1396F /* Color Palette.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B0899961C86EDBC00B1396F /* Color Palette.png */; };
+		4B08999A1C881B3C00B1396F /* JPGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B0899991C881B3C00B1396F /* JPGradientView.m */; };
 		4B0A95FF1C5B9E900038C9B9 /* JPSpotifyListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B0A95FE1C5B9E900038C9B9 /* JPSpotifyListTableViewCell.m */; };
 		4B0A96021C5C877B0038C9B9 /* JPSpotifyPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B0A96011C5C877B0038C9B9 /* JPSpotifyPlayer.m */; };
 		4B1743651C495EF0000B742F /* JPContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1743621C495EF0000B742F /* JPContainerViewController.m */; };
@@ -73,6 +74,8 @@
 		4B0899921C86B13800B1396F /* JPSettingsColorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPSettingsColorViewController.h; path = ViewControllers/JPSettingsColorViewController.h; sourceTree = "<group>"; };
 		4B0899931C86B13800B1396F /* JPSettingsColorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPSettingsColorViewController.m; path = ViewControllers/JPSettingsColorViewController.m; sourceTree = "<group>"; };
 		4B0899961C86EDBC00B1396F /* Color Palette.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Color Palette.png"; sourceTree = "<group>"; };
+		4B0899981C881B3C00B1396F /* JPGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPGradientView.h; path = Views/JPGradientView.h; sourceTree = "<group>"; };
+		4B0899991C881B3C00B1396F /* JPGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPGradientView.m; path = Views/JPGradientView.m; sourceTree = "<group>"; };
 		4B0A95FD1C5B9E900038C9B9 /* JPSpotifyListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPSpotifyListTableViewCell.h; path = Views/JPSpotifyListTableViewCell.h; sourceTree = "<group>"; };
 		4B0A95FE1C5B9E900038C9B9 /* JPSpotifyListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPSpotifyListTableViewCell.m; path = Views/JPSpotifyListTableViewCell.m; sourceTree = "<group>"; };
 		4B0A96001C5C877B0038C9B9 /* JPSpotifyPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPSpotifyPlayer.h; path = Tools/JPSpotifyPlayer.h; sourceTree = "<group>"; };
@@ -328,6 +331,8 @@
 				4BC109201C7341430050E1EF /* JPListControlCell.m */,
 				4B81D9AA1C7B21C400585711 /* JPCoverImageView.h */,
 				4B81D9AB1C7B21C400585711 /* JPCoverImageView.m */,
+				4B0899981C881B3C00B1396F /* JPGradientView.h */,
+				4B0899991C881B3C00B1396F /* JPGradientView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -591,6 +596,7 @@
 				4B0A96021C5C877B0038C9B9 /* JPSpotifyPlayer.m in Sources */,
 				4B1743661C495EF0000B742F /* JPListTableViewController.m in Sources */,
 				4BFFABF81C7C662E00E9CE37 /* UIColor+JPColor.m in Sources */,
+				4B08999A1C881B3C00B1396F /* JPGradientView.m in Sources */,
 				4BE53CBE1C4CE45A00CA5B58 /* JPSingerTableViewController.m in Sources */,
 				4BC1091E1C733C7F0050E1EF /* JPListControlView.m in Sources */,
 				4B27F15B1C1A9AFF009FCBE6 /* Constants.m in Sources */,
