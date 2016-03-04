@@ -13,8 +13,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.view setBackgroundColor:[UIColor JPBackgroundColor]];
-    
     _tableView = [[UITableView alloc] init];
     _tableView.backgroundColor = [UIColor JPBackgroundColor];
     _tableView.separatorColor = [UIColor JPSeparatorColor];

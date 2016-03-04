@@ -33,9 +33,7 @@
     
     _tableView = super.tableView;
     _containerList = super.containerList;
-    
-    [self.view setBackgroundColor:[UIColor JPBackgroundColor]];
-    
+        
     _tableView.dataSource = self;
     _tableView.delegate = self;
     

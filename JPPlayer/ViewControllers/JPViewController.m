@@ -13,6 +13,7 @@
 
 #import "JPSettingsViewController.h"
 #import "JPListViewController.h"
+#import "JPFeatureViewController.h"
 
 #import "TestViewController.h"
 
@@ -105,7 +106,19 @@
         make.edges.equalTo(_rightContainerView);
     }];
     
-    for (NSUInteger i=0; i<6; ++i) {
+    // feature lists tab
+    UIButton *featureTab = [UIButton buttonWithType:UIButtonTypeSystem];
+    [featureTab setImage:[UIImage imageNamed:@"ic_stars_white_48pt"] forState:UIControlStateNormal];
+    [leftBarView addTab:featureTab];
+    
+    JPFeatureViewController *JPFeatureVC = [[JPFeatureViewController alloc] init];
+    [_rightContainerView addSubview:JPFeatureVC.view];
+    [_childViewControllers addObject:JPFeatureVC];
+    [JPFeatureVC.view makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(_rightContainerView);
+    }];
+    
+    for (NSUInteger i=0; i<5; ++i) {
         // test tab
         UIButton *testTab = [UIButton buttonWithType:UIButtonTypeSystem];
         [testTab setBackgroundColor:[UIColor darkGrayColor]];
