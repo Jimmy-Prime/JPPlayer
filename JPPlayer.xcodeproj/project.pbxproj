@@ -186,6 +186,17 @@
 			name = "Container Setting Color ViewController";
 			sourceTree = "<group>";
 		};
+		4B08999B1C893B2D00B1396F /*   */ = {
+			isa = PBXGroup;
+			children = (
+				4BEFCAA31C552C820051750A /* JPSettingsViewController.h */,
+				4BEFCAA41C552C820051750A /* JPSettingsViewController.m */,
+				4BA85DC41C15753300D78EB9 /* JPListViewController.h */,
+				4BA85DC51C15753300D78EB9 /* JPListViewController.m */,
+			);
+			name = " ";
+			sourceTree = "<group>";
+		};
 		4B0A96031C5C87910038C9B9 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
@@ -206,10 +217,7 @@
 				4B27F1541C1A6155009FCBE6 /* TestViewController.m */,
 				4B08998F1C85BF7700B1396F /* JPTabViewController.h */,
 				4B0899901C85BF7700B1396F /* JPTabViewController.m */,
-				4BEFCAA31C552C820051750A /* JPSettingsViewController.h */,
-				4BEFCAA41C552C820051750A /* JPSettingsViewController.m */,
-				4BA85DC41C15753300D78EB9 /* JPListViewController.h */,
-				4BA85DC51C15753300D78EB9 /* JPListViewController.m */,
+				4B08999B1C893B2D00B1396F /*   */,
 			);
 			name = "Tabs ViewControllers";
 			sourceTree = "<group>";

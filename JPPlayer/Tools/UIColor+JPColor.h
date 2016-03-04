@@ -12,6 +12,8 @@
 
 + (instancetype)JPColor;
 
++ (instancetype)colorWithR:(NSUInteger)R G:(NSUInteger)G B:(NSUInteger)B;
+
 + (instancetype)JPBackgroundColor;
 + (instancetype)JPSeparatorColor;
 + (instancetype)JPSelectedCellColor;

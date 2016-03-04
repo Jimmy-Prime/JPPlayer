@@ -9,11 +9,15 @@
 #import "JPSettingsColorViewController.h"
 #import "JPGradientView.h"
 
-@interface JPSettingsColorViewController ()
+@interface JPSettingsColorViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (strong, nonatomic) UIColor *selectedColor;
 @property (strong, nonatomic) UIView *controlContainer;
 @property (strong, nonatomic) JPGradientView *brightnessBar;
+
+@property (nonatomic) CGSize cellSize;
+@property (strong, nonatomic) NSArray *colors;
+@property (strong, nonatomic) NSArray *colorNames;
 
 @end
 
@@ -24,7 +28,7 @@
 
     _selectedColor = [UIColor JPColor];
     
-    // cancel button, preview player, OK button
+    // cancel button, reset to default button, preview view, OK button
     _controlContainer = [[UIView alloc] init];
     _controlContainer.backgroundColor = [UIColor JPBackgroundColor];
     [self.view addSubview:_controlContainer];
@@ -44,6 +48,21 @@
     [cancelButton makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.equalTo(_controlContainer).offset(8.f);
         make.bottom.equalTo(_controlContainer).offset(-8.f);
+        make.width.equalTo(cancelButton.height);
+    }];
+    
+    UIButton *resetButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [resetButton setImage:[UIImage imageNamed:@"ic_refresh_white_48pt"] forState:UIControlStateNormal];
+    resetButton.contentMode = UIViewContentModeScaleAspectFit;
+    resetButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
+    resetButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
+    resetButton.tintColor = [UIColor JPColor];
+    [resetButton addTarget:self action:@selector(reset:) forControlEvents:UIControlEventTouchUpInside];
+    [_controlContainer addSubview:resetButton];
+    [resetButton makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_controlContainer).offset(8.f);
+        make.bottom.equalTo(_controlContainer).offset(-8.f);
+        make.left.equalTo(cancelButton.right).offset(8.f);
         make.width.equalTo(cancelButton.height);
     }];
     
@@ -68,9 +87,10 @@
     previewView.backgroundColor = [UIColor JPColor];
     [_controlContainer addSubview:previewView];
     [previewView makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(_controlContainer);
-        make.width.equalTo(@(ContainerWidth - 2.f*(PlayerViewHeight + 16.f)));
-        make.height.equalTo(@(PlayerViewHeight - 16.f));
+        make.top.equalTo(_controlContainer).offset(8.f);
+        make.bottom.equalTo(_controlContainer).offset(-8.f);
+        make.left.equalTo(resetButton.right).offset(8.f);
+        make.right.equalTo(checkButton.left).offset(-8.f);
     }];
     
     UILabel *previewLabel = [[UILabel alloc] init];
@@ -92,13 +112,34 @@
     }];
     
         // pre load colors
-    UIView *colorSetContainer = [[UIView alloc] init];
-    colorSetContainer.backgroundColor = [UIColor JPColor];
-    [scrollView addSubview:colorSetContainer];
-    [colorSetContainer makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.equalTo(scrollView);
-        make.width.equalTo(@(ContainerWidth));
-        make.height.equalTo(@(600.f));
+    _cellSize = (CGSize){(ContainerWidth - 80.f) / 3.f, 170.f};
+    _colors = @[[UIColor colorWithR:242 G:38 B:19],
+                [UIColor colorWithR:30 G:215 B:97],
+                [UIColor colorWithR:255 G:40 B:0],
+                [UIColor colorWithR:207 G:0 B:15],
+                [UIColor colorWithR:239 G:72 B:54]];
+    
+    _colorNames = @[@"JP Red",
+                    @"Spotify Green",
+                    @"Ferrari",
+                    @"Monza",
+                    @"Flamingo"];
+    
+    UICollectionViewFlowLayout *flow = [[UICollectionViewFlowLayout alloc] init];
+    flow.scrollDirection = UICollectionViewScrollDirectionVertical;
+    flow.itemSize = _cellSize;
+    
+    UICollectionView *colorCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flow];
+    [colorCollectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"ColorCell"];
+    colorCollectionView.dataSource = self;
+    colorCollectionView.delegate = self;
+    [scrollView addSubview:colorCollectionView];
+    [colorCollectionView makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.equalTo(scrollView).offset(20.f);
+        make.right.equalTo(scrollView).offset(-20.f);
+        make.width.equalTo(@(ContainerWidth - 40.f));
+        NSUInteger rowCount = ceil((double)_colors.count / 3.f);
+        make.height.equalTo(@(10.f + (CGFloat)rowCount * _cellSize.height + (CGFloat)(rowCount-1) * 10.f));
     }];
     
     CGFloat hue, saturation, brightness, alpha;
@@ -110,7 +151,7 @@
     colorPalette.userInteractionEnabled = YES;
     [scrollView addSubview:colorPalette];
     [colorPalette makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(colorSetContainer.bottom).offset(20.f);
+        make.top.equalTo(colorCollectionView.bottom).offset(20.f);
         make.centerX.equalTo(scrollView);
         make.width.height.equalTo(@(ContainerWidth - 40.f));
     }];
@@ -158,7 +199,14 @@
 }
 
 - (void)cancel:(UIButton *)button {
-    NSLog(@"cancel");
+    [self dismiss];
+}
+
+- (void)reset:(UIButton *)button {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:nil forKey:UserDefaultsThemeColorKey];
+    [userDefaults synchronize];
+    [self dismiss];
 }
 
 - (void)check:(UIButton *)button {
@@ -166,6 +214,24 @@
     NSData *encodedColor = [NSKeyedArchiver archivedDataWithRootObject:_selectedColor];
     [userDefaults setObject:encodedColor forKey:UserDefaultsThemeColorKey];
     [userDefaults synchronize];
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Color changed" message:@"Restart app to take full effect" preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self dismiss];
+    }];
+    [alert addAction:defaultAction];
+    
+    [self.view.window.rootViewController presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)dismiss {
+    [UIView animateWithDuration:AnimationInterval animations:^{
+        self.view.tag = 2; // ContainerState::Dock in JPTabViewController.h
+        [self.right uninstall];
+        [self.dock install];
+        [self.view.superview layoutIfNeeded];
+    }];
 }
 
 - (void)palettePan:(UIPanGestureRecognizer *)pan {
@@ -223,6 +289,41 @@
             view.backgroundColor = _selectedColor;
         }
     }
+}
+
+#pragma make - UICollectionViewDataSource
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return _colors.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ColorCell" forIndexPath:indexPath];
+    cell.backgroundColor = [UIColor clearColor];
+    
+    CGFloat inset = 5.f, width = _cellSize.width, height = _cellSize.height;
+    
+    UIView *colorCircle = [[UIView alloc] initWithFrame:(CGRect){inset, inset, width - 2.f * inset, width - 2.f * inset}];
+    colorCircle.backgroundColor = _colors[indexPath.row];
+    colorCircle.layer.borderColor = [[UIColor whiteColor] CGColor];
+    colorCircle.layer.borderWidth = 5.f;
+    colorCircle.layer.cornerRadius = width / 2.f - inset;
+    [cell addSubview:colorCircle];
+    
+    CGFloat offsetY = inset + width + inset;
+    UILabel *colorName = [[UILabel alloc] initWithFrame:(CGRect){0, offsetY, width, height - offsetY - inset}];
+    colorName.font = [UIFont systemFontOfSize:11];
+    colorName.textAlignment = NSTextAlignmentCenter;
+    colorName.textColor = [UIColor whiteColor];
+    colorName.text = _colorNames[indexPath.row];
+    [cell addSubview:colorName];
+    
+    
+    return cell;
+}
+
+#pragma make - UICollectionViewDataSource
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    
 }
 
 @end

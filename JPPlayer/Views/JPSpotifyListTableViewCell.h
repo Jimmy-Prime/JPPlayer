@@ -15,5 +15,6 @@ static const CGFloat JPSpotifyListTableCellHeight = 70.f;
 
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UILabel *auxilaryLabel;
+@property (strong, nonatomic) UIButton *optionButton;
 
 @end
