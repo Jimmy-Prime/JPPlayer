@@ -15,6 +15,9 @@
 @property (strong, nonatomic) UIView *controlContainer;
 @property (strong, nonatomic) JPGradientView *brightnessBar;
 
+@property (strong, nonatomic) UIView *pick;
+@property (strong, nonatomic) UIView *slider;
+
 @property (nonatomic) CGSize cellSize;
 @property (strong, nonatomic) NSArray *colors;
 @property (strong, nonatomic) NSArray *colorNames;
@@ -130,6 +133,7 @@
     flow.itemSize = _cellSize;
     
     UICollectionView *colorCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flow];
+    colorCollectionView.backgroundColor = [UIColor clearColor];
     [colorCollectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"ColorCell"];
     colorCollectionView.dataSource = self;
     colorCollectionView.delegate = self;
@@ -159,15 +163,15 @@
     UIPanGestureRecognizer *palettePan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(palettePan:)];
     [colorPalette addGestureRecognizer:palettePan];
     
-    UIView *pick = [[UIView alloc] init];
-    pick.layer.cornerRadius = 15.f;
-    pick.layer.borderColor = [[UIColor whiteColor] CGColor];
-    pick.layer.borderWidth = 2.f;
-    [colorPalette addSubview:pick];
-    [pick makeConstraints:^(MASConstraintMaker *make) {
+    _pick = [[UIView alloc] init];
+    _pick.layer.cornerRadius = 15.f;
+    _pick.layer.borderColor = [[UIColor whiteColor] CGColor];
+    _pick.layer.borderWidth = 2.f;
+    [colorPalette addSubview:_pick];
+    [_pick makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(colorPalette.left).offset(hue * (ContainerWidth - 40.f));
         make.centerY.equalTo(colorPalette.top).offset((1.f - saturation) * (ContainerWidth - 40.f));
-        make.width.height.equalTo(@(2.f * pick.layer.cornerRadius));
+        make.width.height.equalTo(@(2.f * _pick.layer.cornerRadius));
     }];
     
         // bar
@@ -185,15 +189,15 @@
     UIPanGestureRecognizer *barPan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(barPan:)];
     [_brightnessBar addGestureRecognizer:barPan];
 
-    UIView *slider = [[UIView alloc] init];
-    slider.layer.cornerRadius = 10.f;
-    slider.layer.borderColor = [[UIColor whiteColor] CGColor];
-    slider.layer.borderWidth = 2.f;
-    [_brightnessBar addSubview:slider];
-    [slider makeConstraints:^(MASConstraintMaker *make) {
+    _slider = [[UIView alloc] init];
+    _slider.layer.cornerRadius = 10.f;
+    _slider.layer.borderColor = [[UIColor whiteColor] CGColor];
+    _slider.layer.borderWidth = 2.f;
+    [_brightnessBar addSubview:_slider];
+    [_slider makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(_brightnessBar.left).offset((1.f - brightness) * (ContainerWidth - 40.f));
         make.centerY.equalTo(_brightnessBar);
-        make.width.equalTo(@(2.f * slider.layer.cornerRadius));
+        make.width.equalTo(@(2.f * _slider.layer.cornerRadius));
         make.height.equalTo(@(50.f));
     }];
 }
@@ -234,61 +238,60 @@
     }];
 }
 
+- (void)setSelectedColor:(UIColor *)selectedColor {
+    _selectedColor = selectedColor;
+    
+    CGFloat hue, saturation, brightness, alpha;
+    [_selectedColor getHue:&hue saturation:&saturation brightness:&brightness alpha:&alpha];
+    
+    for (UIView *view in _controlContainer.subviews) {
+        if ([view isKindOfClass:[UIButton class]]) {
+            view.tintColor = _selectedColor;
+        }
+        else {
+            view.backgroundColor = _selectedColor;
+        }
+    }
+    
+    _brightnessBar.color = [UIColor colorWithHue:hue saturation:saturation brightness:1.f alpha:1.f];
+    
+    UIView *palette = _pick.superview;
+    [_pick updateConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(palette.left).offset(CGRectGetWidth(palette.frame) * hue);
+        make.centerY.equalTo(palette.top).offset(CGRectGetHeight(palette.frame) * (1.f - saturation));
+    }];
+    
+    UIView *bar = _slider.superview;
+    [_slider updateConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(bar.left).offset(CGRectGetWidth(bar.frame) * (1.f - brightness));
+    }];
+}
+
 - (void)palettePan:(UIPanGestureRecognizer *)pan {
     UIView *palette = pan.view;
-    UIView *pick = palette.subviews.firstObject;
     
     CGFloat offsetX = MAX([pan locationInView:palette].x, 0.f);
     offsetX = MIN(offsetX, CGRectGetWidth(palette.frame));
     CGFloat offsetY = MAX([pan locationInView:palette].y, 0.f);
     offsetY = MIN(offsetY, CGRectGetHeight(palette.frame));
     
-    [pick updateConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(palette.left).offset(offsetX);
-        make.centerY.equalTo(palette.top).offset(offsetY);
-    }];
-    
     CGFloat hue, saturation, brightness, alpha;
     [_selectedColor getHue:&hue saturation:&saturation brightness:&brightness alpha:&alpha];
     
     CGFloat newHue = offsetX / CGRectGetWidth(palette.frame);
     CGFloat newSaturation = 1.f - offsetY / CGRectGetHeight(palette.frame);
-    _selectedColor = [UIColor colorWithHue:newHue saturation:newSaturation brightness:brightness alpha:alpha];
-    for (UIView *view in _controlContainer.subviews) {
-        if ([view isKindOfClass:[UIButton class]]) {
-            view.tintColor = _selectedColor;
-        }
-        else {
-            view.backgroundColor = _selectedColor;
-        }
-    }
-    
-    _brightnessBar.color = [UIColor colorWithHue:newHue saturation:newSaturation brightness:1.f alpha:1.f];
+    self.selectedColor = [UIColor colorWithHue:newHue saturation:newSaturation brightness:brightness alpha:alpha];
 }
 
 - (void)barPan:(UIPanGestureRecognizer *)pan {
-    UIView *slider = pan.view.subviews.firstObject;
-    
     CGFloat offsetX = MAX([pan locationInView:pan.view].x, 0.f);
     offsetX = MIN(offsetX, CGRectGetWidth(pan.view.frame));
-    
-    [slider updateConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(pan.view.left).offset(offsetX);
-    }];
-    
+   
     CGFloat hue, saturation, brightness, alpha;
     [_selectedColor getHue:&hue saturation:&saturation brightness:&brightness alpha:&alpha];
     
     CGFloat newBrightness = 1.f - offsetX / CGRectGetWidth(pan.view.frame);
-    _selectedColor = [UIColor colorWithHue:hue saturation:saturation brightness:newBrightness alpha:alpha];
-    for (UIView *view in _controlContainer.subviews) {
-        if ([view isKindOfClass:[UIButton class]]) {
-            view.tintColor = _selectedColor;
-        }
-        else {
-            view.backgroundColor = _selectedColor;
-        }
-    }
+    self.selectedColor = [UIColor colorWithHue:hue saturation:saturation brightness:newBrightness alpha:alpha];
 }
 
 #pragma make - UICollectionViewDataSource
@@ -317,13 +320,12 @@
     colorName.text = _colorNames[indexPath.row];
     [cell addSubview:colorName];
     
-    
     return cell;
 }
 
 #pragma make - UICollectionViewDataSource
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    
+    self.selectedColor = _colors[indexPath.row];
 }
 
 @end
