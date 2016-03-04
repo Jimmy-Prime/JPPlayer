@@ -2,11 +2,15 @@
 //  JPTabViewController.m
 //  JPPlayer
 //
-//  Created by Prime on 3/1/16.
+//  Created by Prime on 3/4/16.
 //  Copyright © 2016 Prime. All rights reserved.
 //
 
 #import "JPTabViewController.h"
+
+@interface JPTabViewController ()
+
+@end
 
 @implementation JPTabViewController
 
@@ -15,17 +19,7 @@
     
     [self.view setBackgroundColor:[UIColor JPBackgroundColor]];
     
-    _tableView = [[UITableView alloc] init];
-    _tableView.backgroundColor = [UIColor JPBackgroundColor];
-    _tableView.separatorColor = [UIColor JPSeparatorColor];
-    [self.view addSubview:_tableView];
-    [_tableView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.bottom.left.equalTo(self.view);
-        make.width.equalTo(@(ContainerWidth));
-    }];
-    
     _containerList = [[NSMutableArray alloc] init];
-    
 }
 
 #pragma mark - Other actions

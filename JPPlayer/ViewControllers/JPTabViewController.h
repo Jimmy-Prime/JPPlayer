@@ -2,7 +2,7 @@
 //  JPTabViewController.h
 //  JPPlayer
 //
-//  Created by Prime on 3/1/16.
+//  Created by Prime on 3/4/16.
 //  Copyright © 2016 Prime. All rights reserved.
 //
 
@@ -17,9 +17,9 @@ typedef enum {
     Dock
 } ContainerState;
 
-@property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray<JPContainerViewController *> *containerList;
 
 - (void)addOneContainer:(JPContainerViewController *)container;
+
 
 @end

@@ -8,6 +8,7 @@
 
 #import "JPSettingsViewController.h"
 #import "JPSettingsColorViewController.h"
+#import "JPSpotifySession.h"
 
 @interface JPSettingsViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -33,7 +34,7 @@
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 10;
+    return 2;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -48,14 +49,14 @@
     
     cell.backgroundColor = [UIColor JPBackgroundColor];
     cell.textLabel.textColor = [UIColor whiteColor];
-    cell.textLabel.text = @"Change theme color";
+    cell.textLabel.text = indexPath.row ? @"API testing" : @"Change theme color";
     
     return cell;
 }
 
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) { // Spotify section
+    if (indexPath.row == 0) { // Change theme color
         for (JPContainerViewController *container in _containerList) {
             [container.view removeFromSuperview];
         }
@@ -70,6 +71,18 @@
             [last.dock uninstall];
             [last.right install];
             [self.view layoutIfNeeded];
+        }];
+
+    }
+    else if (indexPath.row == 1) { // API testing
+        [SPTBrowse requestFeaturedPlaylistsForCountry:@"TW" limit:50 offset:0 locale:@"" timestamp:nil accessToken:[JPSpotifySession defaultInstance].session.accessToken callback:^(NSError *error, SPTFeaturedPlaylistList *playlistList) {
+            
+            NSLog(@"RAW DATA: %@", playlistList);
+            
+            NSLog(@"MESSAGE: %@", playlistList.message);
+            
+            NSLog(@"%@", playlistList.items);
+            
         }];
     }
 }

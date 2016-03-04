@@ -6,8 +6,8 @@
 //  Copyright © 2015 Prime. All rights reserved.
 //
 
-#import "JPTabViewController.h"
+#import "JPTabTableViewController.h"
 
-@interface JPListViewController : JPTabViewController
+@interface JPListViewController : JPTabTableViewController
 
 @end

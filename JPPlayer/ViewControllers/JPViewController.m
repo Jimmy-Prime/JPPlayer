@@ -31,6 +31,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.view.backgroundColor = [UIColor JPBackgroundColor];
+    
     _pop = NO;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(togglePop:) name:@"popup" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(togglePop:) name:@"pushdown" object:nil];
@@ -145,6 +147,10 @@
 
 - (BOOL)prefersStatusBarHidden {
     return _pop;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
 }
 
 @end

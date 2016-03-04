@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4B0899911C85BF7700B1396F /* JPTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B0899901C85BF7700B1396F /* JPTabViewController.m */; };
+		4B0899911C85BF7700B1396F /* JPTabTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B0899901C85BF7700B1396F /* JPTabTableViewController.m */; };
 		4B0899941C86B13800B1396F /* JPSettingsColorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B0899931C86B13800B1396F /* JPSettingsColorViewController.m */; };
 		4B0899971C86EDBC00B1396F /* Color Palette.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B0899961C86EDBC00B1396F /* Color Palette.png */; };
 		4B08999A1C881B3C00B1396F /* JPGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B0899991C881B3C00B1396F /* JPGradientView.m */; };
@@ -22,6 +22,7 @@
 		4B27F15B1C1A9AFF009FCBE6 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B27F15A1C1A9AFF009FCBE6 /* Constants.m */; };
 		4B41B64F1C19745D0051BC79 /* JPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B41B64E1C19745D0051BC79 /* JPViewController.m */; };
 		4B41B6521C19995C0051BC79 /* JPPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B41B6511C19995C0051BC79 /* JPPlayerView.m */; };
+		4B70B0DF1C897DAA009F93D6 /* JPTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B70B0DE1C897DAA009F93D6 /* JPTabViewController.m */; };
 		4B81D9AC1C7B21C400585711 /* JPCoverImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B81D9AB1C7B21C400585711 /* JPCoverImageView.m */; };
 		4BA85D921C15748400D78EB9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA85D911C15748400D78EB9 /* main.m */; };
 		4BA85D951C15748400D78EB9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA85D941C15748400D78EB9 /* AppDelegate.m */; };
@@ -69,8 +70,8 @@
 
 /* Begin PBXFileReference section */
 		3604C5FF7C837E39F4E3BAB2 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		4B08998F1C85BF7700B1396F /* JPTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPTabViewController.h; path = ViewControllers/JPTabViewController.h; sourceTree = "<group>"; };
-		4B0899901C85BF7700B1396F /* JPTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPTabViewController.m; path = ViewControllers/JPTabViewController.m; sourceTree = "<group>"; };
+		4B08998F1C85BF7700B1396F /* JPTabTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPTabTableViewController.h; path = ViewControllers/JPTabTableViewController.h; sourceTree = "<group>"; };
+		4B0899901C85BF7700B1396F /* JPTabTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPTabTableViewController.m; path = ViewControllers/JPTabTableViewController.m; sourceTree = "<group>"; };
 		4B0899921C86B13800B1396F /* JPSettingsColorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPSettingsColorViewController.h; path = ViewControllers/JPSettingsColorViewController.h; sourceTree = "<group>"; };
 		4B0899931C86B13800B1396F /* JPSettingsColorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPSettingsColorViewController.m; path = ViewControllers/JPSettingsColorViewController.m; sourceTree = "<group>"; };
 		4B0899961C86EDBC00B1396F /* Color Palette.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Color Palette.png"; sourceTree = "<group>"; };
@@ -97,6 +98,8 @@
 		4B41B64E1C19745D0051BC79 /* JPViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPViewController.m; path = ViewControllers/JPViewController.m; sourceTree = "<group>"; };
 		4B41B6501C19995C0051BC79 /* JPPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPPlayerView.h; path = Views/JPPlayerView.h; sourceTree = "<group>"; };
 		4B41B6511C19995C0051BC79 /* JPPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPPlayerView.m; path = Views/JPPlayerView.m; sourceTree = "<group>"; };
+		4B70B0DD1C897DAA009F93D6 /* JPTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPTabViewController.h; path = ViewControllers/JPTabViewController.h; sourceTree = "<group>"; };
+		4B70B0DE1C897DAA009F93D6 /* JPTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPTabViewController.m; path = ViewControllers/JPTabViewController.m; sourceTree = "<group>"; };
 		4B81D9AA1C7B21C400585711 /* JPCoverImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = JPCoverImageView.h; path = Views/JPCoverImageView.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		4B81D9AB1C7B21C400585711 /* JPCoverImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPCoverImageView.m; path = Views/JPCoverImageView.m; sourceTree = "<group>"; };
 		4B86E7911C27DA3800BF6B34 /* JPPlayer.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JPPlayer.pch; sourceTree = SOURCE_ROOT; };
@@ -215,9 +218,9 @@
 			children = (
 				4B27F1531C1A6155009FCBE6 /* TestViewController.h */,
 				4B27F1541C1A6155009FCBE6 /* TestViewController.m */,
-				4B08998F1C85BF7700B1396F /* JPTabViewController.h */,
-				4B0899901C85BF7700B1396F /* JPTabViewController.m */,
-				4B08999B1C893B2D00B1396F /*   */,
+				4B70B0DD1C897DAA009F93D6 /* JPTabViewController.h */,
+				4B70B0DE1C897DAA009F93D6 /* JPTabViewController.m */,
+				4B70B0E01C897EC3009F93D6 /* Tab Table ViewControllers */,
 			);
 			name = "Tabs ViewControllers";
 			sourceTree = "<group>";
@@ -231,6 +234,16 @@
 				4BE53CBB1C4CE32200CA5B58 /* Container Table ViewControllers */,
 			);
 			name = "Container ViewControllers";
+			sourceTree = "<group>";
+		};
+		4B70B0E01C897EC3009F93D6 /* Tab Table ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				4B08998F1C85BF7700B1396F /* JPTabTableViewController.h */,
+				4B0899901C85BF7700B1396F /* JPTabTableViewController.m */,
+				4B08999B1C893B2D00B1396F /*   */,
+			);
+			name = "Tab Table ViewControllers";
 			sourceTree = "<group>";
 		};
 		4BA85D841C15748400D78EB9 = {
@@ -588,7 +601,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4B0899911C85BF7700B1396F /* JPTabViewController.m in Sources */,
+				4B0899911C85BF7700B1396F /* JPTabTableViewController.m in Sources */,
+				4B70B0DF1C897DAA009F93D6 /* JPTabViewController.m in Sources */,
 				4BA85D951C15748400D78EB9 /* AppDelegate.m in Sources */,
 				4B1CE5EF1C42C3F300AC731A /* JPProgressView.m in Sources */,
 				4B41B64F1C19745D0051BC79 /* JPViewController.m in Sources */,
