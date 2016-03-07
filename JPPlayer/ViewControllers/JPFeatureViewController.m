@@ -10,6 +10,7 @@
 #import "JPFeatureViewController.h"
 #import "JPSpotifyFeatureCollectionViewCell.h"
 #import "JPListTableViewController.h"
+#import "JPAlbumTableViewController.h"
 #import "JPSpotifySession.h"
 
 @interface JPFeatureViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
@@ -183,13 +184,20 @@
         [container.view removeFromSuperview];
     }
     [_containerList removeAllObjects];
-    
-    JPListTableViewController *newSpotifyListVC = [[JPListTableViewController alloc] init];
-    newSpotifyListVC.listType = SpotifyPlayList;
-    SPTPartialPlaylist *partialPlayList = (collectionView==_featureListCollectionView) ? _featureListList.items[indexPath.row] : _NewReleaseList[indexPath.row];
-    newSpotifyListVC.information = partialPlayList;
-    
-    [self addOneContainer:newSpotifyListVC];
+
+    if (collectionView == _featureListCollectionView) {
+        JPListTableViewController *newListVC = [[JPListTableViewController alloc] init];
+        SPTPartialPlaylist *partialPlayList = _featureListList.items[indexPath.row];
+        newListVC.information = partialPlayList;
+        [self addOneContainer:newListVC];
+    }
+    else if (collectionView == _NewReleaseCollectionView) {
+        JPAlbumTableViewController *newAlbumVC = [[JPAlbumTableViewController alloc] init];
+        SPTPartialAlbum *partialAlbum = _NewReleaseList[indexPath.row];
+        newAlbumVC.information = partialAlbum;
+        [self addOneContainer:newAlbumVC];
+    }
+
     [self.view layoutIfNeeded];
     [UIView animateWithDuration:AnimationInterval animations:^{
         JPContainerViewController *last = [_containerList lastObject];

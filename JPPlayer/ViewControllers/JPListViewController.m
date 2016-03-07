@@ -155,7 +155,6 @@
         [_containerList removeAllObjects];
         
         JPListTableViewController *newSpotifyListVC = [[JPListTableViewController alloc] init];
-        newSpotifyListVC.listType = SpotifyPlayList;
         SPTPartialPlaylist *partialPlayList = [[_SpotifyLists tracksForPlayback] objectAtIndex:indexPath.row];
         newSpotifyListVC.information = partialPlayList;
         

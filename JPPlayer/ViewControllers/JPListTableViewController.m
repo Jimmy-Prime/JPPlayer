@@ -16,39 +16,39 @@
 
 @property (strong, nonatomic) JPListControlView *controlView;
 
-@property (strong, nonatomic) UIImageView *blurBackgroundImageView;
-@property (strong, nonatomic) UIVisualEffectView *blurEffectView;
-@property (strong, nonatomic) UIImageView *profileImageView;
-@property (strong, nonatomic) UILabel *titleLabel;
-
-@property (strong, nonatomic) NSMutableArray<SPTPlaylistTrack *> *SpotifyTracks;
 @property (strong, nonatomic) NSMutableArray<SPTPlaylistTrack *> *filteredTracks;
 @property (nonatomic) BOOL isSearching;
 
 @end
 
 @implementation JPListTableViewController
-@synthesize topView = _topView;
-@synthesize topViewHeight = _topViewHeight;
+@synthesize blurBackgroundImageView = _blurBackgroundImageView;
+@synthesize profileImageView = _profileImageView;
+@synthesize titleLabel = _titleLabel;
 @synthesize list = _list;
 @synthesize fakeHeaderView = _fakeHeaderView;
+
+@synthesize information = _information;
+@synthesize tracks = _tracks;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(UIKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(UIKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    
-    _topView = super.topView;
-    _topViewHeight = super.topViewHeight;
+
+    _blurBackgroundImageView = super.blurBackgroundImageView;
+    _profileImageView = super.profileImageView;
+    _titleLabel = super.titleLabel;
     _list = super.list;
     _fakeHeaderView = super.fakeHeaderView;
+
+    _information = super.information;
+    _tracks = super.tracks;
     
     _list.dataSource = self;
     _list.delegate = self;
-    
-    self.view.backgroundColor = [UIColor clearColor];
-    
+
     _controlView = [[JPListControlView alloc] init];
     _controlView.delegate = self;
     _controlView.searchBar.delegate = self;
@@ -56,65 +56,8 @@
     [_controlView makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(_fakeHeaderView);
     }];
+
     
-    UIImage *placeHolder = [UIImage imageNamed:@"PlaceHolder.jpg"];
-    
-    _blurBackgroundImageView = [[UIImageView alloc] initWithImage:placeHolder];
-    _blurBackgroundImageView.contentMode = UIViewContentModeScaleToFill;
-    [_topView addSubview:_blurBackgroundImageView];
-    [_blurBackgroundImageView makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(_topView);
-    }];
-    
-    _blurEffectView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]];
-    [_blurBackgroundImageView addSubview:_blurEffectView];
-    [_blurEffectView makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(_blurBackgroundImageView);
-    }];
-    
-    UIView *overlayView = [[UIView alloc] init];
-    overlayView.layer.cornerRadius = 20.f;
-    [_topView addSubview:overlayView];
-    [overlayView makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_blurBackgroundImageView.right);
-        make.width.equalTo(_blurBackgroundImageView);
-        make.bottom.greaterThanOrEqualTo(_topView).offset(-FakeHeaderHeight);
-        make.height.equalTo(@(ContainerWidth - FakeHeaderHeight));
-    }];
-    [self.view layoutIfNeeded];
-    
-    [UIView animateWithDuration:AnimationInterval delay:AnimationInterval options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        [overlayView remakeConstraints:^(MASConstraintMaker *make) {
-            make.left.right.equalTo(_blurBackgroundImageView);
-            make.top.greaterThanOrEqualTo(_blurBackgroundImageView);
-            make.bottom.greaterThanOrEqualTo(_topView).offset(-FakeHeaderHeight);
-            make.height.equalTo(@(ContainerWidth - FakeHeaderHeight));
-        }];
-        [self.view layoutIfNeeded];
-    } completion:nil];
-    
-    
-    _profileImageView = [[UIImageView alloc] initWithImage:placeHolder];
-    _profileImageView.tintColor = [UIColor JPColor];
-    [overlayView addSubview:_profileImageView];
-    [_profileImageView makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.centerY.equalTo(overlayView);
-        make.width.height.equalTo(@(200.f));
-    }];
-    
-    _titleLabel = [[UILabel alloc] init];
-    _titleLabel.text = @"Not available";
-    _titleLabel.textColor = [UIColor whiteColor];
-    _titleLabel.font = [UIFont systemFontOfSize:24];
-    _titleLabel.textAlignment = NSTextAlignmentCenter;
-    [overlayView addSubview:_titleLabel];
-    [_titleLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(overlayView);
-        make.top.equalTo(_profileImageView.bottom).offset(8);
-        make.height.equalTo(@(30));
-    }];
-    
-    _SpotifyTracks = [[NSMutableArray alloc] init];
     _filteredTracks = [[NSMutableArray alloc] init];
     _isSearching = NO;
 }
@@ -132,77 +75,25 @@
         [_profileImageView setImageWithURL:[[playList largestImage] imageURL]];
         _titleLabel.text = playList.name;
         
-        [_SpotifyTracks addObjectsFromArray:playList.tracksForPlayback];
+        [_tracks addObjectsFromArray:playList.tracksForPlayback];
         [_list reloadData];
-        
         [self checkNewPage:playList.firstTrackPage];
     }];
 }
 
-- (void)checkNewPage:(SPTListPage *)page {
-    if (page.hasNextPage) {
-        NSURLRequest *nextPageRequest = [page createRequestForNextPageWithAccessToken:[[[SPTAuth defaultInstance] session] accessToken] error:nil];
-        [[SPTRequest sharedHandler] performRequest:nextPageRequest callback:^(NSError *error, NSURLResponse *response, NSData *data) {
-            if (error) {
-                NSLog(@"error: %@", error);
-                return;
-            }
-            
-            SPTListPage *nextPage = [SPTListPage listPageFromData:data withResponse:response expectingPartialChildren:YES rootObjectKey:nil error:nil];
-            
-            [_SpotifyTracks addObjectsFromArray:nextPage.tracksForPlayback];
-            [_list reloadData];
-            
-            if (nextPage.hasNextPage) {
-                [self checkNewPage:nextPage];
-            }
-        }];
-    }
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (section == 0) {
-        UIView *fakeHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ContainerWidth, ContainerWidth)];
-        [fakeHeader setBackgroundColor:[UIColor clearColor]];
-        return fakeHeader;
-    }
-    
-    return nil;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section == 0) {
-        return _topViewHeight;
-    }
-    
-    return 0;
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 1) { // list section
-        switch (_listType) {
-            case SpotifyPlayList: {
-                JPSpotifyListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:JPSpotifyListTableViewCellIdentifier];
-                if (cell == nil) {
-                    cell = [[JPSpotifyListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:JPSpotifyListTableViewCellIdentifier];
-                }
-                
-                SPTPlaylistTrack *track = _isSearching ? [_filteredTracks objectAtIndex:indexPath.row] : [_SpotifyTracks objectAtIndex:indexPath.row];
-                cell.titleLabel.text = track.name;
-                SPTPartialArtist *artist0 = [track.artists objectAtIndex:0];
-                cell.auxilaryLabel.text = [NSString stringWithFormat:@"%@ - %@", artist0.name, track.album.name];
-                
-                return cell;
-                break;
-            }
-                
-            default:
-                break;
+        JPSpotifyListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:JPSpotifyListTableViewCellIdentifier];
+        if (cell == nil) {
+            cell = [[JPSpotifyListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:JPSpotifyListTableViewCellIdentifier];
         }
+
+        SPTPlaylistTrack *track = _isSearching ? [_filteredTracks objectAtIndex:indexPath.row] : [_tracks objectAtIndex:indexPath.row];
+        cell.titleLabel.text = track.name;
+        SPTPartialArtist *artist0 = [track.artists objectAtIndex:0];
+        cell.auxilaryLabel.text = [NSString stringWithFormat:@"%@ - %@", artist0.name, track.album.name];
+
+        return cell;
     }
     
     return nil;
@@ -210,7 +101,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {    
     if (section == 1) {
-        return _isSearching ? _filteredTracks.count : _SpotifyTracks.count;
+        return _isSearching ? _filteredTracks.count : _tracks.count;
     }
     
     return 0;
@@ -218,14 +109,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 1) {
-        switch (_listType) {
-            case SpotifyPlayList:
-                return JPSpotifyListTableCellHeight;
-                break;
-                
-            default:
-                return 0.f;
-        }
+        return JPSpotifyListTableCellHeight;
     }
     
     return 0.f;
@@ -240,7 +124,7 @@
             }
         }
         else {
-            for (SPTPlaylistTrack *track in _SpotifyTracks) {
+            for (SPTPlaylistTrack *track in _tracks) {
                 [URIs addObject:[track uri]];
             }
         }
@@ -256,7 +140,7 @@
         arrayToSort = [NSMutableArray arrayWithArray:_filteredTracks];
     }
     else {
-        arrayToSort = [NSMutableArray arrayWithArray:_SpotifyTracks];
+        arrayToSort = [NSMutableArray arrayWithArray:_tracks];
     }
     
     arrayToSort = (NSMutableArray *)[arrayToSort sortedArrayUsingComparator:^NSComparisonResult(SPTPlaylistTrack *a, SPTPlaylistTrack *b) {
@@ -296,8 +180,8 @@
         _filteredTracks = [NSMutableArray arrayWithArray:arrayToSort];
     }
     else {
-        [_SpotifyTracks removeAllObjects];
-        _SpotifyTracks = [NSMutableArray arrayWithArray:arrayToSort];
+        [_tracks removeAllObjects];
+        _tracks = [NSMutableArray arrayWithArray:arrayToSort];
     }
     
     [_list reloadData];
@@ -305,7 +189,7 @@
 
 #pragma mark - UISearchBarDelegate
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-    if ((_isSearching && _filteredTracks.count) || (!_isSearching && _SpotifyTracks.count)) {
+    if ((_isSearching && _filteredTracks.count) || (!_isSearching && _tracks.count)) {
         [_list scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1] atScrollPosition:UITableViewScrollPositionTop animated:YES];
     }
 }
@@ -320,7 +204,7 @@
         [_filteredTracks removeAllObjects];
         
         NSString *text = searchBar.text;
-        for (SPTPlaylistTrack *track in _SpotifyTracks) {
+        for (SPTPlaylistTrack *track in _tracks) {
             if ([track.name rangeOfString:text options:NSCaseInsensitiveSearch].location != NSNotFound ||
                 [track.album.name rangeOfString:text options:NSCaseInsensitiveSearch].location != NSNotFound) {
                 [_filteredTracks addObject:track];
