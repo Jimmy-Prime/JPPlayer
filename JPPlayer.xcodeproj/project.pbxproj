@@ -42,7 +42,6 @@
 		4BC9E9FB1C820E3800B867CE /* JPSpotifyListHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC9E9FA1C820E3800B867CE /* JPSpotifyListHeaderView.m */; };
 		4BC9E9FE1C8291E900B867CE /* JPSpotifySession.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC9E9FD1C8291E900B867CE /* JPSpotifySession.m */; };
 		4BE53CBA1C4CB52300CA5B58 /* JPContainerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE53CB91C4CB52300CA5B58 /* JPContainerTableViewController.m */; };
-		4BE53CBE1C4CE45A00CA5B58 /* JPSingerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE53CBD1C4CE45A00CA5B58 /* JPSingerTableViewController.m */; };
 		4BEFCA9D1C552A9A0051750A /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BEFCA9C1C552A9A0051750A /* AVFoundation.framework */; };
 		4BEFCA9F1C552B6C0051750A /* Spotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BEFCA9E1C552B6B0051750A /* Spotify.framework */; };
 		4BEFCAA51C552C820051750A /* JPSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BEFCAA41C552C820051750A /* JPSettingsViewController.m */; };
@@ -140,8 +139,6 @@
 		4BC9E9FD1C8291E900B867CE /* JPSpotifySession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPSpotifySession.m; path = Tools/JPSpotifySession.m; sourceTree = "<group>"; };
 		4BE53CB81C4CB52300CA5B58 /* JPContainerTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = JPContainerTableViewController.h; path = ViewControllers/JPContainerTableViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		4BE53CB91C4CB52300CA5B58 /* JPContainerTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPContainerTableViewController.m; path = ViewControllers/JPContainerTableViewController.m; sourceTree = "<group>"; };
-		4BE53CBC1C4CE45A00CA5B58 /* JPSingerTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPSingerTableViewController.h; path = ViewControllers/JPSingerTableViewController.h; sourceTree = "<group>"; };
-		4BE53CBD1C4CE45A00CA5B58 /* JPSingerTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPSingerTableViewController.m; path = ViewControllers/JPSingerTableViewController.m; sourceTree = "<group>"; };
 		4BEFCA9C1C552A9A0051750A /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		4BEFCA9E1C552B6B0051750A /* Spotify.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Spotify.framework; sourceTree = "<group>"; };
 		4BEFCAA31C552C820051750A /* JPSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPSettingsViewController.h; path = ViewControllers/JPSettingsViewController.h; sourceTree = "<group>"; };
@@ -383,8 +380,6 @@
 			children = (
 				4B1743631C495EF0000B742F /* JPListTableViewController.h */,
 				4B1743641C495EF0000B742F /* JPListTableViewController.m */,
-				4BE53CBC1C4CE45A00CA5B58 /* JPSingerTableViewController.h */,
-				4BE53CBD1C4CE45A00CA5B58 /* JPSingerTableViewController.m */,
 			);
 			name = " ";
 			sourceTree = "<group>";
@@ -629,7 +624,6 @@
 				4B1743661C495EF0000B742F /* JPListTableViewController.m in Sources */,
 				4BFFABF81C7C662E00E9CE37 /* UIColor+JPColor.m in Sources */,
 				4B08999A1C881B3C00B1396F /* JPGradientView.m in Sources */,
-				4BE53CBE1C4CE45A00CA5B58 /* JPSingerTableViewController.m in Sources */,
 				4BC1091E1C733C7F0050E1EF /* JPListControlView.m in Sources */,
 				4B27F15B1C1A9AFF009FCBE6 /* Constants.m in Sources */,
 				4B1CE5F21C42D37100AC731A /* JPTrackLabel.m in Sources */,

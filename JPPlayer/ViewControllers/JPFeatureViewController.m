@@ -14,10 +14,15 @@
 
 @interface JPFeatureViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
 
-@property (strong, nonatomic) SPTFeaturedPlaylistList *playlistList;
-@property (strong, nonatomic) UILabel *messageLabel;
-@property (strong, nonatomic) UICollectionView *featureList;
-@property (nonatomic) CGSize cellSize;
+@property (strong, nonatomic) UILabel *featureMessageLabel;
+@property (strong, nonatomic) SPTFeaturedPlaylistList *featureListList;
+@property (strong, nonatomic) UICollectionView *featureListCollectionView;
+@property (nonatomic) CGSize featureCellSize;
+
+@property (strong, nonatomic) UILabel *NewReleaseLabel;
+@property (strong, nonatomic) NSMutableArray *NewReleaseList;
+@property (strong, nonatomic) UICollectionView *NewReleaseCollectionView;
+@property (nonatomic) CGSize NewReleaseCellSize;
 
 @end
 
@@ -26,61 +31,128 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(validateSpotifySession) name:SpotifySessionStateChanged object:nil];
+
     _containerList = super.containerList;
     
-    _messageLabel = [[UILabel alloc] init];
-    _messageLabel.backgroundColor = [UIColor JPSelectedCellColor];
-    _messageLabel.textColor = [UIColor whiteColor];
-    _messageLabel.textAlignment = NSTextAlignmentCenter;
-    _messageLabel.text = @"Not Available";
-    [self.view addSubview:_messageLabel];
-    [_messageLabel makeConstraints:^(MASConstraintMaker *make) {
+    _featureMessageLabel = [[UILabel alloc] init];
+    _featureMessageLabel.backgroundColor = [UIColor JPSeparatorColor];
+    _featureMessageLabel.textColor = [UIColor whiteColor];
+    _featureMessageLabel.textAlignment = NSTextAlignmentCenter;
+    _featureMessageLabel.text = @"Not Available";
+    [self.view addSubview:_featureMessageLabel];
+    [_featureMessageLabel makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
         make.height.equalTo(@(FakeHeaderHeight));
     }];
+
+    UICollectionViewFlowLayout *featureFlow = [[UICollectionViewFlowLayout alloc] init];
+    featureFlow.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    featureFlow.itemSize = _featureCellSize = (CGSize){210.f, 250.f};
     
-    
-    UICollectionViewFlowLayout *flow = [[UICollectionViewFlowLayout alloc] init];
-    flow.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    flow.itemSize = _cellSize = (CGSize){210.f, 250.f};
-    
-    _featureList = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flow];
-    _featureList.backgroundColor = [UIColor clearColor];
-    _featureList.showsHorizontalScrollIndicator = NO;
-    [_featureList registerClass:[JPSpotifyFeatureCollectionViewCell class] forCellWithReuseIdentifier:JPSpotifyFeatureCollectionViewIdentifier];
-    _featureList.dataSource = self;
-    _featureList.delegate = self;
-    [self.view addSubview:_featureList];
-    [_featureList makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_messageLabel.bottom);
+    _featureListCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:featureFlow];
+    _featureListCollectionView.backgroundColor = [UIColor clearColor];
+    _featureListCollectionView.showsHorizontalScrollIndicator = NO;
+    [_featureListCollectionView registerClass:[JPSpotifyFeatureCollectionViewCell class] forCellWithReuseIdentifier:JPSpotifyFeatureCollectionViewIdentifier];
+    _featureListCollectionView.dataSource = self;
+    _featureListCollectionView.delegate = self;
+    [self.view addSubview:_featureListCollectionView];
+    [_featureListCollectionView makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_featureMessageLabel.bottom);
         make.left.equalTo(self.view).offset(15.f);
         make.right.equalTo(self.view).offset(-15.f);
-        make.height.equalTo(@(_cellSize.height));
+        make.height.equalTo(@(_featureCellSize.height));
     }];
+
+    _NewReleaseLabel = [[UILabel alloc] init];
+    _NewReleaseLabel.backgroundColor = [UIColor JPSeparatorColor];
+    _NewReleaseLabel.textColor = [UIColor whiteColor];
+    _NewReleaseLabel.textAlignment = NSTextAlignmentCenter;
+    _NewReleaseLabel.text = @"New Release";
+    [self.view addSubview:_NewReleaseLabel];
+    [_NewReleaseLabel makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_featureListCollectionView.bottom);
+        make.left.right.equalTo(self.view);
+        make.height.equalTo(@(FakeHeaderHeight));
+    }];
+
+    UICollectionViewFlowLayout *NewReleaseFlow = [[UICollectionViewFlowLayout alloc] init];
+    NewReleaseFlow.scrollDirection = UICollectionViewScrollDirectionVertical;
+    NewReleaseFlow.itemSize = _NewReleaseCellSize = (CGSize){155.f, 210.f};
+
+    _NewReleaseCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:NewReleaseFlow];
+    _NewReleaseCollectionView.backgroundColor = [UIColor clearColor];
+    [_NewReleaseCollectionView registerClass:[JPSpotifyFeatureCollectionViewCell class] forCellWithReuseIdentifier:JPSpotifyFeatureCollectionViewIdentifier];
+    _NewReleaseCollectionView.dataSource = self;
+    _NewReleaseCollectionView.delegate = self;
+    [self.view addSubview:_NewReleaseCollectionView];
+    [_NewReleaseCollectionView makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_NewReleaseLabel.bottom);
+        make.bottom.equalTo(self.view);
+        make.left.equalTo(self.view).offset(15.f);
+        make.right.equalTo(self.view).offset(-15.f);
+    }];
+
+    _NewReleaseList = [[NSMutableArray alloc] init];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    [SPTBrowse requestFeaturedPlaylistsForCountry:@"TW" limit:50 offset:0 locale:@"" timestamp:nil accessToken:[JPSpotifySession defaultInstance].session.accessToken callback:^(NSError *error, SPTFeaturedPlaylistList *playlistList) {
-        self.playlistList = playlistList;
-    }];
+
+    [self validateSpotifySession];
 }
 
-- (void)setPlaylistList:(SPTFeaturedPlaylistList *)playlistList {
-    _playlistList = playlistList;
-    
-    _messageLabel.text = playlistList.message;
-    [_featureList reloadData];
+- (void)validateSpotifySession {
+    switch ([JPSpotifySession defaultInstance].state) {
+        case JPSpotifySessionValid: {
+            [SPTBrowse requestFeaturedPlaylistsForCountry:@"TW" limit:50 offset:0 locale:@"" timestamp:nil accessToken:[JPSpotifySession defaultInstance].session.accessToken callback:^(NSError *error, SPTFeaturedPlaylistList *playlistList) {
+                _featureListList = playlistList;
+                _featureMessageLabel.text = playlistList.message;
+                [_featureListCollectionView reloadData];
+            }];
+
+            NSURLRequest *req = [SPTBrowse createRequestForNewReleasesInCountry:@"TW" limit:50 offset:0 accessToken:[JPSpotifySession defaultInstance].session.accessToken error:nil];
+            [[SPTRequest sharedHandler] performRequest:req callback:^(NSError *error, NSURLResponse *response, NSData *data) {
+                SPTListPage *page = [SPTBrowse newReleasesFromData:data withResponse:response error:&error];
+                [_NewReleaseList addObjectsFromArray:page.items];
+                [_NewReleaseCollectionView reloadData];
+                [self checkNextPage:page];
+            }];
+
+            break;
+        }
+
+        default:
+            break;
+    }
+}
+
+- (void)checkNextPage:(SPTListPage *)page {
+    if ([page hasNextPage]) {
+        [page requestNextPageWithSession:[JPSpotifySession defaultInstance].session callback:^(NSError *error, SPTListPage *nextPage) {
+            if (error) {
+                NSLog(@"error: %@", error);
+                return;
+            }
+
+            [_NewReleaseList addObjectsFromArray:nextPage.items];
+            [_NewReleaseCollectionView reloadData];
+            [self checkNextPage:nextPage];
+        }];
+    }
 }
 
 #pragma make - UICollectionViewDataSource
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    if (_playlistList) {
-        return _playlistList.items.count;
+    if (collectionView == _featureListCollectionView && _featureListList) {
+        return _featureListList.items.count;
     }
-    
+
+    if (collectionView == _NewReleaseCollectionView && _NewReleaseList) {
+        return _NewReleaseList.count;
+    }
+
     return 0;
 }
 
@@ -90,15 +162,22 @@
     if (!cell) {
         cell = [[JPSpotifyFeatureCollectionViewCell alloc] init];
     }
-    
-    SPTPartialPlaylist *partialList = _playlistList.items[indexPath.row];
-    [cell.profileImageView setImageWithURL:partialList.largestImage.imageURL placeholderImage:[UIImage imageNamed:@"PlaceHolder.jpg"]];
-    cell.titleLabel.text = partialList.name;
+
+    if (collectionView == _featureListCollectionView) {
+        SPTPartialPlaylist *partialList = _featureListList.items[indexPath.row];
+        [cell.profileImageView setImageWithURL:partialList.largestImage.imageURL placeholderImage:[UIImage imageNamed:@"PlaceHolder.jpg"]];
+        cell.titleLabel.text = partialList.name;
+    }
+    else if (collectionView == _NewReleaseCollectionView) {
+        SPTPartialAlbum *partialAlbum = _NewReleaseList[indexPath.row];
+        [cell.profileImageView setImageWithURL:partialAlbum.largestCover.imageURL placeholderImage:[UIImage imageNamed:@"PlaceHolder.jpg"]];
+        cell.titleLabel.text = partialAlbum.name;
+    }
     
     return cell;
 }
 
-#pragma make - UICollectionViewDataSource
+#pragma make - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     for (JPContainerViewController *container in _containerList) {
         [container.view removeFromSuperview];
@@ -107,7 +186,7 @@
     
     JPListTableViewController *newSpotifyListVC = [[JPListTableViewController alloc] init];
     newSpotifyListVC.listType = SpotifyPlayList;
-    SPTPartialPlaylist *partialPlayList = _playlistList.items[indexPath.row];
+    SPTPartialPlaylist *partialPlayList = (collectionView==_featureListCollectionView) ? _featureListList.items[indexPath.row] : _NewReleaseList[indexPath.row];
     newSpotifyListVC.information = partialPlayList;
     
     [self addOneContainer:newSpotifyListVC];

@@ -71,14 +71,15 @@
 
     }
     else if (indexPath.row == 1) { // API testing
-        [SPTBrowse requestFeaturedPlaylistsForCountry:@"TW" limit:50 offset:0 locale:@"" timestamp:nil accessToken:[JPSpotifySession defaultInstance].session.accessToken callback:^(NSError *error, SPTFeaturedPlaylistList *playlistList) {
-            
-            NSLog(@"RAW DATA: %@", playlistList);
-            
-            NSLog(@"MESSAGE: %@", playlistList.message);
-            
-            NSLog(@"%@", playlistList.items);
-            
+        NSURLRequest *req = [SPTBrowse createRequestForNewReleasesInCountry:@"TW" limit:50 offset:0 accessToken:[JPSpotifySession defaultInstance].session.accessToken error:nil];
+        [[SPTRequest sharedHandler] performRequest:req callback:^(NSError *error, NSURLResponse *response, NSData *data) {
+            SPTListPage *listPage = [SPTBrowse newReleasesFromData:data withResponse:response error:&error];
+
+            NSLog(@"%@", listPage);
+
+            NSLog(@"%@", listPage.items);
+
+            NSLog(@"%@", [listPage tracksForPlayback]);
         }];
     }
 }

@@ -23,6 +23,7 @@
         
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.backgroundColor = [UIColor JPSelectedCellColor];
+        _titleLabel.font = [UIFont systemFontOfSize:11];
         _titleLabel.textColor = [UIColor whiteColor];
         _titleLabel.textAlignment = NSTextAlignmentCenter;
         _titleLabel.text = @"Not Available";
