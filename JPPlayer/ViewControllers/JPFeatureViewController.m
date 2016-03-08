@@ -80,7 +80,7 @@
 
     UICollectionViewFlowLayout *NewReleaseFlow = [[UICollectionViewFlowLayout alloc] init];
     NewReleaseFlow.scrollDirection = UICollectionViewScrollDirectionVertical;
-    NewReleaseFlow.itemSize = _NewReleaseCellSize = (CGSize){155.f, 210.f};
+    NewReleaseFlow.itemSize = _NewReleaseCellSize = (CGSize){160.f, 190.f};
 
     _NewReleaseCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:NewReleaseFlow];
     _NewReleaseCollectionView.backgroundColor = [UIColor clearColor];
@@ -90,9 +90,7 @@
     [self.view addSubview:_NewReleaseCollectionView];
     [_NewReleaseCollectionView makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_NewReleaseLabel.bottom);
-        make.bottom.equalTo(self.view);
-        make.left.equalTo(self.view).offset(15.f);
-        make.right.equalTo(self.view).offset(-15.f);
+        make.bottom.left.right.equalTo(self.view);
     }];
 
     _NewReleaseList = [[NSMutableArray alloc] init];

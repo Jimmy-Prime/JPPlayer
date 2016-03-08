@@ -14,7 +14,7 @@
 
 @interface JPCoverScrollViewController () <UIScrollViewDelegate>
 
-@property NSUInteger midPage;
+@property (nonatomic) NSUInteger midPage;
 @property (strong, nonatomic) UIScrollView *coverScrollView;
 
 @end
@@ -27,7 +27,6 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spotifyDidChangeToTrack:) name:SpotifyDidChangeToTrack object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spotifyDidChangePlaybackMode) name:SpotifyDidChangePlaybackMode object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spotifyShowNextTrackAnimation) name:SpotifyShowNextTrackAnimation object:nil];
 
     _coverScrollView = [[UIScrollView alloc] init];
     [self.view addSubview:_coverScrollView];
@@ -92,70 +91,95 @@
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    NSUInteger newPage;
-    if (_landscape) {
-        CGFloat pageLength = CGRectGetHeight(self.view.frame);
-        newPage = floor((scrollView.contentOffset.y - pageLength / 2.f) / pageLength) + 1;
-    }
-    else {
-        CGFloat pageLength = CGRectGetWidth(self.view.frame);
-        newPage = floor((scrollView.contentOffset.x - pageLength / 2.f) / pageLength) + 1;
-    }
-    
+    CGFloat pageLength = _landscape ? CGRectGetHeight(self.view.frame)
+                                    : CGRectGetWidth(self.view.frame);
+    NSUInteger newPage = _landscape ? floor((scrollView.contentOffset.y - pageLength / 2.f) / pageLength) + 1
+                                    : floor((scrollView.contentOffset.x - pageLength / 2.f) / pageLength) + 1;
+
     JPCoverImageView *targetTrack = _coverScrollView.subviews[newPage];
+
     if (targetTrack.spotifyURI) {
+        [self scrollToPage:_midPage];
         if (newPage < _midPage) {
+            [self swapToNext:NO];
             [[JPSpotifyPlayer defaultInstance] playPrevious];
-            
-            for (NSUInteger i=_coverScrollView.subviews.count-1; i>0; --i) {
-                JPCoverImageView *destination = _coverScrollView.subviews[i];
-                JPCoverImageView *source = _coverScrollView.subviews[i-1];
-                BOOL needsCrossFade = destination.needsCrossFade;
-                destination.needsCrossFade = NO;
-                [destination setWith:source];
-                destination.needsCrossFade = needsCrossFade;
-            }
         }
         else if (newPage > _midPage) {
+            [self swapToNext:YES];
             [[JPSpotifyPlayer defaultInstance] playNext];
-            
-            for (NSUInteger i=0; i<_coverScrollView.subviews.count-1; ++i) {
-                JPCoverImageView *destination = _coverScrollView.subviews[i];
-                JPCoverImageView *source = _coverScrollView.subviews[i+1];
-                BOOL needsCrossFade = destination.needsCrossFade;
-                destination.needsCrossFade = NO;
-                [destination setWith:source];
-                destination.needsCrossFade = needsCrossFade;
-            }
         }
     }
-    
-    CGRect bounds = _coverScrollView.bounds;
-    if (_landscape) {
-        bounds.origin.x = 0.f;
-        bounds.origin.y = CGRectGetHeight(bounds) * _midPage;
-    }
     else {
-        bounds.origin.x = CGRectGetWidth(bounds) * _midPage;
-        bounds.origin.y = 0.f;
+        [UIView animateWithDuration:AnimationInterval animations:^{
+            [self scrollToPage:_midPage];
+        }];
     }
-    [_coverScrollView scrollRectToVisible:bounds animated:!targetTrack.spotifyURI];
 }
 
-- (void)spotifyDidChangeToTrack:(NSNotification *)notification {
-    [self spotifyDidChangePlaybackMode];
-    
-    _midPage = 2;
+- (void)scrollToPage:(NSUInteger)page {
     CGRect bounds = _coverScrollView.bounds;
     if (_landscape) {
         bounds.origin.x = 0.f;
-        bounds.origin.y = CGRectGetHeight(bounds) * _midPage;
+        bounds.origin.y = CGRectGetHeight(bounds) * page;
     }
     else {
-        bounds.origin.x = CGRectGetWidth(bounds) * _midPage;
+        bounds.origin.x = CGRectGetWidth(bounds) * page;
         bounds.origin.y = 0.f;
     }
     [_coverScrollView scrollRectToVisible:bounds animated:NO];
+}
+
+- (void)swapToNext:(BOOL)next {
+    if (!next) {
+        for (NSUInteger i=_coverScrollView.subviews.count-1; i>0; --i) {
+            JPCoverImageView *destination = _coverScrollView.subviews[i];
+            JPCoverImageView *source = _coverScrollView.subviews[i-1];
+            BOOL needsCrossFade = destination.needsCrossFade;
+            destination.needsCrossFade = NO;
+            [destination setWith:source];
+            destination.needsCrossFade = needsCrossFade;
+        }
+    }
+    else {
+        for (NSUInteger i=0; i<_coverScrollView.subviews.count-1; ++i) {
+            JPCoverImageView *destination = _coverScrollView.subviews[i];
+            JPCoverImageView *source = _coverScrollView.subviews[i+1];
+            BOOL needsCrossFade = destination.needsCrossFade;
+            destination.needsCrossFade = NO;
+            [destination setWith:source];
+            destination.needsCrossFade = needsCrossFade;
+        }
+    }
+}
+
+- (void)spotifyDidChangeToTrack:(NSNotification *)notification {
+    NSDictionary *userInfo = notification.userInfo;
+    SPTTrack *track = userInfo[@"track"];
+
+    JPCoverImageView *nextTrack = _coverScrollView.subviews[_midPage + 1];
+    JPCoverImageView *previousTrack = _coverScrollView.subviews[_midPage - 1];
+    if ([track.uri isEqual:nextTrack.spotifyURI]) {
+        [UIView animateWithDuration:AnimationInterval animations:^{
+            [self scrollToPage:_midPage+1];
+        } completion:^(BOOL finished) {
+            [self scrollToPage:_midPage];
+            [self swapToNext:YES];
+            [self spotifyDidChangePlaybackMode];
+        }];
+    }
+    else if ([track.uri isEqual:previousTrack.spotifyURI]) {
+        [UIView animateWithDuration:AnimationInterval animations:^{
+            [self scrollToPage:_midPage-1];
+        } completion:^(BOOL finished) {
+            [self scrollToPage:_midPage];
+            [self swapToNext:NO];
+            [self spotifyDidChangePlaybackMode];
+        }];
+    }
+
+    else {
+        [self spotifyDidChangePlaybackMode];
+    }
 }
 
 - (void)spotifyDidChangePlaybackMode {
@@ -182,36 +206,6 @@
             }
         }
     }
-}
-
-- (void)spotifyShowNextTrackAnimation {
-    CGRect bounds = _coverScrollView.bounds;
-    if (_landscape) {
-        bounds.origin.x = 0.f;
-        bounds.origin.y = CGRectGetHeight(bounds) * (_midPage + 1);
-    }
-    else {
-        bounds.origin.x = CGRectGetWidth(bounds) * (_midPage + 1);
-        bounds.origin.y = 0.f;
-    }
-    [_coverScrollView scrollRectToVisible:bounds animated:YES];
-        
-    for (NSUInteger i=0; i<_coverScrollView.subviews.count-1; ++i) {
-        JPCoverImageView *destination = _coverScrollView.subviews[i];
-        JPCoverImageView *source = _coverScrollView.subviews[i+1];
-        [destination setWith:source];
-    }
-    
-    bounds = _coverScrollView.bounds;
-    if (_landscape) {
-        bounds.origin.x = 0.f;
-        bounds.origin.y = CGRectGetHeight(bounds) * _midPage;
-    }
-    else {
-        bounds.origin.x = CGRectGetWidth(bounds) * _midPage;
-        bounds.origin.y = 0.f;
-    }
-    [_coverScrollView scrollRectToVisible:bounds animated:NO];
 }
 
 @end

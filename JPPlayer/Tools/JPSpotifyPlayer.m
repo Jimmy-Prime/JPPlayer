@@ -130,7 +130,7 @@ static SPTAudioStreamingController *_player = nil;
     
     if (_index == 0) {
         if (_playbackState == JPSpotifyPlaybackNone) {
-            [[JPSpotifyPlayer player] stop:nil];
+//            [[JPSpotifyPlayer player] stop:nil];
         }
         else {
             _index = _activeURIs.count - 1;
@@ -153,7 +153,7 @@ static SPTAudioStreamingController *_player = nil;
         _index = 0;
         if (_playbackState == JPSpotifyPlaybackNone) {
             _index = _activeURIs.count - 1;
-            [[JPSpotifyPlayer player] stop:nil];
+//            [[JPSpotifyPlayer player] stop:nil];
         }
         else {
             [[JPSpotifyPlayer player] playURIs:@[_activeURIs[_index]] fromIndex:0 callback:nil];
@@ -202,7 +202,6 @@ static SPTAudioStreamingController *_player = nil;
         }
         else {
             [self playNext];
-            [[NSNotificationCenter defaultCenter] postNotificationName:SpotifyShowNextTrackAnimation object:nil];
         }
     }
 }
