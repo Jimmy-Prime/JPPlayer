@@ -37,3 +37,6 @@ CGFloat FakeHeaderHeight = 100.f;
 // Popup Player View Controller
 CGFloat CoverLength = 600.f;
 CGFloat CoverInset = 25.f;
+
+// Popup Menu View
+CGFloat PopupMenuWidth = 320.f;

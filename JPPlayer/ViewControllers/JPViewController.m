@@ -66,8 +66,8 @@
     [_rightContainerView makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).offset(20);
         make.bottom.equalTo(playerView.top);
-        make.right.equalTo(self.view);
         make.left.equalTo(leftBarView.right);
+        make.right.equalTo(self.view);
     }];
     
     [_popupPlayerViewController.view makeConstraints:^(MASConstraintMaker *make) {

@@ -28,3 +28,5 @@ extern CGFloat FakeHeaderHeight;
 extern CGFloat AnimationInterval;
 extern CGFloat CoverLength;
 extern CGFloat CoverInset;
+
+extern CGFloat PopupMenuWidth;

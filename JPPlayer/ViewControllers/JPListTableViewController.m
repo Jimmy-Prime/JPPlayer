@@ -88,11 +88,8 @@
             cell = [[JPSpotifyListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:JPSpotifyListTableViewCellIdentifier];
         }
 
-        SPTPlaylistTrack *track = _isSearching ? [_filteredTracks objectAtIndex:indexPath.row] : [_tracks objectAtIndex:indexPath.row];
-        cell.titleLabel.text = track.name;
-        SPTPartialArtist *artist0 = [track.artists objectAtIndex:0];
-        cell.auxilaryLabel.text = [NSString stringWithFormat:@"%@ - %@", artist0.name, track.album.name];
-
+        cell.track = _isSearching ? [_filteredTracks objectAtIndex:indexPath.row] : [_tracks objectAtIndex:indexPath.row];
+        
         return cell;
     }
     

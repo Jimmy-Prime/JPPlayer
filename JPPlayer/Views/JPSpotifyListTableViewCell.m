@@ -7,6 +7,7 @@
 //
 
 #import "JPSpotifyListTableViewCell.h"
+#import "JPPopupMenuView.h"
 
 @implementation JPSpotifyListTableViewCell
 
@@ -28,15 +29,14 @@
         _optionButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
         _optionButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
         _optionButton.tintColor = [UIColor whiteColor];
+        [_optionButton addTarget:self action:@selector(showMenu:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_optionButton];
         [_optionButton makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self);
             make.right.equalTo(self).offset(-8.f);
             make.width.height.equalTo(@(SmallButtonWidth));
         }];
-        
-        
-        
+
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.textColor = [UIColor whiteColor];
         [self addSubview:_titleLabel];
@@ -52,7 +52,7 @@
         [self addSubview:_auxilaryLabel];
         [_auxilaryLabel makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.equalTo(self);
-            make.left.equalTo(self).offset(20.f);
+            make.left.equalTo(self).offset(30.f);
             make.right.equalTo(_optionButton.left).offset(-10.f);
             make.height.equalTo(self).multipliedBy(0.5f);
         }];
@@ -61,10 +61,16 @@
     return self;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
+- (void)setTrack:(SPTPartialTrack *)track {
+    _track = track;
 
-    // Configure the view for the selected state
+    _titleLabel.text = track.name;
+    SPTPartialArtist *artist0 = track.artists.firstObject;
+    _auxilaryLabel.text = [NSString stringWithFormat:@"%@ - %@", artist0.name, track.album.name];
+}
+
+- (void)showMenu:(UIButton *)button {
+    [[JPPopupMenuView defaultInstance] showMenuWithRefPoint:[self convertPoint:button.center toView:self.window] track:_track];
 }
 
 @end

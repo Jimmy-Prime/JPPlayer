@@ -66,7 +66,7 @@
         }
 
         SPTPartialTrack *track = _tracks[indexPath.row];
-        cell.titleLabel.text = track.name;
+        cell.track = _tracks[indexPath.row];
 
         NSString *artists = ((SPTPartialArtist *)(track.artists.firstObject)).name;
         for (NSInteger i=1; i<track.artists.count; ++i) {
