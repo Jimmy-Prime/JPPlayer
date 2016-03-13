@@ -70,7 +70,7 @@
 }
 
 - (void)showMenu:(UIButton *)button {
-    [[JPPopupMenuView defaultInstance] showMenuWithRefPoint:[self convertPoint:button.center toView:self.window] track:_track];
+    [[JPPopupMenuView defaultInstance] showMenuAtRefPoint:[self convertPoint:button.center toView:self.window] track:_track];
 }
 
 @end

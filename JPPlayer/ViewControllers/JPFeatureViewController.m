@@ -45,7 +45,7 @@
     [self.view addSubview:_featureMessageLabel];
     [_featureMessageLabel makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
-        make.height.equalTo(@(FakeHeaderHeight));
+        make.height.equalTo(@(PlayerViewHeight));
     }];
 
     UICollectionViewFlowLayout *featureFlow = [[UICollectionViewFlowLayout alloc] init];
@@ -75,7 +75,7 @@
     [_NewReleaseLabel makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_featureListCollectionView.bottom);
         make.left.right.equalTo(self.view);
-        make.height.equalTo(@(FakeHeaderHeight));
+        make.height.equalTo(@(PlayerViewHeight));
     }];
 
     UICollectionViewFlowLayout *NewReleaseFlow = [[UICollectionViewFlowLayout alloc] init];
@@ -111,6 +111,7 @@
                 [_featureListCollectionView reloadData];
             }];
 
+            #warning shorthand method not working
             NSURLRequest *req = [SPTBrowse createRequestForNewReleasesInCountry:@"TW" limit:50 offset:0 accessToken:[JPSpotifySession defaultInstance].session.accessToken error:nil];
             [[SPTRequest sharedHandler] performRequest:req callback:^(NSError *error, NSURLResponse *response, NSData *data) {
                 SPTListPage *page = [SPTBrowse newReleasesFromData:data withResponse:response error:&error];

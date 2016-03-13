@@ -36,6 +36,7 @@
     auth.tokenSwapURL = [NSURL URLWithString:SpotifySwapURL];
     auth.requestedScopes = @[SPTAuthPlaylistReadPrivateScope,
                              SPTAuthStreamingScope,
+                             SPTAuthUserLibraryModifyScope,
                              SPTAuthUserLibraryReadScope,
                              SPTAuthUserReadPrivateScope];
     

@@ -25,8 +25,13 @@
 #pragma mark - Other actions
 - (void)addOneContainer:(JPContainerViewController *)container {
     [self.view addSubview:container.view];
-    
+
     JPContainerViewController *prev = [_containerList lastObject];
+    while (prev.view.tag == Dock) {
+        [prev.view removeFromSuperview];
+        [_containerList removeLastObject];
+        prev = [_containerList lastObject];
+    }
     [prev.view updateConstraints:^(MASConstraintMaker *make) {
         make.right.greaterThanOrEqualTo(container.view.left);
     }];
@@ -48,6 +53,19 @@
     [container.view addGestureRecognizer:container.pan];
     
     [_containerList addObject:container];
+
+    [self.view layoutIfNeeded];
+    [UIView animateWithDuration:AnimationInterval animations:^{
+        prev.view.tag = Left;
+        [prev.right uninstall];
+        [prev.left install];
+
+        JPContainerViewController *last = [_containerList lastObject];
+        last.view.tag = Right;
+        [last.dock uninstall];
+        [last.right install];
+        [self.view layoutIfNeeded];
+    }];
 }
 
 - (void)pan:(UIPanGestureRecognizer *)pan {

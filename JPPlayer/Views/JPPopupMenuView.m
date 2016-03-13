@@ -8,6 +8,11 @@
 
 #import <UIImageView+AFNetworking.h>
 #import "JPPopupMenuView.h"
+#import "JPAlbumTableViewController.h"
+#import "JPSpotifySession.h"
+
+#define HeaderHeight 80.f
+#define CellHeight 60.f
 
 @interface JPPopupMenuView() <UITableViewDataSource, UITableViewDelegate>
 
@@ -19,9 +24,12 @@
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UILabel *auxilaryLabel;
 
+@property (strong, nonatomic) SPTPartialTrack *track;
+
 @property (strong, nonatomic) UITableView *actionTableView;
 @property (strong, nonatomic) NSArray *menuCaptions;
 @property (strong, nonatomic) NSArray *menuImageNames;
+@property (strong, nonatomic) NSIndexPath *selectedIndexPath;
 
 @property (strong, nonatomic) UIImageView *indicator;
 
@@ -68,7 +76,7 @@ static id defaultInstance;
         [_backgroundContainerView addSubview:self];
         [self makeConstraints:^(MASConstraintMaker *make) {
             make.width.equalTo(@(PopupMenuWidth));
-            make.height.equalTo(@(80.f));
+            make.height.equalTo(@(HeaderHeight));
             make.right.equalTo(_backgroundContainerView).offset(-(8.f + SmallButtonWidth + 8.f));
             make.centerY.equalTo(_backgroundContainerView).priorityLow();
             make.top.greaterThanOrEqualTo(_backgroundContainerView.top).offset(20.f);
@@ -98,7 +106,7 @@ static id defaultInstance;
         [self addSubview:_headerContainerView];
         [_headerContainerView makeConstraints:^(MASConstraintMaker *make) {
             make.top.left.right.equalTo(self);
-            make.height.equalTo(@(80.f));
+            make.height.equalTo(@(HeaderHeight));
         }];
 
         _coverImageView = [[UIImageView alloc] init];
@@ -155,13 +163,14 @@ static id defaultInstance;
     [self dismissMenu];
 }
 
-- (void)showMenuWithRefPoint:(CGPoint)point track:(SPTPartialTrack *)track {
+- (void)showMenuAtRefPoint:(CGPoint)point track:(SPTPartialTrack *)track {
+    _track = track;
     _indicator.center = point;
 
     CGFloat y = point.y - [UIScreen mainScreen].bounds.size.height / 2.f;
 
     [self updateConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(@(80.f));
+        make.height.equalTo(@(HeaderHeight));
         make.centerY.equalTo(_backgroundContainerView.centerY).offset(y).priorityLow();
     }];
 
@@ -172,7 +181,7 @@ static id defaultInstance;
 
     [UIView animateWithDuration:AnimationInterval animations:^{
         [self updateConstraints:^(MASConstraintMaker *make) {
-            make.height.equalTo(@(400.f));
+            make.height.equalTo(@(HeaderHeight + _menuCaptions.count * CellHeight));
         }];
 
         [_actionTableView remakeConstraints:^(MASConstraintMaker *make) {
@@ -193,7 +202,7 @@ static id defaultInstance;
 - (void)dismissMenu {
     [UIView animateWithDuration:AnimationInterval animations:^{
         [self updateConstraints:^(MASConstraintMaker *make) {
-            make.height.equalTo(@(80.f));
+            make.height.equalTo(@(HeaderHeight));
         }];
 
         [_actionTableView remakeConstraints:^(MASConstraintMaker *make) {
@@ -202,6 +211,7 @@ static id defaultInstance;
         [_backgroundContainerView layoutIfNeeded];
     } completion:^(BOOL finished) {
         _backgroundContainerView.hidden = YES;
+        [_actionTableView deselectRowAtIndexPath:_selectedIndexPath animated:NO];
     }];
 }
 
@@ -234,13 +244,53 @@ static id defaultInstance;
 
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    _selectedIndexPath = indexPath;
 
+    switch (indexPath.row) {
+        case 0: { // Add
+            NSString *accessToken = [JPSpotifySession defaultInstance].session.accessToken;
+            #warning shorthand method not working
+            NSURLRequest *req = [SPTYourMusic createRequestForCheckingIfSavedTracksContains:@[_track] forUserWithAccessToken:accessToken error:nil];
+            [[SPTRequest sharedHandler] performRequest:req callback:^(NSError *error, NSURLResponse *response, NSData *data) {
+                if (error) {
+                    NSLog(@"error: %@", error);
+                    return;
+                }
+
+                NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                if ([result isEqualToString:@"[ false ]"]) {
+                    [SPTYourMusic saveTracks:@[_track] forUserWithAccessToken:accessToken callback:nil];
+                }
+            }];
+
+            break;
+    }
+
+        case 1: // Add to Playlist
+            break;
+
+        case 2: { // Go to Album
+            JPAlbumTableViewController *newAlbumVC = [[JPAlbumTableViewController alloc] init];
+            newAlbumVC.information = _track.album;
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"newContainer" object:nil userInfo:@{@"container" : newAlbumVC}];
+            break;
+        }
+
+        case 3: // Go to Artist
+            break;
+
+        case 4: // Share
+            break;
+
+        default:
+            break;
+    }
 
     [self dismissMenu];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return (400.f - 80.f) / _menuCaptions.count;
+    return CellHeight;
 }
 
 @end

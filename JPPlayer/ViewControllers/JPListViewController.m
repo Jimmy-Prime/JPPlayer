@@ -159,14 +159,6 @@
         newSpotifyListVC.information = partialPlayList;
         
         [self addOneContainer:newSpotifyListVC];
-        [self.view layoutIfNeeded];
-        [UIView animateWithDuration:AnimationInterval animations:^{
-            JPContainerViewController *last = [_containerList lastObject];
-            last.view.tag = Right;
-            [last.dock uninstall];
-            [last.right install];
-            [self.view layoutIfNeeded];
-        }];
     }
 }
 

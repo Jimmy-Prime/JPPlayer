@@ -11,6 +11,9 @@
 #import "JPPlayerView.h"
 #import "JPPopupPlayerViewController.h"
 
+#import "JPTabViewController.h"
+#import "JPContainerViewController.h"
+
 #import "JPSettingsViewController.h"
 #import "JPListViewController.h"
 #import "JPFeatureViewController.h"
@@ -22,6 +25,7 @@
 @property (strong, nonatomic) UIView *rightContainerView;
 @property (strong, nonatomic) JPPopupPlayerViewController *popupPlayerViewController;
 @property (strong, nonatomic) NSMutableArray *childViewControllers;
+@property (strong, nonatomic) JPTabViewController *activeTab;
 
 @property BOOL pop;
 
@@ -37,6 +41,8 @@
     _pop = NO;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(togglePop:) name:@"popup" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(togglePop:) name:@"pushdown" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(swithTab:) name:@"switchTab" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addContainer:) name:@"newContainer" object:nil];
     
     JPLeftBarView *leftBarView = [[JPLeftBarView alloc] init];
     [leftBarView setBackgroundColor:[UIColor blackColor]];
@@ -129,20 +135,9 @@
         [_rightContainerView addSubview:testVC.view];
         [_childViewControllers addObject:testVC];
     }
-    
-    // register notification
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(swithTab:) name:@"switchTab" object:nil];
-    
+
     // default tab
     [[NSNotificationCenter defaultCenter] postNotificationName:@"switchTab" object:nil userInfo:@{@"tab" : @(1)}];
-}
-
-- (void)swithTab:(NSNotification *)notification {
-    NSDictionary *userInfo = notification.userInfo;
-    NSInteger index = [[userInfo objectForKey:@"tab"] integerValue];
-    UIViewController *vc = [_childViewControllers objectAtIndex:index];
-    [_rightContainerView bringSubviewToFront:vc.view];
-    [vc viewWillAppear:YES];
 }
 
 - (void)togglePop:(NSNotification *)notification {
@@ -156,6 +151,21 @@
     [UIView animateWithDuration:AnimationInterval animations:^{
         [self setNeedsStatusBarAppearanceUpdate];
     }];
+}
+
+- (void)swithTab:(NSNotification *)notification {
+    NSDictionary *userInfo = notification.userInfo;
+    NSInteger index = [[userInfo objectForKey:@"tab"] integerValue];
+    JPTabViewController *vc = [_childViewControllers objectAtIndex:index];
+    [_rightContainerView bringSubviewToFront:vc.view];
+    [vc viewWillAppear:YES];
+    _activeTab = vc;
+}
+
+- (void)addContainer:(NSNotification *)notification {
+    NSDictionary *userInfo = notification.userInfo;
+    JPContainerViewController *container = userInfo[@"container"];
+    [_activeTab addOneContainer:container];
 }
 
 - (BOOL)prefersStatusBarHidden {
