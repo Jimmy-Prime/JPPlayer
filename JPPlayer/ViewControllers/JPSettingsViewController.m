@@ -71,15 +71,62 @@
 
     }
     else if (indexPath.row == 1) { // API testing
-        NSURLRequest *req = [SPTBrowse createRequestForNewReleasesInCountry:@"TW" limit:50 offset:0 accessToken:[JPSpotifySession defaultInstance].session.accessToken error:nil];
-        [[SPTRequest sharedHandler] performRequest:req callback:^(NSError *error, NSURLResponse *response, NSData *data) {
-            SPTListPage *listPage = [SPTBrowse newReleasesFromData:data withResponse:response error:&error];
+        SPTSession *session = [JPSpotifySession defaultInstance].session;
+        NSURL *URI = [NSURL URLWithString:@"spotify:artist:0TnOYISbd1XYRBk9myaseg"];
+        [SPTArtist artistWithURI:URI session:session callback:^(NSError *error, SPTArtist *artist) {
+            if (error) {
+                NSLog(@"error: %@", error);
+                return;
+            }
 
-            NSLog(@"%@", listPage);
+            NSLog(@"Artist: %@", artist);
 
-            NSLog(@"%@", listPage.items);
+            [artist requestAlbumsOfType:SPTAlbumTypeAlbum withSession:session availableInTerritory:nil callback:^(NSError *error, id object) {
+                if (error) {
+                    NSLog(@"error: %@", error);
+                    return;
+                }
 
-            NSLog(@"%@", [listPage tracksForPlayback]);
+                NSLog(@"Album: %@", object);
+            }];
+
+            [artist requestAlbumsOfType:SPTAlbumTypeSingle withSession:session availableInTerritory:nil callback:^(NSError *error, SPTListPage *page) {
+                if (error) {
+                    NSLog(@"error: %@", error);
+                    return;
+                }
+
+                NSLog(@"Single: %@", page);
+                NSLog(@"%@", page.items);
+            }];
+
+            [artist requestAlbumsOfType:SPTAlbumTypeCompilation withSession:session availableInTerritory:nil callback:^(NSError *error, SPTListPage *page) {
+                if (error) {
+                    NSLog(@"error: %@", error);
+                    return;
+                }
+
+                NSLog(@"Compilation: %@", page);
+                NSLog(@"%@", page.items);
+            }];
+
+            [artist requestAlbumsOfType:SPTAlbumTypeAppearsOn withSession:session availableInTerritory:nil callback:^(NSError *error, SPTListPage *page) {
+                if (error) {
+                    NSLog(@"error: %@", error);
+                    return;
+                }
+
+                NSLog(@"AppearsOn: %@", page);
+                NSLog(@"%@", page.items);
+            }];
+
+            [artist requestTopTracksForTerritory:@"TW" withSession:session callback:^(NSError *error, id object) {
+//                NSLog(@"Top Tracks: %@", object);
+            }];
+
+            [artist requestRelatedArtistsWithSession:session callback:^(NSError *error, id object) {
+//                NSLog(@"Related Artists: %@", object);
+            }];
         }];
     }
 }

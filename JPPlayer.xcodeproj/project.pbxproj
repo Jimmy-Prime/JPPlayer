@@ -44,6 +44,7 @@
 		4BC9E9FB1C820E3800B867CE /* JPSpotifyListHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC9E9FA1C820E3800B867CE /* JPSpotifyListHeaderView.m */; };
 		4BC9E9FE1C8291E900B867CE /* JPSpotifySession.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC9E9FD1C8291E900B867CE /* JPSpotifySession.m */; };
 		4BE53CBA1C4CB52300CA5B58 /* JPContainerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE53CB91C4CB52300CA5B58 /* JPContainerTableViewController.m */; };
+		4BEA81E21C96709B001C1946 /* JPArtistTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BEA81E11C96709B001C1946 /* JPArtistTableViewController.m */; };
 		4BEFCA9D1C552A9A0051750A /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BEFCA9C1C552A9A0051750A /* AVFoundation.framework */; };
 		4BEFCA9F1C552B6C0051750A /* Spotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BEFCA9E1C552B6B0051750A /* Spotify.framework */; };
 		4BEFCAA51C552C820051750A /* JPSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BEFCAA41C552C820051750A /* JPSettingsViewController.m */; };
@@ -145,6 +146,8 @@
 		4BC9E9FD1C8291E900B867CE /* JPSpotifySession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPSpotifySession.m; path = Tools/JPSpotifySession.m; sourceTree = "<group>"; };
 		4BE53CB81C4CB52300CA5B58 /* JPContainerTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = JPContainerTableViewController.h; path = ViewControllers/JPContainerTableViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		4BE53CB91C4CB52300CA5B58 /* JPContainerTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPContainerTableViewController.m; path = ViewControllers/JPContainerTableViewController.m; sourceTree = "<group>"; };
+		4BEA81E01C96709B001C1946 /* JPArtistTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPArtistTableViewController.h; path = ViewControllers/JPArtistTableViewController.h; sourceTree = "<group>"; };
+		4BEA81E11C96709B001C1946 /* JPArtistTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPArtistTableViewController.m; path = ViewControllers/JPArtistTableViewController.m; sourceTree = "<group>"; };
 		4BEFCA9C1C552A9A0051750A /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		4BEFCA9E1C552B6B0051750A /* Spotify.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Spotify.framework; sourceTree = "<group>"; };
 		4BEFCAA31C552C820051750A /* JPSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPSettingsViewController.h; path = ViewControllers/JPSettingsViewController.h; sourceTree = "<group>"; };
@@ -388,6 +391,8 @@
 			children = (
 				4B9408461C8DBCB60061AEAC /* JPAlbumTableViewController.h */,
 				4B9408471C8DBCB60061AEAC /* JPAlbumTableViewController.m */,
+				4BEA81E01C96709B001C1946 /* JPArtistTableViewController.h */,
+				4BEA81E11C96709B001C1946 /* JPArtistTableViewController.m */,
 				4B1743631C495EF0000B742F /* JPListTableViewController.h */,
 				4B1743641C495EF0000B742F /* JPListTableViewController.m */,
 			);
@@ -623,6 +628,7 @@
 				4B41B64F1C19745D0051BC79 /* JPViewController.m in Sources */,
 				4BFCBA461C3F8D8D00B86DD9 /* JPPopupPlayerViewController.m in Sources */,
 				4B9408481C8DBCB60061AEAC /* JPAlbumTableViewController.m in Sources */,
+				4BEA81E21C96709B001C1946 /* JPArtistTableViewController.m in Sources */,
 				4BFCBA491C3F90FF00B86DD9 /* JPCoverScrollViewController.m in Sources */,
 				4B94084E1C932F0B0061AEAC /* JPPopupMenuView.m in Sources */,
 				4BA85DC61C15753300D78EB9 /* JPListViewController.m in Sources */,
