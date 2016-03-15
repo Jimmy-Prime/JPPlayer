@@ -9,7 +9,7 @@
 #import <UIImageView+AFNetworking.h>
 #import "JPListTableViewController.h"
 #import "JPListControlView.h"
-#import "JPSpotifyListTableViewCell.h"
+#import "JPTrackCell.h"
 #import "JPSpotifyPlayer.h"
 
 @interface JPListTableViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, JPListControlDelegate>
@@ -83,9 +83,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 1) { // list section
-        JPSpotifyListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:JPSpotifyListTableViewCellIdentifier];
+        JPTrackCell *cell = [tableView dequeueReusableCellWithIdentifier:JPTrackCellIdentifier];
         if (cell == nil) {
-            cell = [[JPSpotifyListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:JPSpotifyListTableViewCellIdentifier];
+            cell = [[JPTrackCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:JPTrackCellIdentifier];
         }
 
         cell.track = _isSearching ? [_filteredTracks objectAtIndex:indexPath.row] : [_tracks objectAtIndex:indexPath.row];
@@ -106,7 +106,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 1) {
-        return JPSpotifyListTableCellHeight;
+        return JPTrackCellHeight;
     }
     
     return 0.f;

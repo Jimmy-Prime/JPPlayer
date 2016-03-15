@@ -8,7 +8,7 @@
 
 #import <UIImageView+AFNetworking.h>
 #import "JPArtistTableViewController.h"
-#import "JPSpotifyListTableViewCell.h"
+#import "JPTrackCell.h"
 #import "JPSpotifySession.h"
 
 @interface JPArtistTableViewController () <UITableViewDataSource, UITableViewDelegate>
@@ -123,9 +123,9 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    JPSpotifyListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:JPSpotifyListTableViewCellIdentifier];
+    JPTrackCell *cell = [tableView dequeueReusableCellWithIdentifier:JPTrackCellIdentifier];
     if (!cell) {
-        cell = [[JPSpotifyListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:JPSpotifyListTableViewCellIdentifier];
+        cell = [[JPTrackCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:JPTrackCellIdentifier];
     }
 
 //    UIImage *placeHolder = [UIImage imageNamed:@"PlaceHolder.jpg"];
@@ -191,7 +191,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return JPSpotifyListTableCellHeight;
+    return JPTrackCellHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {

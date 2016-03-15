@@ -8,7 +8,7 @@
 
 #import <UIImageView+AFNetworking.h>
 #import "JPAlbumTableViewController.h"
-#import "JPSpotifyListTableViewCell.h"
+#import "JPTrackCell.h"
 #import "JPSpotifyPlayer.h"
 
 @interface JPAlbumTableViewController () <UITableViewDataSource, UITableViewDelegate>
@@ -60,9 +60,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 1) { // list section
-        JPSpotifyListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:JPSpotifyListTableViewCellIdentifier];
+        JPTrackCell *cell = [tableView dequeueReusableCellWithIdentifier:JPTrackCellIdentifier];
         if (cell == nil) {
-            cell = [[JPSpotifyListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:JPSpotifyListTableViewCellIdentifier];
+            cell = [[JPTrackCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:JPTrackCellIdentifier];
         }
 
         SPTPartialTrack *track = _tracks[indexPath.row];
@@ -92,7 +92,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 1) {
-        return JPSpotifyListTableCellHeight;
+        return JPTrackCellHeight;
     }
 
     return 0.f;

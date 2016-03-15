@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-#define JPSpotifyListViewCellIdentifier @"SpotifyPlaylistCell"
-static const CGFloat JPSpotifyListCellHeight = 70.f;
+#define JPPlaylistCellIdentifier @"JPPlaylistCell"
+static const CGFloat JPPlaylistCellHeight = 70.f;
 
-@interface JPSpotifyListViewCell : UITableViewCell
+@interface JPPlaylistCell : UITableViewCell
 
 @property (strong, nonatomic) UIImageView *profileImageView;
 @property (strong, nonatomic) UILabel *titleLabel;

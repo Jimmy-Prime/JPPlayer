@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-#define JPSpotifyListTableViewCellIdentifier @"SpotifyListCell"
-static const CGFloat JPSpotifyListTableCellHeight = 70.f;
+#define JPTrackCellIdentifier @"JPTrackCell"
+static const CGFloat JPTrackCellHeight = 70.f;
 
-@interface JPSpotifyListTableViewCell : UITableViewCell
+@interface JPTrackCell : UITableViewCell
 
 @property (strong, nonatomic) SPTPartialTrack *track;
 

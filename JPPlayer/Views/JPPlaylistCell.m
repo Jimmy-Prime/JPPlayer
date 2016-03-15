@@ -6,9 +6,9 @@
 //  Copyright © 2016 Prime. All rights reserved.
 //
 
-#import "JPSpotifyListViewCell.h"
+#import "JPPlaylistCell.h"
 
-@implementation JPSpotifyListViewCell
+@implementation JPPlaylistCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];

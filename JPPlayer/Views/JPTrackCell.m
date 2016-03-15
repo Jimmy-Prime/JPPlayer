@@ -6,10 +6,10 @@
 //  Copyright © 2016 Prime. All rights reserved.
 //
 
-#import "JPSpotifyListTableViewCell.h"
+#import "JPTrackCell.h"
 #import "JPPopupMenuView.h"
 
-@implementation JPSpotifyListTableViewCell
+@implementation JPTrackCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];

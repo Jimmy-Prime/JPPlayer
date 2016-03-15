@@ -9,7 +9,7 @@
 #import <UIImageView+AFNetworking.h>
 #import "JPListViewController.h"
 #import "JPListTableViewController.h"
-#import "JPSpotifyListViewCell.h"
+#import "JPPlaylistCell.h"
 #import "JPSpotifyPlayer.h"
 #import "JPSpotifyListHeaderView.h"
 #import "JPSpotifySession.h"
@@ -109,9 +109,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) { // spotify section
-        JPSpotifyListViewCell *cell = [tableView dequeueReusableCellWithIdentifier:JPSpotifyListViewCellIdentifier];
+        JPPlaylistCell *cell = [tableView dequeueReusableCellWithIdentifier:JPPlaylistCellIdentifier];
         if (cell == nil) {
-            cell = [[JPSpotifyListViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:JPSpotifyListViewCellIdentifier];
+            cell = [[JPPlaylistCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:JPPlaylistCellIdentifier];
         }
         
         SPTPartialPlaylist *partialPlayList = [[_SpotifyLists tracksForPlayback] objectAtIndex:indexPath.row];
@@ -141,7 +141,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
-        return JPSpotifyListCellHeight;
+        return JPPlaylistCellHeight;
     }
     
     return 0.f;
