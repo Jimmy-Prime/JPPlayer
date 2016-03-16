@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-#define JPSpotifyFeatureCollectionViewIdentifier @"JPSpotifyFeatureCollectionViewCell"
-@interface JPSpotifyFeatureCollectionViewCell : UICollectionViewCell
+#define JPCollectionViewCellIdentifier @"JPCollectionViewCellIdentifier"
+@interface JPCollectionViewCell : UICollectionViewCell
 
 @property (strong, nonatomic) UIImageView *profileImageView;
 @property (strong, nonatomic) UILabel *titleLabel;

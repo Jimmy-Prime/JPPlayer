@@ -7,11 +7,13 @@
 //
 
 #import <UIImageView+AFNetworking.h>
-#import "JPArtistTableViewController.h"
-#import "JPTrackCell.h"
+#import "JPArtistCollectionViewController.h"
+#import "JPAlbumTableViewController.h"
+#import "JPCollectionViewCell.h"
 #import "JPSpotifySession.h"
+#import "JPSpotifyPlayer.h"
 
-@interface JPArtistTableViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface JPArtistCollectionViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (strong, nonatomic) NSArray *topTracks; // SPTTrack
 @property (strong, nonatomic) NSArray *relatedArtists; // SPTArtist
@@ -20,7 +22,7 @@
 
 @end
 
-@implementation JPArtistTableViewController
+@implementation JPArtistCollectionViewController
 @synthesize blurBackgroundImageView = _blurBackgroundImageView;
 @synthesize profileImageView = _profileImageView;
 @synthesize titleLabel = _titleLabel;
@@ -43,6 +45,8 @@
 
     _albums = [[NSMutableArray alloc] init];
     _singles = [[NSMutableArray alloc] init];
+
+    [_list registerClass:[JPCollectionViewCell class] forCellWithReuseIdentifier:JPCollectionViewCellIdentifier];
 }
 
 - (void)setInformation:(id)information {
@@ -122,54 +126,12 @@
     }
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    JPTrackCell *cell = [tableView dequeueReusableCellWithIdentifier:JPTrackCellIdentifier];
-    if (!cell) {
-        cell = [[JPTrackCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:JPTrackCellIdentifier];
-    }
-
-//    UIImage *placeHolder = [UIImage imageNamed:@"PlaceHolder.jpg"];
-    SPTPartialAlbum *album;
-    switch (indexPath.section) {
-        case 1: {
-            SPTTrack *track = _topTracks[indexPath.row];
-//            [cell.imageView setImageWithURL:track.album.smallestCover.imageURL placeholderImage:placeHolder];
-            cell.titleLabel.text = track.name;
-            cell.auxilaryLabel.text = track.album.name;
-            break;
-        }
-
-        case 2: {
-            SPTArtist *artist = _relatedArtists[indexPath.row];
-//            [cell.imageView setImageWithURL:artist.smallestImage.imageURL placeholderImage:placeHolder];
-            cell.titleLabel.text = artist.name;
-            cell.auxilaryLabel.text = artist.genres.firstObject;
-            break;
-        }
-
-        case 3:
-            album = _albums[indexPath.row];
-
-        case 4:
-            album = _singles[indexPath.row];
-
-//            [cell.imageView setImageWithURL:album.smallestCover.imageURL placeholderImage:placeHolder];
-            cell.titleLabel.text = album.name;
-            cell.auxilaryLabel.text = album.identifier;
-            break;
-            
-        default:
-            break;
-    }
-
-    return cell;
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+#pragma mark - UICollectionViewDataSource
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return 5;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     switch (section) {
         case 1:
             return _topTracks.count;
@@ -186,58 +148,129 @@
         default:
             break;
     }
-
+    
     return 0;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return JPTrackCellHeight;
-}
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    JPCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:JPCollectionViewCellIdentifier forIndexPath:indexPath];
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section == 0) {
-        return ContainerWidth;
+    if (!cell) {
+        cell = [[JPCollectionViewCell alloc] init];
     }
 
-    return 100.f;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (!section) {
-        return nil;
-    }
-
-    UILabel *label = [[UILabel alloc] initWithFrame:(CGRect){CGPointZero, ContainerWidth, 100.f}];
-    label.textAlignment = NSTextAlignmentCenter;
-    label.backgroundColor = [UIColor JPSelectedCellColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = [UIFont systemFontOfSize:36];
-    switch (section) {
-        case 1:
-            label.text = @"Top Tracks";
+    UIImage *placeHolder = [UIImage imageNamed:@"PlaceHolder.jpg"];
+    SPTPartialAlbum *album;
+    switch (indexPath.section) {
+        case 1: {
+            SPTTrack *track = _topTracks[indexPath.row];
+            [cell.profileImageView setImageWithURL:track.album.largestCover.imageURL placeholderImage:placeHolder];
+            cell.titleLabel.text = track.name;
             break;
+        }
 
-        case 2:
-            label.text = @"Related Artists";
+        case 2: {
+            SPTArtist *artist = _relatedArtists[indexPath.row];
+            [cell.profileImageView setImageWithURL:artist.largestImage.imageURL placeholderImage:placeHolder];
+            cell.titleLabel.text = artist.name;
             break;
+        }
 
         case 3:
-            label.text = @"Albums";
-            break;
+            album = _albums[indexPath.row];
 
         case 4:
-            label.text = @"Singles";
+            album = _singles[indexPath.row];
+
+            [cell.profileImageView setImageWithURL:album.largestCover.imageURL placeholderImage:placeHolder];
+            cell.titleLabel.text = album.name;
             break;
             
         default:
             break;
     }
 
-    return label;
+    return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+    if (kind == UICollectionElementKindSectionHeader) {
+        #warning custom header not working, this is a work around
+        UICollectionReusableView *header = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"JPContainerCollectionViewHeader" forIndexPath:indexPath];
 
+        UILabel *label = header.subviews.firstObject;
+        if (!label) {
+            label = [[UILabel alloc] initWithFrame:(CGRect){CGPointZero, ContainerWidth, FakeHeaderHeight}];
+            label.backgroundColor = [UIColor JPSelectedCellColor];
+            label.font = [UIFont systemFontOfSize:28];
+            label.textColor = [UIColor whiteColor];
+            label.textAlignment = NSTextAlignmentCenter;
+            label.text = @"Not Available";
+            [header addSubview:label];
+        }
+
+        label.hidden = NO;
+        switch (indexPath.section) {
+            case 1:
+                label.text = @"Top Tracks";
+                break;
+
+            case 2:
+                label.text = @"Related Artists";
+                break;
+
+            case 3:
+                label.text = @"Albums";
+                break;
+
+            case 4:
+                label.text = @"Singles";
+                break;
+                
+            default:
+                label.hidden = YES;
+                break;
+        }
+
+        return header;
+    }
+
+    return nil;
+}
+
+#pragma mark - UICollectionViewDelegate
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    switch (indexPath.section) {
+        case 1: {
+            SPTTrack *track = _topTracks[indexPath.row];
+            [[JPSpotifyPlayer defaultInstance] playURIs:@[track.uri] fromIndex:0];
+            break;
+        }
+
+        case 2: {
+            JPArtistCollectionViewController *newArtistVC = [[JPArtistCollectionViewController alloc] init];
+            newArtistVC.information = _relatedArtists[indexPath.row];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"newContainer" object:nil userInfo:@{@"container" : newArtistVC}];
+            break;
+        }
+
+        case 3: {
+            JPAlbumTableViewController *newAlbumVC = [[JPAlbumTableViewController alloc] init];
+            newAlbumVC.information = _albums[indexPath.row];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"newContainer" object:nil userInfo:@{@"container" : newAlbumVC}];
+            break;
+        }
+
+        case 4: {
+            JPAlbumTableViewController *newAlbumVC = [[JPAlbumTableViewController alloc] init];
+            newAlbumVC.information = _singles[indexPath.row];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"newContainer" object:nil userInfo:@{@"container" : newAlbumVC}];
+            break;
+        }
+
+        default:
+            break;
+    }
 }
 
 @end

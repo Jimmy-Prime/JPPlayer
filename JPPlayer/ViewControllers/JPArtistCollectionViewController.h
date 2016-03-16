@@ -6,8 +6,8 @@
 //  Copyright © 2016 Prime. All rights reserved.
 //
 
-#import "JPContainerTableViewController.h"
+#import "JPContainerCollectionViewController.h"
 
-@interface JPArtistTableViewController : JPContainerTableViewController
+@interface JPArtistCollectionViewController : JPContainerCollectionViewController
 
 @end

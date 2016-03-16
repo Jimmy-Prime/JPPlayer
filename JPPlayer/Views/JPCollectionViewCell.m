@@ -6,9 +6,9 @@
 //  Copyright © 2016 Prime. All rights reserved.
 //
 
-#import "JPSpotifyFeatureCollectionViewCell.h"
+#import "JPCollectionViewCell.h"
 
-@implementation JPSpotifyFeatureCollectionViewCell
+@implementation JPCollectionViewCell
 
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];

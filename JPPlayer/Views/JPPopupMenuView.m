@@ -9,7 +9,7 @@
 #import <UIImageView+AFNetworking.h>
 #import "JPPopupMenuView.h"
 #import "JPAlbumTableViewController.h"
-#import "JPArtistTableViewController.h"
+#import "JPArtistCollectionViewController.h"
 #import "JPSpotifySession.h"
 
 #define HeaderHeight 80.f
@@ -278,7 +278,7 @@ static id defaultInstance;
         }
 
         case 3: { // Go to Artist
-            JPArtistTableViewController *newArtistVC = [[JPArtistTableViewController alloc] init];
+            JPArtistCollectionViewController *newArtistVC = [[JPArtistCollectionViewController alloc] init];
             newArtistVC.information = _track.artists.firstObject;
             [[NSNotificationCenter defaultCenter] postNotificationName:@"newContainer" object:nil userInfo:@{@"container" : newArtistVC}];
             break;

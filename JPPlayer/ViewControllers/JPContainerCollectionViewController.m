@@ -1,25 +1,24 @@
 //
-//  JPContainerTableViewController.m
+//  JPContainerCollectionViewController.m
 //  JPPlayer
 //
-//  Created by Prime on 1/18/16.
+//  Created by Prime on 3/16/16.
 //  Copyright © 2016 Prime. All rights reserved.
 //
 
-#import "JPContainerTableViewController.h"
-#import "JPSpotifySession.h"
+#import "JPContainerCollectionViewController.h"
 
-@interface JPContainerTableViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
+@interface JPContainerCollectionViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 @end
 
-@implementation JPContainerTableViewController
+@implementation JPContainerCollectionViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     _topViewHeight = ContainerWidth;
-    
+
     _topView = [[UIView alloc] init];
     _topView.clipsToBounds = YES;
     [self.view addSubview:_topView];
@@ -27,17 +26,22 @@
         make.top.left.right.equalTo(self.view);
         make.height.equalTo(@(_topViewHeight));
     }];
-    
-    _list = [[UITableView alloc] init];
+
+    UICollectionViewFlowLayout *flow = [[UICollectionViewFlowLayout alloc] init];
+    flow.scrollDirection = UICollectionViewScrollDirectionVertical;
+    flow.minimumInteritemSpacing = 20.f;
+    flow.minimumLineSpacing = 20.f;
+
+    _list = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flow];
+    [_list registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"JPContainerCollectionViewHeader"];
+    _list.backgroundColor = [UIColor clearColor];
     _list.dataSource = self;
     _list.delegate = self;
-    _list.backgroundColor = [UIColor clearColor];
-    _list.separatorColor = [UIColor JPSeparatorColor];
     [self.view addSubview:_list];
     [_list makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
-    
+
     _fakeHeaderView = [[UIView alloc] init];
     _fakeHeaderView.backgroundColor = [UIColor JPFakeHeaderColor];
     [self.view addSubview:_fakeHeaderView];
@@ -106,56 +110,42 @@
     _tracks = [[NSMutableArray alloc] init];
 }
 
-- (void)checkNewPage:(SPTListPage *)page {
-    if (page.hasNextPage) {
-        [page requestNextPageWithSession:[JPSpotifySession defaultInstance].session callback:^(NSError *error, SPTListPage *nextPage) {
-            if (error) {
-                NSLog(@"error: %@", error);
-                return;
-            }
-
-            [_tracks addObjectsFromArray:nextPage.tracksForPlayback];
-            [_list reloadData];
-
-            if (nextPage.hasNextPage) {
-                [self checkNewPage:nextPage];
-            }
-        }];
-    }
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+#pragma mark - UICollectionViewDataSource
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return 2;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (section == 0) {
-        UIView *fakeHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ContainerWidth, ContainerWidth)];
-        [fakeHeader setBackgroundColor:[UIColor clearColor]];
-        return fakeHeader;
-    }
-    
-    return nil;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section == 0) {
-        return _topViewHeight;
-    }
-    
-    return 0;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [[UITableViewCell alloc] init];
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return section ? 100 : 0;
 }
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-    return YES;
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    return [[UICollectionViewCell alloc] init];
+}
+
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+    if (kind == UICollectionElementKindSectionHeader) {
+        UICollectionReusableView *header = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"JPContainerCollectionViewHeader" forIndexPath:indexPath];
+        return header;
+    }
+
+    return nil;
+}
+
+#pragma mark - UICollectionViewDelegate
+
+#pragma mark - UICollectionViewDelegateFlowLayout
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+    return (UIEdgeInsets){0, 20, 0, 20};
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
+    return section ? (CGSize){ContainerWidth, FakeHeaderHeight} : (CGSize){ContainerWidth, ContainerWidth};
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    CGFloat width = (ContainerWidth - 60.f) / 2.f;
+    return (CGSize){width, width + 40.f};
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -164,7 +154,7 @@
     if (_topViewHeight < FakeHeaderHeight) {
         _topViewHeight = FakeHeaderHeight;
     }
-    
+
     [_topView updateConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@(_topViewHeight));
     }];

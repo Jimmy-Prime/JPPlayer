@@ -8,7 +8,7 @@
 
 #import <UIImageView+AFNetworking.h>
 #import "JPFeatureViewController.h"
-#import "JPSpotifyFeatureCollectionViewCell.h"
+#import "JPCollectionViewCell.h"
 #import "JPListTableViewController.h"
 #import "JPAlbumTableViewController.h"
 #import "JPSpotifySession.h"
@@ -53,9 +53,9 @@
     featureFlow.itemSize = _featureCellSize = (CGSize){210.f, 250.f};
     
     _featureListCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:featureFlow];
-    _featureListCollectionView.backgroundColor = [UIColor clearColor];
+    _featureListCollectionView.backgroundColor = [UIColor JPBackgroundColor];
     _featureListCollectionView.showsHorizontalScrollIndicator = NO;
-    [_featureListCollectionView registerClass:[JPSpotifyFeatureCollectionViewCell class] forCellWithReuseIdentifier:JPSpotifyFeatureCollectionViewIdentifier];
+    [_featureListCollectionView registerClass:[JPCollectionViewCell class] forCellWithReuseIdentifier:JPCollectionViewCellIdentifier];
     _featureListCollectionView.dataSource = self;
     _featureListCollectionView.delegate = self;
     [self.view addSubview:_featureListCollectionView];
@@ -84,7 +84,7 @@
 
     _NewReleaseCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:NewReleaseFlow];
     _NewReleaseCollectionView.backgroundColor = [UIColor clearColor];
-    [_NewReleaseCollectionView registerClass:[JPSpotifyFeatureCollectionViewCell class] forCellWithReuseIdentifier:JPSpotifyFeatureCollectionViewIdentifier];
+    [_NewReleaseCollectionView registerClass:[JPCollectionViewCell class] forCellWithReuseIdentifier:JPCollectionViewCellIdentifier];
     _NewReleaseCollectionView.dataSource = self;
     _NewReleaseCollectionView.delegate = self;
     [self.view addSubview:_NewReleaseCollectionView];
@@ -157,10 +157,10 @@
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    JPSpotifyFeatureCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:JPSpotifyFeatureCollectionViewIdentifier forIndexPath:indexPath];
+    JPCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:JPCollectionViewCellIdentifier forIndexPath:indexPath];
     
     if (!cell) {
-        cell = [[JPSpotifyFeatureCollectionViewCell alloc] init];
+        cell = [[JPCollectionViewCell alloc] init];
     }
 
     if (collectionView == _featureListCollectionView) {
