@@ -226,7 +226,7 @@
     }];
     [alert addAction:defaultAction];
     
-    [self.view.window.rootViewController presentViewController:alert animated:YES completion:nil];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)dismiss {

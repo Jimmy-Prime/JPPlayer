@@ -46,7 +46,9 @@ static id defaultInstance;
 }
 
 - (void)setState:(JPSpotifySessionState)state {
-    if (_state != state) {
+    if (_state != state ||
+        state == JPSpotifySessionNone ||
+        state == JPSpotifySessionInvalid) {
         _state = state;
         [[NSNotificationCenter defaultCenter] postNotificationName:SpotifySessionStateChanged object:nil];
     }

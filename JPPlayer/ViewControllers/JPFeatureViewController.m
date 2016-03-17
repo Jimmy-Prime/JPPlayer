@@ -33,8 +33,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(validateSpotifySession) name:SpotifySessionStateChanged object:nil];
-
     _containerList = super.containerList;
     
     _featureMessageLabel = [[UILabel alloc] init];

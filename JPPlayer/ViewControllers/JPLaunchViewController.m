@@ -26,6 +26,8 @@
 @property (strong, nonatomic) UIImageView *playerImage;
 @property (strong, nonatomic) UILabel *playerLabel;
 
+@property (strong, nonatomic) UIButton *loginButton;
+
 @end
 
 @implementation JPLaunchViewController
@@ -35,40 +37,35 @@
 
     self.view.backgroundColor = [UIColor blackColor];
 
-    _connect = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo connect.png"]];
+    void (^placeAtCenter)(MASConstraintMaker *) = ^void(MASConstraintMaker *make) {
+        make.center.equalTo(self.view);
+        make.size.equalTo(@(512));
+    };
+
+    _connect = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"logo connect.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+    _connect.tintColor = [UIColor JPColor];
     [self.view addSubview:_connect];
-    [_connect makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(self.view);
-        make.size.equalTo(@(512));
-    }];
+    [_connect makeConstraints:placeAtCenter];
 
-    _outerL = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo outer L.png"]];
+    _outerL = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"logo outer L.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+    _outerL.tintColor = [UIColor JPColor];
     [self.view addSubview:_outerL];
-    [_outerL makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(self.view);
-        make.size.equalTo(@(512));
-    }];
+    [_outerL makeConstraints:placeAtCenter];
 
-    _outerR = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo outer R.png"]];
+    _outerR = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"logo outer R.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+    _outerR.tintColor = [UIColor JPColor];
     [self.view addSubview:_outerR];
-    [_outerR makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(self.view);
-        make.size.equalTo(@(512));
-    }];
+    [_outerR makeConstraints:placeAtCenter];
 
-    _innerL = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo inner L.png"]];
+    _innerL = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"logo inner L.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+    _innerL.tintColor = [UIColor JPColor];
     [self.view addSubview:_innerL];
-    [_innerL makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(self.view);
-        make.size.equalTo(@(512));
-    }];
+    [_innerL makeConstraints:placeAtCenter];
 
-    _innerR = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo inner R.png"]];
+    _innerR = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"logo inner R.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+    _innerR.tintColor = [UIColor JPColor];
     [self.view addSubview:_innerR];
-    [_innerR makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(self.view);
-        make.size.equalTo(@(512));
-    }];
+    [_innerR makeConstraints:placeAtCenter];
 
     _container = [[UIView alloc] init];
     _container.backgroundColor = [UIColor JPSelectedCellColor];
@@ -135,18 +132,33 @@
         make.top.bottom.right.equalTo(bottomContainer);
         make.left.equalTo(_playerImage.right).offset(5.f);
     }];
+
+    _loginButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [_loginButton setImage: [[UIImage imageNamed: @"spotify_login"] imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal] forState: UIControlStateNormal];
+    _loginButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    _loginButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
+    _loginButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
+    [_loginButton addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
+    _loginButton.alpha = 0.f;
+    [self.view addSubview:_loginButton];
+    [_loginButton makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.view).offset(-8.f);
+        make.centerX.equalTo(self.view);
+        // 488 * 88
+        make.width.equalTo(@(244.f));
+        make.height.equalTo(@(44.f));
+    }];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 
-    CGFloat animationInterval = 0.5f;
     CGFloat bottomInset = -100.f;
-    CGFloat horizontalInset = 80.f; // -48.f for stick to side
+    CGFloat horizontalInset = 80.f;
 
-    [UIView animateWithDuration:animationInterval animations:^{
+    [UIView animateWithDuration:AnimationInterval delay:AnimationInterval*3.f options:0 animations:^{
         void (^moveUp)(MASConstraintMaker *) = ^void(MASConstraintMaker *make) {
-            make.centerY.equalTo(self.view.centerY).offset(bottomInset);
+            make.centerY.equalTo(self.view).offset(bottomInset);
             make.centerX.equalTo(self.view);
             make.size.equalTo(@(512));
         };
@@ -161,10 +173,10 @@
         [self.view layoutIfNeeded];
         
     } completion:^(BOOL finished) {
-        [UIView animateWithDuration:animationInterval animations:^{
+        [UIView animateWithDuration:AnimationInterval animations:^{
             void (^moveLeft)(MASConstraintMaker *) = ^void(MASConstraintMaker *make) {
-                make.centerY.equalTo(self.view.centerY).offset(bottomInset);
-                make.left.equalTo(self.view).offset(horizontalInset);
+                make.centerY.equalTo(self.view).offset(bottomInset);
+                make.centerX.equalTo(self.view).offset(-horizontalInset);
                 make.size.equalTo(@(512));
             };
 
@@ -172,8 +184,8 @@
             [_innerL remakeConstraints:moveLeft];
 
             void (^moveRight)(MASConstraintMaker *) = ^void(MASConstraintMaker *make) {
-                make.centerY.equalTo(self.view.centerY).offset(bottomInset);
-                make.right.equalTo(self.view).offset(-horizontalInset);
+                make.centerY.equalTo(self.view).offset(bottomInset);
+                make.centerX.equalTo(self.view).offset(horizontalInset);
                 make.size.equalTo(@(512));
             };
 
@@ -183,7 +195,7 @@
             [self.view layoutIfNeeded];
 
         } completion:^(BOOL finished) {
-            [UIView animateWithDuration:animationInterval animations:^{
+            [UIView animateWithDuration:AnimationInterval animations:^{
                 _container.alpha = 1.f;
 
             } completion:^(BOOL finished) {
@@ -204,6 +216,10 @@
 
             UIImage *noneImage = [[UIImage imageNamed:@"ic_cancel_white_48pt"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             _sessionImage.image = noneImage;
+
+            [UIView animateWithDuration:AnimationInterval animations:^{
+                _loginButton.alpha = 1.f;
+            }];
             break;
         }
 
@@ -248,6 +264,10 @@
                 }];
             } completion:nil];
 
+            [UIView animateWithDuration:AnimationInterval animations:^{
+                _loginButton.alpha = 0.f;
+            }];
+
             [[JPSpotifyPlayer player] loginWithSession:[JPSpotifySession defaultInstance].session callback:^(NSError *error) {
                 if (error) {
                     NSLog(@"error: %@", error);
@@ -270,7 +290,56 @@
 }
 
 - (void)showPlayer {
-    [self performSegueWithIdentifier:@"ShowPlayer" sender:self];
+    CGFloat bottomInset = -100.f;
+
+    [UIView animateWithDuration:AnimationInterval animations:^{
+        _container.alpha = 0.f;
+
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:AnimationInterval animations:^{
+            void (^moveToMid)(MASConstraintMaker *) = ^void(MASConstraintMaker *make) {
+                make.centerY.equalTo(self.view).offset(bottomInset);
+                make.centerX.equalTo(self.view);
+                make.size.equalTo(@(512));
+            };
+
+            [_outerL remakeConstraints:moveToMid];
+            [_outerR remakeConstraints:moveToMid];
+            [_innerL remakeConstraints:moveToMid];
+            [_innerR remakeConstraints:moveToMid];
+
+            [self.view layoutIfNeeded];
+            
+        } completion:^(BOOL finished) {
+            [UIView animateWithDuration:AnimationInterval animations:^{
+                void (^moveToMid)(MASConstraintMaker *) = ^void(MASConstraintMaker *make) {
+                    make.center.equalTo(self.view);
+                    make.size.equalTo(@(512));
+                };
+
+                _connect.alpha = 1.f;
+                [_connect remakeConstraints:moveToMid];
+                [_outerL remakeConstraints:moveToMid];
+                [_outerR remakeConstraints:moveToMid];
+                [_innerL remakeConstraints:moveToMid];
+                [_innerR remakeConstraints:moveToMid];
+                
+                [self.view layoutIfNeeded];
+                
+            } completion:^(BOOL finished) {
+                [self performSegueWithIdentifier:@"ShowPlayer" sender:self];
+            }];
+        }];
+    }];
+}
+
+- (void)login {
+    [[UIApplication sharedApplication] openURL:[SPTAuth defaultInstance].loginURL];
+
+    _sessionLabel.text = @"Creating Session";
+
+    UIImage *moreImage = [[UIImage imageNamed:@"ic_more_horiz_white_48pt"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    _sessionImage.image = moreImage;
 }
 
 @end
