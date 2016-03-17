@@ -66,6 +66,17 @@
         }
 
         SPTPartialTrack *track = _tracks[indexPath.row];
+        if (![track isKindOfClass:[SPTTrack class]]) {
+            [SPTTrack trackWithURI:track.uri session:nil callback:^(NSError *error, SPTTrack *track) {
+                if (error) {
+                    NSLog(@"error: %@", error);
+                    return;
+                }
+
+                _tracks[indexPath.row] = track;
+            }];
+        }
+
         cell.track = _tracks[indexPath.row];
 
         NSString *artists = ((SPTPartialArtist *)(track.artists.firstObject)).name;
@@ -102,7 +113,7 @@
     if (indexPath.section == 1) {
         NSMutableArray *URIs = [[NSMutableArray alloc] init];
 
-        for (SPTPlaylistTrack *track in _tracks) {
+        for (SPTPartialTrack *track in _tracks) {
             [URIs addObject:[track uri]];
         }
 

@@ -94,38 +94,21 @@
     }];
 
     _NewReleaseList = [[NSMutableArray alloc] init];
-}
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
+    [SPTBrowse requestFeaturedPlaylistsForCountry:@"TW" limit:50 offset:0 locale:@"" timestamp:nil accessToken:[JPSpotifySession defaultInstance].session.accessToken callback:^(NSError *error, SPTFeaturedPlaylistList *playlistList) {
+        _featureListList = playlistList;
+        _featureMessageLabel.text = playlistList.message;
+        [_featureListCollectionView reloadData];
+    }];
 
-    [self validateSpotifySession];
-}
-
-- (void)validateSpotifySession {
-    switch ([JPSpotifySession defaultInstance].state) {
-        case JPSpotifySessionValid: {
-            [SPTBrowse requestFeaturedPlaylistsForCountry:@"TW" limit:50 offset:0 locale:@"" timestamp:nil accessToken:[JPSpotifySession defaultInstance].session.accessToken callback:^(NSError *error, SPTFeaturedPlaylistList *playlistList) {
-                _featureListList = playlistList;
-                _featureMessageLabel.text = playlistList.message;
-                [_featureListCollectionView reloadData];
-            }];
-
-            #warning shorthand method not working
-            NSURLRequest *req = [SPTBrowse createRequestForNewReleasesInCountry:@"TW" limit:50 offset:0 accessToken:[JPSpotifySession defaultInstance].session.accessToken error:nil];
-            [[SPTRequest sharedHandler] performRequest:req callback:^(NSError *error, NSURLResponse *response, NSData *data) {
-                SPTListPage *page = [SPTBrowse newReleasesFromData:data withResponse:response error:&error];
-                [_NewReleaseList addObjectsFromArray:page.items];
-                [_NewReleaseCollectionView reloadData];
-                [self checkNextPage:page];
-            }];
-
-            break;
-        }
-
-        default:
-            break;
-    }
+#warning shorthand method not working
+    NSURLRequest *req = [SPTBrowse createRequestForNewReleasesInCountry:@"TW" limit:50 offset:0 accessToken:[JPSpotifySession defaultInstance].session.accessToken error:nil];
+    [[SPTRequest sharedHandler] performRequest:req callback:^(NSError *error, NSURLResponse *response, NSData *data) {
+        SPTListPage *page = [SPTBrowse newReleasesFromData:data withResponse:response error:&error];
+        [_NewReleaseList addObjectsFromArray:page.items];
+        [_NewReleaseCollectionView reloadData];
+        [self checkNextPage:page];
+    }];
 }
 
 - (void)checkNextPage:(SPTListPage *)page {
