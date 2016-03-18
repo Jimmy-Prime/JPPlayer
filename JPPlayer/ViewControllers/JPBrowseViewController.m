@@ -146,12 +146,12 @@
 
     if (collectionView == _featureListCollectionView) {
         SPTPartialPlaylist *partialList = _featureListList.items[indexPath.row];
-        [cell.profileImageView setImageWithURL:partialList.largestImage.imageURL placeholderImage:[UIImage imageNamed:@"PlaceHolder.jpg"]];
+        [cell.profileImageView setImageWithURL:[partialList imageClosestToSize:_featureCellSize].imageURL placeholderImage:[UIImage imageNamed:@"PlaceHolder.jpg"]];
         cell.titleLabel.text = partialList.name;
     }
     else if (collectionView == _NewReleaseCollectionView) {
         SPTPartialAlbum *partialAlbum = _NewReleaseList[indexPath.row];
-        [cell.profileImageView setImageWithURL:partialAlbum.largestCover.imageURL placeholderImage:[UIImage imageNamed:@"PlaceHolder.jpg"]];
+        [cell.profileImageView setImageWithURL:[partialAlbum imageClosestToSize:_NewReleaseCellSize].imageURL placeholderImage:[UIImage imageNamed:@"PlaceHolder.jpg"]];
         cell.titleLabel.text = partialAlbum.name;
     }
     

@@ -15,8 +15,9 @@
 #import "JPContainerViewController.h"
 
 #import "JPSettingsViewController.h"
-#import "JPListViewController.h"
+#import "JPSearchViewController.h"
 #import "JPBrowseViewController.h"
+#import "JPListViewController.h"
 
 #import "TestViewController.h"
 
@@ -99,7 +100,31 @@
     [JPSettingsVC.view makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(_rightContainerView);
     }];
-    
+
+    // search tab
+    UIButton *searchtab = [UIButton buttonWithType:UIButtonTypeSystem];
+    [searchtab setImage:[UIImage imageNamed:@"ic_search_white_48pt"] forState:UIControlStateNormal];
+    [leftBarView addTab:searchtab];
+
+    JPSearchViewController *JPSearchVC = [[JPSearchViewController alloc] init];
+    [_rightContainerView addSubview:JPSearchVC.view];
+    [_childViewControllers addObject:JPSearchVC];
+    [JPSearchVC.view makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(_rightContainerView);
+    }];
+
+    // feature lists tab
+    UIButton *featureTab = [UIButton buttonWithType:UIButtonTypeSystem];
+    [featureTab setImage:[UIImage imageNamed:@"ic_stars_white_48pt"] forState:UIControlStateNormal];
+    [leftBarView addTab:featureTab];
+
+    JPBrowseViewController *JPBrowseVC = [[JPBrowseViewController alloc] init];
+    [_rightContainerView addSubview:JPBrowseVC.view];
+    [_childViewControllers addObject:JPBrowseVC];
+    [JPBrowseVC.view makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(_rightContainerView);
+    }];
+
     // list tab
     UIButton *listTab = [UIButton buttonWithType:UIButtonTypeSystem];
     [listTab setImage:[UIImage imageNamed:@"ic_view_list_white_48pt"] forState:UIControlStateNormal];
@@ -111,19 +136,7 @@
     [JPListVC.view makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(_rightContainerView);
     }];
-    
-    // feature lists tab
-    UIButton *featureTab = [UIButton buttonWithType:UIButtonTypeSystem];
-    [featureTab setImage:[UIImage imageNamed:@"ic_stars_white_48pt"] forState:UIControlStateNormal];
-    [leftBarView addTab:featureTab];
-    
-    JPBrowseViewController *JPBrowseVC = [[JPBrowseViewController alloc] init];
-    [_rightContainerView addSubview:JPBrowseVC.view];
-    [_childViewControllers addObject:JPBrowseVC];
-    [JPBrowseVC.view makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(_rightContainerView);
-    }];
-    
+
     for (NSUInteger i=0; i<5; ++i) {
         // test tab
         UIButton *testTab = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -137,7 +150,7 @@
     }
 
     // default tab
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"switchTab" object:nil userInfo:@{@"tab" : @(1)}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"switchTab" object:nil userInfo:@{@"tab" : @(3)}];
 }
 
 - (void)togglePop:(NSNotification *)notification {

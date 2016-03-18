@@ -31,7 +31,7 @@
     self.view.clipsToBounds = YES;
     
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(popUp:) name:@"popup" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spotifyDidChangeToTrack:) name:SpotifyDidChangeToTrack object:nil];
@@ -67,9 +67,11 @@
     pushDownButton.tintColor = [UIColor JPColor];
     [self.view addSubview:pushDownButton];
     [pushDownButton addTarget:self action:@selector(pushDown:) forControlEvents:UIControlEventTouchUpInside];
+
+    [self orientationChanged];
 }
 
-- (void)orientationChanged:(NSNotification *)notification {
+- (void)orientationChanged {
     UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
     CGFloat width, height, longer, shorter;
     width = [UIScreen mainScreen].bounds.size.width;

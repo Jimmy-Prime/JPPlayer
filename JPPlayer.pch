@@ -17,5 +17,6 @@
 #import <Spotify/Spotify.h>
 #import "Constants.h"
 #import "UIColor+JPColor.h"
+#import "SPT+image.h"
 
 #endif /* JPPlayer_pch */

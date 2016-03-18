@@ -104,11 +104,22 @@
         make.top.bottom.left.equalTo(topContainer);
         make.width.equalTo(_sessionImage.height);
     }];
+    [UIView animateKeyframesWithDuration:AnimationInterval*4.f delay:0.f options:UIViewAnimationOptionRepeat | UIViewAnimationOptionCurveLinear animations:^{
+        [UIView addKeyframeWithRelativeStartTime:0.f relativeDuration:1.f / 3.f animations:^{
+            _sessionImage.transform = CGAffineTransformMakeRotation(M_PI * 2.0f / 3.0f);
+        }];
+        [UIView addKeyframeWithRelativeStartTime:1.f / 3.f relativeDuration:1.f / 3.f animations:^{
+            _sessionImage.transform = CGAffineTransformMakeRotation(M_PI * 4.0f / 3.0f);
+        }];
+        [UIView addKeyframeWithRelativeStartTime:2.f / 3.f relativeDuration:1.f / 3.f animations:^{
+            _sessionImage.transform = CGAffineTransformIdentity;
+        }];
+    } completion:nil];
 
     _sessionLabel = [[UILabel alloc] init];
     _sessionLabel.textAlignment = NSTextAlignmentCenter;
     _sessionLabel.textColor = [UIColor JPColor];
-    _sessionLabel.text = @"Waiting";
+    _sessionLabel.text = @"Checking Session";
     [topContainer addSubview:_sessionLabel];
     [_sessionLabel makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.right.equalTo(topContainer);

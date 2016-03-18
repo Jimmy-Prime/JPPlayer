@@ -51,7 +51,7 @@ static id defaultInstance;
 - (instancetype)init {
     self = [super init];
     if (self) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
 
         UIWindow *window = [UIApplication sharedApplication].delegate.window;
 
@@ -154,7 +154,7 @@ static id defaultInstance;
 }
 
 
-- (void)orientationChanged:(NSNotification *)notification {
+- (void)orientationChanged {
     _backgroundContainerView.frame = [UIScreen mainScreen].bounds;
     _backgroundView.frame = [UIScreen mainScreen].bounds;
     [self dismissMenu];

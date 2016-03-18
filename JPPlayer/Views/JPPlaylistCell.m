@@ -44,7 +44,7 @@
         [self addSubview:_titleLabel];
         [_titleLabel makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(_profileImageView);
-            make.left.equalTo(_profileImageView.right).offset(5.f);
+            make.left.equalTo(_profileImageView.right).offset(15.f);
             make.right.equalTo(rightArrowImageView.left).offset(-5.f);
             make.height.equalTo(_profileImageView).multipliedBy(0.5f);
         }];
@@ -54,7 +54,7 @@
         [self addSubview:_auxilaryLabel];
         [_auxilaryLabel makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.equalTo(_profileImageView);
-            make.left.equalTo(_profileImageView.right).offset(5.f);
+            make.left.equalTo(_profileImageView.right).offset(15.f);
             make.right.equalTo(rightArrowImageView.left).offset(-5.f);
             make.height.equalTo(_profileImageView).multipliedBy(0.5f);
         }];

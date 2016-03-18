@@ -161,17 +161,19 @@
 
     UIImage *placeHolder = [UIImage imageNamed:@"PlaceHolder.jpg"];
     SPTPartialAlbum *album;
+    CGFloat width = (ContainerWidth - 60.f) / 2.f;
+    CGSize imageSize = (CGSize){width, width};
     switch (indexPath.section) {
         case 1: {
             SPTTrack *track = _topTracks[indexPath.row];
-            [cell.profileImageView setImageWithURL:track.album.largestCover.imageURL placeholderImage:placeHolder];
+            [cell.profileImageView setImageWithURL:[track.album imageClosestToSize:imageSize].imageURL placeholderImage:placeHolder];
             cell.titleLabel.text = track.name;
             break;
         }
 
         case 2: {
             SPTArtist *artist = _relatedArtists[indexPath.row];
-            [cell.profileImageView setImageWithURL:artist.largestImage.imageURL placeholderImage:placeHolder];
+            [cell.profileImageView setImageWithURL:[artist imageClosestToSize:imageSize].imageURL placeholderImage:placeHolder];
             cell.titleLabel.text = artist.name;
             break;
         }
@@ -182,7 +184,7 @@
         case 4:
             album = _singles[indexPath.row];
 
-            [cell.profileImageView setImageWithURL:album.largestCover.imageURL placeholderImage:placeHolder];
+            [cell.profileImageView setImageWithURL:[album imageClosestToSize:imageSize].imageURL placeholderImage:placeHolder];
             cell.titleLabel.text = album.name;
             break;
             
