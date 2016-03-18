@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "JPTabViewController.h"
 
-@interface JPPopupMenuView : UIView
+@interface JPPopupMenuViewController : UIViewController
 
 + (instancetype)defaultInstance;
 - (void)showMenuAtRefPoint:(CGPoint)point track:(SPTPartialTrack *)track;

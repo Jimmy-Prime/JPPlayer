@@ -7,7 +7,7 @@
 //
 
 #import "JPTrackCell.h"
-#import "JPPopupMenuView.h"
+#import "JPPopupMenuViewController.h"
 
 @implementation JPTrackCell
 
@@ -70,7 +70,7 @@
 }
 
 - (void)showMenu:(UIButton *)button {
-    [[JPPopupMenuView defaultInstance] showMenuAtRefPoint:[self convertPoint:button.center toView:self.window] track:_track];
+    [[JPPopupMenuViewController defaultInstance] showMenuAtRefPoint:[self convertPoint:button.center toView:self.window] track:_track];
 }
 
 @end

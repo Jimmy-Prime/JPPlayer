@@ -16,7 +16,7 @@
 
 #import "JPSettingsViewController.h"
 #import "JPListViewController.h"
-#import "JPFeatureViewController.h"
+#import "JPBrowseViewController.h"
 
 #import "TestViewController.h"
 
@@ -117,10 +117,10 @@
     [featureTab setImage:[UIImage imageNamed:@"ic_stars_white_48pt"] forState:UIControlStateNormal];
     [leftBarView addTab:featureTab];
     
-    JPFeatureViewController *JPFeatureVC = [[JPFeatureViewController alloc] init];
-    [_rightContainerView addSubview:JPFeatureVC.view];
-    [_childViewControllers addObject:JPFeatureVC];
-    [JPFeatureVC.view makeConstraints:^(MASConstraintMaker *make) {
+    JPBrowseViewController *JPBrowseVC = [[JPBrowseViewController alloc] init];
+    [_rightContainerView addSubview:JPBrowseVC.view];
+    [_childViewControllers addObject:JPBrowseVC];
+    [JPBrowseVC.view makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(_rightContainerView);
     }];
     

@@ -8,6 +8,6 @@
 
 #import "JPTabViewController.h"
 
-@interface JPFeatureViewController : JPTabViewController
+@interface JPBrowseViewController : JPTabViewController
 
 @end

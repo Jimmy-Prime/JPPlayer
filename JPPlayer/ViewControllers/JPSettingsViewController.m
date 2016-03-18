@@ -71,62 +71,18 @@
 
     }
     else if (indexPath.row == 1) { // API testing
-        SPTSession *session = [JPSpotifySession defaultInstance].session;
-        NSURL *URI = [NSURL URLWithString:@"spotify:artist:0TnOYISbd1XYRBk9myaseg"];
-        [SPTArtist artistWithURI:URI session:session callback:^(NSError *error, SPTArtist *artist) {
+        NSString *accessToken = [JPSpotifySession defaultInstance].session.accessToken;
+
+//        SPTQueryTypeTrack = 0,
+//        SPTQueryTypeArtist,
+//        SPTQueryTypeAlbum,
+//        SPTQueryTypePlaylist
+        [SPTSearch performSearchWithQuery:@"Muse" queryType:SPTQueryTypeArtist accessToken:accessToken callback:^(NSError *error, SPTListPage *page) {
             if (error) {
                 NSLog(@"error: %@", error);
-                return;
             }
-
-            NSLog(@"Artist: %@", artist);
-
-            [artist requestAlbumsOfType:SPTAlbumTypeAlbum withSession:session availableInTerritory:nil callback:^(NSError *error, id object) {
-                if (error) {
-                    NSLog(@"error: %@", error);
-                    return;
-                }
-
-                NSLog(@"Album: %@", object);
-            }];
-
-            [artist requestAlbumsOfType:SPTAlbumTypeSingle withSession:session availableInTerritory:nil callback:^(NSError *error, SPTListPage *page) {
-                if (error) {
-                    NSLog(@"error: %@", error);
-                    return;
-                }
-
-                NSLog(@"Single: %@", page);
-                NSLog(@"%@", page.items);
-            }];
-
-            [artist requestAlbumsOfType:SPTAlbumTypeCompilation withSession:session availableInTerritory:nil callback:^(NSError *error, SPTListPage *page) {
-                if (error) {
-                    NSLog(@"error: %@", error);
-                    return;
-                }
-
-                NSLog(@"Compilation: %@", page);
-                NSLog(@"%@", page.items);
-            }];
-
-            [artist requestAlbumsOfType:SPTAlbumTypeAppearsOn withSession:session availableInTerritory:nil callback:^(NSError *error, SPTListPage *page) {
-                if (error) {
-                    NSLog(@"error: %@", error);
-                    return;
-                }
-
-                NSLog(@"AppearsOn: %@", page);
-                NSLog(@"%@", page.items);
-            }];
-
-            [artist requestTopTracksForTerritory:@"TW" withSession:session callback:^(NSError *error, id object) {
-//                NSLog(@"Top Tracks: %@", object);
-            }];
-
-            [artist requestRelatedArtistsWithSession:session callback:^(NSError *error, id object) {
-//                NSLog(@"Related Artists: %@", object);
-            }];
+            NSLog(@"%@", page);
+            NSLog(@"%@", page.items);
         }];
     }
 }

@@ -11,14 +11,12 @@
 #import "JPListTableViewController.h"
 #import "JPPlaylistCell.h"
 #import "JPSpotifyPlayer.h"
-#import "JPSpotifyListHeaderView.h"
 #import "JPSpotifySession.h"
 
-@interface JPListViewController () <UITableViewDataSource, UITableViewDelegate, JPSpotifyListHeaderDelegate>
+@interface JPListViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) UITableView *listsTableView;
 @property (strong, nonatomic) SPTPlaylistList *SpotifyLists;
-@property (strong, nonatomic) JPSpotifyListHeaderView *header;
 
 @end
 
@@ -34,19 +32,13 @@
         
     _tableView.dataSource = self;
     _tableView.delegate = self;
-    
-    _header = [[JPSpotifyListHeaderView alloc] initWithFrame:CGRectMake(0, 0, ContainerWidth, 120)];
-    _header.delegate = self;
 
     SPTSession *session = [JPSpotifySession defaultInstance].session;
     [SPTPlaylistList playlistsForUserWithSession:session callback:^(NSError *error, SPTPlaylistList *lists) {
         if (error) {
             NSLog(@"Get playlist error: %@", error);
-            _header.state = JPSpotifyHeaderError;
             return;
         }
-
-        _header.state = JPSpotifyHeaderDone;
 
         _SpotifyLists = lists;
         [_tableView reloadData];
@@ -88,7 +80,9 @@
 #pragma mark - UITableViewDelegate
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     if (section == 0) { // spotify header
-        return _header;
+        UIView *header = [[UIView alloc] initWithFrame:(CGRect){CGPointZero, ContainerWidth, 120.f}];
+        header.backgroundColor = [UIColor JPColor];
+        return header;
     }
     
     return nil;
@@ -119,24 +113,6 @@
         
         [self addOneContainer:newSpotifyListVC];
     }
-}
-
-#pragma mark - Other actions
-- (void)refresh {
-    _header.state = JPSpotifyHeaderRetrieving;
-    
-    [SPTPlaylistList playlistsForUserWithSession:[JPSpotifySession defaultInstance].session callback:^(NSError *error, SPTPlaylistList *lists) {
-        if (error) {
-            NSLog(@"Get playlist error: %@", error);
-            _header.state = JPSpotifyHeaderError;
-            return;
-        }
-        
-        _header.state = JPSpotifyHeaderDone;
-        
-        _SpotifyLists = lists;
-        [_tableView reloadData];
-    }];
 }
 
 @end

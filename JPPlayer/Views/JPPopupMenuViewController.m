@@ -7,7 +7,7 @@
 //
 
 #import <UIImageView+AFNetworking.h>
-#import "JPPopupMenuView.h"
+#import "JPPopupMenuViewController.h"
 #import "JPAlbumTableViewController.h"
 #import "JPArtistCollectionViewController.h"
 #import "JPSpotifySession.h"
@@ -15,7 +15,7 @@
 #define HeaderHeight 80.f
 #define CellHeight 60.f
 
-@interface JPPopupMenuView() <UITableViewDataSource, UITableViewDelegate>
+@interface JPPopupMenuViewController() <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) UIView *backgroundContainerView;
 @property (strong, nonatomic) UIView *backgroundView;
@@ -36,7 +36,7 @@
 
 @end
 
-@implementation JPPopupMenuView
+@implementation JPPopupMenuViewController
 
 static id defaultInstance;
 
@@ -71,11 +71,11 @@ static id defaultInstance;
             make.edges.equalTo(_backgroundContainerView);
         }];
 
-        self.backgroundColor = [UIColor JPBackgroundColor];
-        self.layer.cornerRadius = 10.f;
-        self.clipsToBounds = YES;
-        [_backgroundContainerView addSubview:self];
-        [self makeConstraints:^(MASConstraintMaker *make) {
+        self.view.backgroundColor = [UIColor JPBackgroundColor];
+        self.view.layer.cornerRadius = 10.f;
+        self.view.clipsToBounds = YES;
+        [_backgroundContainerView addSubview:self.view];
+        [self.view makeConstraints:^(MASConstraintMaker *make) {
             make.width.equalTo(@(PopupMenuWidth));
             make.height.equalTo(@(HeaderHeight));
             make.right.equalTo(_backgroundContainerView).offset(-(8.f + SmallButtonWidth + 8.f));
@@ -100,13 +100,13 @@ static id defaultInstance;
         _actionTableView.delegate = self;
         _actionTableView.backgroundColor = [UIColor JPBackgroundColor];
         _actionTableView.separatorColor = [UIColor JPSeparatorColor];
-        [self addSubview:_actionTableView];
+        [self.view addSubview:_actionTableView];
 
         _headerContainerView = [[UIView alloc] init];
         _headerContainerView.backgroundColor = [UIColor JPFakeHeaderColor];
-        [self addSubview:_headerContainerView];
+        [self.view addSubview:_headerContainerView];
         [_headerContainerView makeConstraints:^(MASConstraintMaker *make) {
-            make.top.left.right.equalTo(self);
+            make.top.left.right.equalTo(self.view);
             make.height.equalTo(@(HeaderHeight));
         }];
 
@@ -170,24 +170,24 @@ static id defaultInstance;
 
     CGFloat y = point.y - [UIScreen mainScreen].bounds.size.height / 2.f;
 
-    [self updateConstraints:^(MASConstraintMaker *make) {
+    [self.view updateConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@(HeaderHeight));
         make.centerY.equalTo(_backgroundContainerView.centerY).offset(y).priorityLow();
     }];
 
     [_actionTableView remakeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self);
+        make.edges.equalTo(self.view);
     }];
     [_backgroundContainerView layoutIfNeeded];
 
     [UIView animateWithDuration:AnimationInterval animations:^{
-        [self updateConstraints:^(MASConstraintMaker *make) {
+        [self.view updateConstraints:^(MASConstraintMaker *make) {
             make.height.equalTo(@(HeaderHeight + _menuCaptions.count * CellHeight));
         }];
 
         [_actionTableView remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(_headerContainerView.bottom);
-            make.bottom.left.right.equalTo(self);
+            make.bottom.left.right.equalTo(self.view);
         }];
         [_backgroundContainerView layoutIfNeeded];
     }];
@@ -202,12 +202,12 @@ static id defaultInstance;
 
 - (void)dismissMenu {
     [UIView animateWithDuration:AnimationInterval animations:^{
-        [self updateConstraints:^(MASConstraintMaker *make) {
+        [self.view updateConstraints:^(MASConstraintMaker *make) {
             make.height.equalTo(@(HeaderHeight));
         }];
 
         [_actionTableView remakeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self);
+            make.edges.equalTo(self.view);
         }];
         [_backgroundContainerView layoutIfNeeded];
     } completion:^(BOOL finished) {
@@ -261,6 +261,14 @@ static id defaultInstance;
                 NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                 if ([result isEqualToString:@"[ false ]"]) {
                     [SPTYourMusic saveTracks:@[_track] forUserWithAccessToken:accessToken callback:nil];
+
+                    NSString *message = [NSString stringWithFormat:@"%@ is saved", _track.name];
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Succeeded" message:message preferredStyle:UIAlertControllerStyleAlert];
+
+                    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+                    [alert addAction:defaultAction];
+                    
+                    [self presentViewController:alert animated:YES completion:nil];
                 }
             }];
 

@@ -7,13 +7,13 @@
 //
 
 #import <UIImageView+AFNetworking.h>
-#import "JPFeatureViewController.h"
+#import "JPBrowseViewController.h"
 #import "JPCollectionViewCell.h"
 #import "JPListTableViewController.h"
 #import "JPAlbumTableViewController.h"
 #import "JPSpotifySession.h"
 
-@interface JPFeatureViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface JPBrowseViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (strong, nonatomic) UILabel *featureMessageLabel;
 @property (strong, nonatomic) SPTFeaturedPlaylistList *featureListList;
@@ -27,7 +27,7 @@
 
 @end
 
-@implementation JPFeatureViewController
+@implementation JPBrowseViewController
 @synthesize containerList = _containerList;
 
 - (void)viewDidLoad {
