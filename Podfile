@@ -1,2 +1,5 @@
 pod 'Masonry'
 pod 'AFNetworking'
+pod 'FBSDKCoreKit'
+pod 'FBSDKLoginKit'
+pod 'FBSDKShareKit'
