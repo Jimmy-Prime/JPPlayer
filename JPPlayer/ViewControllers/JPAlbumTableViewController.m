@@ -74,6 +74,7 @@
                 }
 
                 _tracks[indexPath.row] = track;
+                cell.track = track;
             }];
         }
 

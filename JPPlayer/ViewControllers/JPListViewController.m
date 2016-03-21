@@ -65,7 +65,7 @@
             cell = [[JPPlaylistCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:JPPlaylistCellIdentifier];
         }
         
-        SPTPartialPlaylist *partialPlayList = [[_SpotifyLists tracksForPlayback] objectAtIndex:indexPath.row];
+        SPTPartialPlaylist *partialPlayList = [[_SpotifyLists items] objectAtIndex:indexPath.row];
         UIImage *placeHolder = [UIImage imageNamed:@"PlaceHolder.jpg"];
         [cell.profileImageView setImageWithURL:partialPlayList.smallestImage.imageURL placeholderImage:placeHolder];
         cell.titleLabel.text = [NSString stringWithFormat:@"%@", partialPlayList.name];

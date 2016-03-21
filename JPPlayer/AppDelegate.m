@@ -39,7 +39,8 @@
     auth.redirectURL = [NSURL URLWithString:SpotifyRedirectURL];
     auth.tokenRefreshURL = [NSURL URLWithString:SpotifyRefreshURL];
     auth.tokenSwapURL = [NSURL URLWithString:SpotifySwapURL];
-    auth.requestedScopes = @[SPTAuthPlaylistReadPrivateScope,
+    auth.requestedScopes = @[SPTAuthPlaylistModifyPublicScope,
+                             SPTAuthPlaylistReadPrivateScope,
                              SPTAuthStreamingScope,
                              SPTAuthUserLibraryModifyScope,
                              SPTAuthUserLibraryReadScope,

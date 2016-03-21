@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JPPopupMenuViewController : UIViewController
+@interface JPPopupMenuViewController : UINavigationController
 
 + (instancetype)defaultInstance;
 - (void)showMenuAtRefPoint:(CGPoint)point track:(SPTPartialTrack *)track;

@@ -16,5 +16,6 @@ static const CGFloat JPPlaylistCellHeight = 70.f;
 @property (strong, nonatomic) UIImageView *profileImageView;
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UILabel *auxilaryLabel;
+@property (strong, nonatomic) UIImageView *rightArrowImageView;
 
 @end

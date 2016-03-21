@@ -8,6 +8,7 @@
 
 #import <UIImageView+AFNetworking.h>
 #import "JPPopupMenuViewController.h"
+#import "JPPopupMenuTableViewController.h"
 #import "JPAlbumTableViewController.h"
 #import "JPArtistCollectionViewController.h"
 #import "JPSpotifySession.h"
@@ -15,7 +16,7 @@
 #define HeaderHeight 80.f
 #define CellHeight 60.f
 
-@interface JPPopupMenuViewController() <UITableViewDataSource, UITableViewDelegate>
+@interface JPPopupMenuViewController() <UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) UIView *backgroundContainerView;
 @property (strong, nonatomic) UIView *backgroundView;
@@ -27,12 +28,13 @@
 
 @property (strong, nonatomic) SPTPartialTrack *track;
 
+@property (strong, nonatomic) UIViewController *rootVC;
 @property (strong, nonatomic) UITableView *actionTableView;
 @property (strong, nonatomic) NSArray *menuCaptions;
 @property (strong, nonatomic) NSArray *menuImageNames;
 @property (strong, nonatomic) NSIndexPath *selectedIndexPath;
 
-@property (strong, nonatomic) UIImageView *indicator;
+@property (strong, nonatomic) JPPopupMenuTableViewController *playlistTable;
 
 @end
 
@@ -51,8 +53,9 @@ static id defaultInstance;
 - (instancetype)init {
     self = [super init];
     if (self) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
-
+        /*******************************/
+        // Setup background touch view //
+        /*******************************/
         UIWindow *window = [UIApplication sharedApplication].delegate.window;
 
         _backgroundContainerView = [[UIView alloc] init];
@@ -71,9 +74,14 @@ static id defaultInstance;
             make.edges.equalTo(_backgroundContainerView);
         }];
 
+        self.delegate = self;
+        [self.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+        self.navigationBar.shadowImage = [UIImage new];
+
         self.view.backgroundColor = [UIColor JPBackgroundColor];
         self.view.layer.cornerRadius = 10.f;
         self.view.clipsToBounds = YES;
+        [self setNavigationBarHidden:YES];
         [_backgroundContainerView addSubview:self.view];
         [self.view makeConstraints:^(MASConstraintMaker *make) {
             make.width.equalTo(@(PopupMenuWidth));
@@ -83,6 +91,16 @@ static id defaultInstance;
             make.top.greaterThanOrEqualTo(_backgroundContainerView.top).offset(20.f);
             make.bottom.lessThanOrEqualTo(_backgroundContainerView.bottom).offset(-20.f);
         }];
+
+        /******************************/
+        // Setup root view controller //
+        /******************************/
+        _rootVC = [[UIViewController alloc] init];
+        _rootVC.view.backgroundColor = [UIColor JPBackgroundColor];
+        [self setViewControllers:@[_rootVC]];
+
+        _rootVC.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        _rootVC.navigationController.navigationBar.tintColor = [UIColor JPColor];
 
         _menuCaptions = @[@"Add",
                           @"Add to Playlist",
@@ -100,13 +118,13 @@ static id defaultInstance;
         _actionTableView.delegate = self;
         _actionTableView.backgroundColor = [UIColor JPBackgroundColor];
         _actionTableView.separatorColor = [UIColor JPSeparatorColor];
-        [self.view addSubview:_actionTableView];
+        [_rootVC.view addSubview:_actionTableView];
 
         _headerContainerView = [[UIView alloc] init];
         _headerContainerView.backgroundColor = [UIColor JPFakeHeaderColor];
-        [self.view addSubview:_headerContainerView];
+        [_rootVC.view addSubview:_headerContainerView];
         [_headerContainerView makeConstraints:^(MASConstraintMaker *make) {
-            make.top.left.right.equalTo(self.view);
+            make.top.left.right.equalTo(_rootVC.view);
             make.height.equalTo(@(HeaderHeight));
         }];
 
@@ -140,24 +158,16 @@ static id defaultInstance;
             make.height.equalTo(_headerContainerView).multipliedBy(0.4f);
         }];
 
-        _indicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ic_more_horiz_white_48pt"]];
-        _indicator.frame = (CGRect){CGPointZero, SmallButtonWidth, SmallButtonWidth};
-        _indicator.layer.borderColor = [[UIColor whiteColor] CGColor];
-        _indicator.layer.borderWidth = 1.f;
-        _indicator.layer.cornerRadius = SmallButtonWidth / 2.f;
-        _indicator.contentMode = UIViewContentModeScaleAspectFit;
-        _indicator.tintColor = [UIColor whiteColor];
-        [_backgroundContainerView addSubview:_indicator];
+        _playlistTable = [[JPPopupMenuTableViewController alloc] init];
     }
 
     return self;
 }
 
-
-- (void)orientationChanged {
-    _backgroundContainerView.frame = [UIScreen mainScreen].bounds;
-    _backgroundView.frame = [UIScreen mainScreen].bounds;
-    [self dismissMenu];
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    if (viewController == navigationController.viewControllers.firstObject) {
+        [navigationController setNavigationBarHidden:YES];
+    }
 }
 
 - (void)tap:(UITapGestureRecognizer *)tap {
@@ -166,7 +176,7 @@ static id defaultInstance;
 
 - (void)showMenuAtRefPoint:(CGPoint)point track:(SPTPartialTrack *)track {
     _track = track;
-    _indicator.center = point;
+    _playlistTable.track = track;
 
     CGFloat y = point.y - [UIScreen mainScreen].bounds.size.height / 2.f;
 
@@ -176,7 +186,7 @@ static id defaultInstance;
     }];
 
     [_actionTableView remakeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.view);
+        make.edges.equalTo(_actionTableView.superview);
     }];
     [_backgroundContainerView layoutIfNeeded];
 
@@ -187,7 +197,7 @@ static id defaultInstance;
 
         [_actionTableView remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(_headerContainerView.bottom);
-            make.bottom.left.right.equalTo(self.view);
+            make.bottom.left.right.equalTo(_actionTableView.superview);
         }];
         [_backgroundContainerView layoutIfNeeded];
     }];
@@ -207,12 +217,15 @@ static id defaultInstance;
         }];
 
         [_actionTableView remakeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self.view);
+            make.edges.equalTo(_actionTableView.superview);
         }];
         [_backgroundContainerView layoutIfNeeded];
     } completion:^(BOOL finished) {
         _backgroundContainerView.hidden = YES;
         [_actionTableView deselectRowAtIndexPath:_selectedIndexPath animated:NO];
+
+        [self popToRootViewControllerAnimated:NO];
+        [self setNavigationBarHidden:YES];
     }];
 }
 
@@ -272,16 +285,22 @@ static id defaultInstance;
                 }
             }];
 
+            [self dismissMenu];
             break;
     }
 
-        case 1: // Add to Playlist
+        case 1: { // Add to Playlist
+            [self pushViewController:_playlistTable animated:YES];
+            [self setNavigationBarHidden:NO];
             break;
+        }
 
         case 2: { // Go to Album
             JPAlbumTableViewController *newAlbumVC = [[JPAlbumTableViewController alloc] init];
             newAlbumVC.information = _track.album;
             [[NSNotificationCenter defaultCenter] postNotificationName:@"newContainer" object:nil userInfo:@{@"container" : newAlbumVC}];
+
+            [self dismissMenu];
             break;
         }
 
@@ -289,6 +308,8 @@ static id defaultInstance;
             JPArtistCollectionViewController *newArtistVC = [[JPArtistCollectionViewController alloc] init];
             newArtistVC.information = _track.artists.firstObject;
             [[NSNotificationCenter defaultCenter] postNotificationName:@"newContainer" object:nil userInfo:@{@"container" : newArtistVC}];
+
+            [self dismissMenu];
             break;
         }
 
@@ -298,8 +319,6 @@ static id defaultInstance;
         default:
             break;
     }
-
-    [self dismissMenu];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
