@@ -7,18 +7,18 @@
 //
 
 #import <UIImageView+AFNetworking.h>
-#import "JPPopupMenuTableViewController.h"
+#import "JPPopupMenuPlaylistViewController.h"
 #import "JPPopupMenuViewController.h"
 #import "JPPlaylistCell.h"
 #import "JPSpotifySession.h"
 
-@interface JPPopupMenuTableViewController ()
+@interface JPPopupMenuPlaylistViewController ()
 
 @property (strong, nonatomic) NSMutableArray *playlists;
 
 @end
 
-@implementation JPPopupMenuTableViewController
+@implementation JPPopupMenuPlaylistViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -79,6 +79,7 @@
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     SPTPlaylistSnapshot *playlist = _playlists[indexPath.row];
+
     [playlist addTracksToPlaylist:@[_track] withSession:[JPSpotifySession defaultInstance].session callback:^(NSError *error) {
         if (error) {
             NSLog(@"error: %@", error);

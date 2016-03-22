@@ -1,14 +1,14 @@
 //
-//  JPPopupMenuTableViewController.h
+//  JPPopupMenuRootViewController.h
 //  JPPlayer
 //
-//  Created by Prime on 3/21/16.
+//  Created by Prime on 3/22/16.
 //  Copyright © 2016 Prime. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface JPPopupMenuTableViewController : UITableViewController
+@interface JPPopupMenuRootViewController : UITableViewController
 
 @property (strong, nonatomic) SPTPartialTrack *track;
 
