@@ -40,3 +40,4 @@ CGFloat CoverInset = 25.f;
 
 // Popup Menu View
 CGFloat PopupMenuWidth = 320.f;
+CGFloat PopupMenuCellHeight = 60.f;

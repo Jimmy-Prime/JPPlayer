@@ -30,3 +30,4 @@ extern CGFloat CoverLength;
 extern CGFloat CoverInset;
 
 extern CGFloat PopupMenuWidth;
+extern CGFloat PopupMenuCellHeight;

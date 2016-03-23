@@ -20,6 +20,7 @@
 		4B1CE5F51C45777200AC731A /* JPPopupControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1CE5F41C45777200AC731A /* JPPopupControlViewController.m */; };
 		4B2590051CA126A100B8FB01 /* JPTrackHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B2590041CA126A100B8FB01 /* JPTrackHeader.m */; };
 		4B2590081CA1388D00B8FB01 /* JPPopupMenuRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B2590071CA1388D00B8FB01 /* JPPopupMenuRootViewController.m */; };
+		4B25900B1CA14B2E00B8FB01 /* JPPopupMenuShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B25900A1CA14B2E00B8FB01 /* JPPopupMenuShareViewController.m */; };
 		4B27F1551C1A6155009FCBE6 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B27F1541C1A6155009FCBE6 /* TestViewController.m */; };
 		4B27F15B1C1A9AFF009FCBE6 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B27F15A1C1A9AFF009FCBE6 /* Constants.m */; };
 		4B3767611C9856DF0046D88A /* logo connect.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B37675B1C9856DF0046D88A /* logo connect.png */; };
@@ -62,6 +63,7 @@
 		4BEFCA9F1C552B6C0051750A /* Spotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BEFCA9E1C552B6B0051750A /* Spotify.framework */; };
 		4BEFCAA51C552C820051750A /* JPSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BEFCAA41C552C820051750A /* JPSettingsViewController.m */; };
 		4BEFCAEE1C58FCFF0051750A /* JPPlaylistCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BEFCAED1C58FCFF0051750A /* JPPlaylistCell.m */; };
+		4BF8A0971CA27B65009305AE /* FB icon license.html in Resources */ = {isa = PBXBuildFile; fileRef = 4BF8A0961CA27B65009305AE /* FB icon license.html */; };
 		4BFCBA461C3F8D8D00B86DD9 /* JPPopupPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BFCBA451C3F8D8D00B86DD9 /* JPPopupPlayerViewController.m */; };
 		4BFCBA491C3F90FF00B86DD9 /* JPCoverScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BFCBA481C3F90FF00B86DD9 /* JPCoverScrollViewController.m */; };
 		4BFFABF81C7C662E00E9CE37 /* UIColor+JPColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BFFABF71C7C662E00E9CE37 /* UIColor+JPColor.m */; };
@@ -112,6 +114,8 @@
 		4B2590041CA126A100B8FB01 /* JPTrackHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPTrackHeader.m; path = Views/JPTrackHeader.m; sourceTree = "<group>"; };
 		4B2590061CA1388D00B8FB01 /* JPPopupMenuRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPPopupMenuRootViewController.h; path = ViewControllers/JPPopupMenuRootViewController.h; sourceTree = "<group>"; };
 		4B2590071CA1388D00B8FB01 /* JPPopupMenuRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPPopupMenuRootViewController.m; path = ViewControllers/JPPopupMenuRootViewController.m; sourceTree = "<group>"; };
+		4B2590091CA14B2E00B8FB01 /* JPPopupMenuShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPPopupMenuShareViewController.h; path = ViewControllers/JPPopupMenuShareViewController.h; sourceTree = "<group>"; };
+		4B25900A1CA14B2E00B8FB01 /* JPPopupMenuShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPPopupMenuShareViewController.m; path = ViewControllers/JPPopupMenuShareViewController.m; sourceTree = "<group>"; };
 		4B27F1531C1A6155009FCBE6 /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestViewController.h; path = ViewControllers/TestViewController.h; sourceTree = "<group>"; };
 		4B27F1541C1A6155009FCBE6 /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestViewController.m; path = ViewControllers/TestViewController.m; sourceTree = "<group>"; };
 		4B27F15A1C1A9AFF009FCBE6 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
@@ -187,6 +191,7 @@
 		4BEFCAA41C552C820051750A /* JPSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPSettingsViewController.m; path = ViewControllers/JPSettingsViewController.m; sourceTree = "<group>"; };
 		4BEFCAEC1C58FCFF0051750A /* JPPlaylistCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPPlaylistCell.h; path = Views/JPPlaylistCell.h; sourceTree = "<group>"; };
 		4BEFCAED1C58FCFF0051750A /* JPPlaylistCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPPlaylistCell.m; path = Views/JPPlaylistCell.m; sourceTree = "<group>"; };
+		4BF8A0961CA27B65009305AE /* FB icon license.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "FB icon license.html"; sourceTree = "<group>"; };
 		4BFCBA441C3F8D8D00B86DD9 /* JPPopupPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPPopupPlayerViewController.h; path = ViewControllers/JPPopupPlayerViewController.h; sourceTree = "<group>"; };
 		4BFCBA451C3F8D8D00B86DD9 /* JPPopupPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPPopupPlayerViewController.m; path = ViewControllers/JPPopupPlayerViewController.m; sourceTree = "<group>"; };
 		4BFCBA471C3F90FF00B86DD9 /* JPCoverScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPCoverScrollViewController.h; path = ViewControllers/JPCoverScrollViewController.h; sourceTree = "<group>"; };
@@ -325,10 +330,7 @@
 			children = (
 				4B94084C1C932F0B0061AEAC /* JPPopupMenuViewController.h */,
 				4B94084D1C932F0B0061AEAC /* JPPopupMenuViewController.m */,
-				4B2590061CA1388D00B8FB01 /* JPPopupMenuRootViewController.h */,
-				4B2590071CA1388D00B8FB01 /* JPPopupMenuRootViewController.m */,
-				4BEE160C1C9FFA5C003DEED3 /* JPPopupMenuPlaylistViewController.h */,
-				4BEE160D1C9FFA5C003DEED3 /* JPPopupMenuPlaylistViewController.m */,
+				4BF8A0951CA2754C009305AE /* Popup Menu Sub ViewControllers */,
 			);
 			name = "Popup Menu Navigation Controller";
 			sourceTree = "<group>";
@@ -349,6 +351,7 @@
 				4B37675A1C98569E0046D88A /* JPPlayer logo component */,
 				4BC1081A1C6499590050E1EF /* PlaceHolder License.txt */,
 				4BC1081B1C6499590050E1EF /* PlaceHolder.jpg */,
+				4BF8A0961CA27B65009305AE /* FB icon license.html */,
 				4B0899961C86EDBC00B1396F /* Color Palette.png */,
 				4BA85D8F1C15748400D78EB9 /* JPPlayer */,
 				4BA85DA91C15748400D78EB9 /* JPPlayerTests */,
@@ -490,6 +493,19 @@
 				4B1743641C495EF0000B742F /* JPListTableViewController.m */,
 			);
 			name = " ";
+			sourceTree = "<group>";
+		};
+		4BF8A0951CA2754C009305AE /* Popup Menu Sub ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				4B2590061CA1388D00B8FB01 /* JPPopupMenuRootViewController.h */,
+				4B2590071CA1388D00B8FB01 /* JPPopupMenuRootViewController.m */,
+				4BEE160C1C9FFA5C003DEED3 /* JPPopupMenuPlaylistViewController.h */,
+				4BEE160D1C9FFA5C003DEED3 /* JPPopupMenuPlaylistViewController.m */,
+				4B2590091CA14B2E00B8FB01 /* JPPopupMenuShareViewController.h */,
+				4B25900A1CA14B2E00B8FB01 /* JPPopupMenuShareViewController.m */,
+			);
+			name = "Popup Menu Sub ViewControllers";
 			sourceTree = "<group>";
 		};
 		4BFCBA4A1C3F910C00B86DD9 /* Popup ViewControllers */ = {
@@ -640,6 +656,7 @@
 				4BA85DA01C15748400D78EB9 /* LaunchScreen.storyboard in Resources */,
 				4B3767651C9856DF0046D88A /* logo inner R.png in Resources */,
 				4B3767611C9856DF0046D88A /* logo connect.png in Resources */,
+				4BF8A0971CA27B65009305AE /* FB icon license.html in Resources */,
 				4B3767621C9856DF0046D88A /* logo outer L.png in Resources */,
 				4B3767641C9856DF0046D88A /* logo inner L.png in Resources */,
 				4BA85D9D1C15748400D78EB9 /* Assets.xcassets in Resources */,
@@ -743,6 +760,7 @@
 				4B1743661C495EF0000B742F /* JPListTableViewController.m in Sources */,
 				4BFFABF81C7C662E00E9CE37 /* UIColor+JPColor.m in Sources */,
 				4B08999A1C881B3C00B1396F /* JPGradientView.m in Sources */,
+				4B25900B1CA14B2E00B8FB01 /* JPPopupMenuShareViewController.m in Sources */,
 				4BC1091E1C733C7F0050E1EF /* JPListControlView.m in Sources */,
 				4B27F15B1C1A9AFF009FCBE6 /* Constants.m in Sources */,
 				4B1CE5F21C42D37100AC731A /* JPTrackLabel.m in Sources */,
